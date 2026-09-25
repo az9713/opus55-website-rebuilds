@@ -1260,12 +1260,11 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <p>Pages was switched on with <code>gh api -X POST repos/az9713/opus55-website-rebuilds/pages -f "source[branch]=main" -f "source[path]=/"</code>. The build type is "legacy" (Jekyll). No <code>.nojekyll</code> file is needed: Jekyll renders <code>README.md</code> as the root page and copies the plain HTML files as they are. No file or folder name starts with <code>_</code>, so Jekyll skips nothing.</p>
 
 <h3>What is in git and what is not</h3>
-<p>In git: <code>sites/</code> (7 pages and 75 images), <code>scripts/</code>, <code>BRIEF.md</code>, <code>README.md</code>, <code>journey-img/</code>, and this page once it is committed. Kept out by <code>.gitignore</code>: <code>scratch/</code> (old crops, Higgsfield PNGs, verification frames, backups), <code>evidence/</code> (video frames), <code>transcript.txt</code> (the creator's narration), <code>HANDOFF.md</code>, <code>TASKS.md</code>, <code>.claude/</code>, and <code>.ignore/</code>.</p>
+<p>In git: <code>sites/</code> (7 pages and 75 images), <code>scripts/</code>, <code>BRIEF.md</code>, <code>README.md</code>, <code>journey-img/</code>, <code>LICENSE</code>, and this page. Kept out by <code>.gitignore</code>: <code>scratch/</code> (old crops, Higgsfield PNGs, verification frames, backups), <code>evidence/</code> (video frames), <code>transcript.txt</code> (the creator's narration), <code>HANDOFF.md</code>, <code>TASKS.md</code>, <code>.claude/</code>, and <code>.ignore/</code>.</p>
 
 <h3>Open items</h3>
 <p>None of these blocks the live sites. Each is an option for the owner, not a promise.</p>
 <ol>
-<li><strong>This page is not committed yet.</strong> The README links to <code>DEVELOPMENT-JOURNEY.html</code> on Pages; that link returns 404 until the file is committed and pushed.</li>
 <li><strong><code>BRIEF.md</code> is public and describes phase 1</strong> ("copy text ... verbatim", "crop photos directly from the frames") and shows a local Windows path. The README explains that photos and text were replaced later. Options: leave it as a historical record, or add a note at its top.</li>
 <li><strong>Old names in file names and code keys</strong> (<code>anders.jpg</code>, <code>amara.jpg</code>, <code>p-fathom.jpg</code>, <code>gull-king.jpg</code>, <code>salthowl-picks</code>). A rename needs matching code edits.</li>
 <li><strong>A few near-verbatim strings</strong> remain (for example the high-rise hero opening "Thirty-eight storeys of").</li>
