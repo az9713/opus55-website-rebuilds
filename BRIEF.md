@@ -1,6 +1,6 @@
 # Brief for each site-rebuild agent
 
-Project root: `C:\Users\USERNAME\Downloads\opus5.5_website_brendan` (use Git Bash paths `/c/Users/USERNAME/Downloads/opus5.5_website_brendan`).
+Project root: `C:\Users\<user>\Downloads\opus5.5_website_brendan` (use Git Bash paths `/c/Users/<user>/Downloads/opus5.5_website_brendan`).
 
 Goal: recreate ONE website shown in a YouTube screen recording, with the highest visual fidelity to the original, including its animations. The original sites were built by Claude Opus 5.5 with GPT-image photos.
 
@@ -9,7 +9,7 @@ Goal: recreate ONE website shown in a YouTube screen recording, with the highest
 - `sheets/<site>/sheet_XX.jpg` — contact sheets, 20 frames each (every 2nd frame = 1 fps), labeled with the frame file name. READ THE SHEETS FIRST to map sections to frame ranges. Then read full frames only where you need copy text, layout detail, or colors (about 20–40 full frames). Do not read every frame.
 - `transcript.txt` — narration; find your chapter. It names the animations the presenter points out.
 - To see motion in detail, extract a short high-fps window yourself, e.g.
-  `"/c/Users/USERNAME/AppData/Local/Programs/Python/Python313/Lib/site-packages/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe" -loglevel error -ss <sec> -t 2 -i video/source.webm -vf fps=10 scratch/<site>/m_%03d.jpg`
+  `"/c/Users/<user>/AppData/Local/Programs/Python/Python313/Lib/site-packages/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe" -loglevel error -ss <sec> -t 2 -i video/source.webm -vf fps=10 scratch/<site>/m_%03d.jpg`
   Put scratch files under `scratch/<site>/`, never elsewhere.
 
 ## Frame geometry

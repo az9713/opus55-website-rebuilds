@@ -136,7 +136,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <dt>Date</dt><dd>2026-09-24 to 2026-09-25 (four Claude Code sessions)</dd>
 <dt>Deliverable</dt><dd><a href="https://az9713.github.io/opus55-website-rebuilds/">https://az9713.github.io/opus55-website-rebuilds/</a> (7 live sites) and the repository <a href="https://github.com/az9713/opus55-website-rebuilds">github.com/az9713/opus55-website-rebuilds</a></dd>
 <dt>Source video</dt><dd><a href="https://www.youtube.com/watch?v=mPiaap4zEVk">"NEW Opus 5.5 is INSANE at Building Websites (Full Showcase)"</a> by Brendan Jowett (<a href="https://www.youtube.com/@brendanautomation">@brendanautomation</a>)</dd>
-<dt>Owner</dt><dd>the owner. He directed the work. He did not write the code.</dd>
+<dt>Owner</dt><dd>The repository owner directed the work and did not write the code.</dd>
 <dt>Model</dt><dd>Claude Opus 5.5 (<code>claude-opus-5-5</code>) in the main thread of all four sessions</dd>
 </dl>
 <nav class="toc toc-mobile" aria-label="Table of contents">
@@ -185,14 +185,14 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <p><strong>This page is a reconstruction.</strong> The work happened in four Claude Code sessions. The session that wrote this page started after a <code>/clear</code>, so it had no memory of the earlier work. Everything below comes from the saved records listed here, not from memory.</p>
 </div>
 <div class="tw"><table>
-<tr><th>Session</th><th>Local time (local offset)</th><th>What it did</th><th>Record used</th></tr>
+<tr><th>Session</th><th>Local time</th><th>What it did</th><th>Record used</th></tr>
 <tr><td>S1 <code>4c61f10e</code></td><td>Thu 24 Sep 14:57 &rarr; 21:59</td><td>Download, frames, 7 build agents, checks, site 5 hang, evidence report, copyright talk, Higgsfield install</td><td>Main transcript (10.3 MB) and 8 agent transcripts (18&ndash;94 MB each)</td></tr>
 <tr><td>S2 <code>6178a7a4</code></td><td>Thu 24 Sep 22:08 &rarr; Fri 25 Sep ~03:03</td><td>Replaced all 75 photos with Higgsfield images</td><td>Main transcript (13.1 MB) and 7 agent transcripts</td></tr>
 <tr><td>S3 <code>39aca3b5</code></td><td>Fri 25 Sep 03:06 &rarr; 04:54</td><td>New banners, copy rewrite, evidence page, public GitHub repository</td><td>Main transcript (3.9 MB) and 7 agent transcripts</td></tr>
 <tr><td>S4 <code>2c18db54</code></td><td>Fri 25 Sep 07:13 &rarr; open</td><td>GitHub Pages, README, this page</td><td>Live notes of this session</td></tr>
 </table></div>
 <p>The transcripts are JSONL files, one event per line. A small Python script (<code>dump.py</code>) turned them into plain text. That condensed text cuts long tool inputs after about 400 to 500 characters. So some commands, some file contents, and the end of two agent reports (site 3 and <code>site5-finish</code>) are missing. Where a detail is missing, this page says so. Other evidence: <code>HANDOFF.md</code>, <code>TASKS.md</code>, <code>BRIEF.md</code>, <code>README.md</code>, the scripts in <code>scripts/</code> and <code>scratch/higgs/</code>, the job JSON files from Higgsfield, and the git history.</p>
-<p>Some facts were measured again during the reconstruction, for example the aspect check on all 70 generated images. Those facts say "recomputed". All times on this page are the owner's local time, local offset, unless a line says UTC. The transcripts store UTC.</p>
+<p>Some facts were measured again during the reconstruction, for example the aspect check on all 70 generated images. Those facts say "recomputed". All times on this page are the owner's local time unless a line says UTC. The transcripts store UTC.</p>
 
 <h3>The whole pipeline on one screen</h3>
 <ol class="flow">
@@ -210,11 +210,11 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 
 <section id="s1">
 <h2>1. The brief and the prompts</h2>
-<p>the owner typed every message below. The text is verbatim, with his spelling. "brock" in the last prompt means Brendan Jowett, the creator of the video. Messages that the owner pasted from elsewhere are marked "paste". Other "user" events in the transcripts are tool results, agent notifications, or skill texts, and they are not listed.</p>
+<p>The owner typed every message below. The text is verbatim, with the original spelling. "brock" in the last prompt means Brendan Jowett, the creator of the video. Messages that the owner pasted from elsewhere are marked "paste". Other "user" events in the transcripts are tool results, agent notifications, or skill texts, and they are not listed.</p>
 
 <h3>Session 1 (24 Sep, build)</h3>
 <div class="tw"><table>
-<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><th>Local</th><th>The owner's message</th></tr>
 <tr><td>14:57</td><td>"will you be able to "watch" the video https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=21s end-to-end and recreate the seven websites showcased in the video. you will need get the detailed visual for each website to recreate each of them. please confirm one way or another. do not act yet"</td></tr>
 <tr><td>15:08</td><td>"can you do without yt-dlp as it costs $$$ right ?"</td></tr>
 <tr><td>15:15</td><td>"can you remind me 1. what is " analyze_long.py pipeline calls the Gemini API," for ? 2. after that, remind me  recommendation: use yt-dlp + ffmpeg and skip Gemini."</td></tr>
@@ -232,13 +232,13 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <tr><td>20:54</td><td>"OK even with 1-5 above, any problem publishing the 7 sites in Github"</td></tr>
 <tr><td>21:42</td><td>"i have higgsfield subscription. you can use higgs to replace the 75 photos. the quality must be as good as or exceeding the original. how can that be guaranteed"</td></tr>
 <tr><td>21:49</td><td>(paste) "Set up Higgsfield for me so I can generate images and videos from here. 1. Install the CLI: run <code>npm i -g @higgsfield/cli</code>. 2. Authenticate: run <code>higgsfield auth login</code> ... 3. Install the companion skills: run <code>npx skills add higgsfield-ai/skills</code>."</td></tr>
-<tr><td>21:55</td><td>"add C:\Users\USERNAME\AppData\Roaming\npm to user PATH."</td></tr>
+<tr><td>21:55</td><td>"add C:\Users\&lt;user&gt;\AppData\Roaming\npm to user PATH."</td></tr>
 <tr><td>21:58</td><td><code>/handoff-after-clear</code></td></tr>
 </table></div>
 
 <h3>Session 2 (24&ndash;25 Sep, images)</h3>
 <div class="tw"><table>
-<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><th>Local</th><th>The owner's message</th></tr>
 <tr><td>22:08</td><td><code>/clear</code>, then <code>/exit</code></td></tr>
 <tr><td>22:09</td><td><code>@HANDOFF.md</code> (the whole instruction; the handoff's "Next task" was the image pilot)</td></tr>
 <tr><td>22:20</td><td>"approved, use 4K rule, re-aim the hotspots"</td></tr>
@@ -248,7 +248,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 
 <h3>Session 3 (25 Sep, text, banners, repository)</h3>
 <div class="tw"><table>
-<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><th>Local</th><th>The owner's message</th></tr>
 <tr><td>03:06</td><td><code>/clear</code>, then <code>@HANDOFF.md</code></td></tr>
 <tr><td>03:15</td><td>"My review : None rejected<br>Do both Public GitHub repo and Evidence page tasks. ask  me if questions"</td></tr>
 <tr><td>03:18</td><td>Answers to 4 multiple-choice questions (see section 6): banner "Relabel, no stats"; copy "Text, keep names (Recommended)"; webcam "Blur the box"; repository "opus55-website-rebuilds (Recommended)".</td></tr>
@@ -256,22 +256,22 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 
 <h3>Session 4 (25 Sep, Pages and this page)</h3>
 <div class="tw"><table>
-<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><th>Local</th><th>The owner's message</th></tr>
 <tr><td>07:13</td><td>"please confirm that we are ready to push to the codebase to github."</td></tr>
 <tr><td>07:35</td><td>"please 1. make all 7 sites github pages and make them renderable as live web page in README.md 2. the ultimate goal of this project is to demystify the "video-to-website" generation process. Opus 5.5 "watched" brock's video and subsequently created the websites. i want this process to be reveal. please capture step-by-step how the websites were created using /dev-journey skill, warts and all. include how animations were recreated from static frames, how and why new images were created to avoid rule violations. explain the higgsfield process - was cli or mcp used ? how ? which image model was used ? how each image was recreated but modified ... include also what website features were NOT replicated and why. surface unknown unknowns to this human who is not familiar with this process and address all those unknown issues in the dev journey html also. ask me if any question."</td></tr>
-<tr><td>(answer)</td><td>To the question "should the public journey show video material?" the owner chose "No stills (Recommended)". So this page shows no video frame and no old photo crop. It links to YouTube timestamps.</td></tr>
+<tr><td>(answer)</td><td>To the question "should the public journey show video material?" The owner chose "No stills (Recommended)". So this page shows no video frame and no old photo crop. It links to YouTube timestamps.</td></tr>
 </table></div>
 
 <h3>How the brief was interpreted</h3>
 <p>The first message asked two things: can Claude "watch" the video, and can it recreate the sites. It also said "do not act yet". Claude answered with a plan and its limits and did nothing else. The main sentence was: "I cannot play a video stream directly. I can turn the video into still frames, and I can look at those frames as images." It listed what frames do not give: parts the presenter does not show, motion timing and easing, exact fonts and colours, clean photos and 3D, and text smaller than about 12 px.</p>
 <p>"Highest fidelity" was read as: every section the video shows is present, every animation the presenter names is built, and a screenshot of each rebuild matches a frame from the video. Claude wrote this finish line into <code>TASKS.md</code>. "Capture the animations" was read as: build the named effects so that they work, with timing matched by eye. It was not read as frame-exact timing, because Claude had already said that frames cannot measure timing.</p>
-<p>Some rules were active in every session and shaped the output. the owner's global instructions require Simplified Technical English, dark-mode HTML, "questions are read-only" (a question gets an answer, not an action), "never kill a process by name", and "finish, or say what you left". That is why Claude often answered a question and then wrote "You asked a question, so I have not changed anything." The build brief for the 7 agents is <a href="https://github.com/az9713/opus55-website-rebuilds/blob/main/BRIEF.md"><code>BRIEF.md</code></a>. It is public, and it still describes phase 1 (text copied verbatim, photos cropped from frames). Both were replaced later.</p>
+<p>Some rules were active in every session and shaped the output. The owner's global instructions require Simplified Technical English, dark-mode HTML, "questions are read-only" (a question gets an answer, not an action), "never kill a process by name", and "finish, or say what you left". That is why Claude often answered a question and then wrote "You asked a question, so I have not changed anything." The build brief for the 7 agents is <a href="https://github.com/az9713/opus55-website-rebuilds/blob/main/BRIEF.md"><code>BRIEF.md</code></a>. It is public, and it still describes phase 1 (text copied verbatim, photos cropped from frames). Both were replaced later.</p>
 
 <h3>Human-in-the-loop moments</h3>
-<p>the owner acted at these points. Each one is invisible in the finished sites.</p>
+<p>The owner acted at these points. Each one is invisible in the finished sites.</p>
 <ol>
 <li>Choice of method: free <code>yt-dlp</code> + <code>ffmpeg</code>, no paid Gemini call.</li>
-<li>Approval of deletes in <code>scratch/</code>, and one permission prompt that he answered by hand.</li>
+<li>Approval of deletes in <code>scratch/</code>, and one permission prompt that the owner answered by hand.</li>
 <li>The decision to stop the hung site 5 agent and start <code>site5-finish</code>.</li>
 <li>The decision to delete about 1.5 GB of working files, including the video.</li>
 <li>The question about skeptics, which produced the evidence report.</li>
@@ -293,13 +293,13 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <p>The presenter's words filled several of these gaps. The file <code>transcript.txt</code> (28,399 bytes) was already in the project folder when session 1 started. Its origin is not recorded. It holds the narration with timestamps, for example "1:14 ... if I refresh the page, you will see the animations of loading the web page. And you'll see this entire image is also slowly zooming in." That sentence told the hotel agent that a load animation and a slow zoom exist, which a still frame cannot prove.</p>
 
 <h3>Step 1: download (yt-dlp, format 308)</h3>
-<p>the owner asked if <code>yt-dlp</code> costs money. It does not. It is a free open-source downloader with no account or key. Claude listed the formats with <code>yt-dlp -F</code> and chose format 308, a video-only stream at 2560&times;1440 (1440p). Format 308 has no audio. The narration was already in <code>transcript.txt</code>.</p>
+<p>The owner asked if <code>yt-dlp</code> costs money. It does not. It is a free open-source downloader with no account or key. Claude listed the formats with <code>yt-dlp -F</code> and chose format 308, a video-only stream at 2560&times;1440 (1440p). Format 308 has no audio. The narration was already in <code>transcript.txt</code>.</p>
 <pre><code>yt-dlp -f 308 -o "video/source.%(ext)s" "https://www.youtube.com/watch?v=mPiaap4zEVk"</code></pre>
-<p>Result: <code>video/source.webm</code>, 600,540,458 bytes (573 MB). the owner later asked to delete it, and it was deleted at 20:04 on 24 Sep.</p>
+<p>Result: <code>video/source.webm</code>, 600,540,458 bytes (573 MB). The owner later asked to delete it, and it was deleted at 20:04 on 24 Sep.</p>
 
 <h3>Step 2: frames (ffmpeg from imageio_ffmpeg, 2 per second)</h3>
 <p><code>ffmpeg</code> was not on the PATH. Claude did not install it. It found the copy that ships inside the Python package <code>imageio_ffmpeg</code>:</p>
-<pre><code>C:\Users\USERNAME\AppData\Local\Programs\Python\Python313\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe</code></pre>
+<pre><code>C:\Users\&lt;user&gt;\AppData\Local\Programs\Python\Python313\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe</code></pre>
 <p>It cut one segment per site, with the start and end taken from the chapter times in the transcript, and saved 2 frames per second:</p>
 <pre><code>"$FF" -loglevel error -ss &lt;start&gt; -to &lt;end&gt; -i video/source.webm -vf fps=2 -q:v 2 -start_number 0 frames/&lt;site&gt;/f_%04d.jpg</code></pre>
 <p>Frame <code>f_NNNN</code> shows the video at segment start + N/2 seconds. The frame counts were: hotel 272, festival 324, e-commerce 190, SaaS 250, drink 336, high-rise 268, space 186. The total is 1,826 frames at 2560&times;1440.</p>
@@ -309,7 +309,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <p><code>scripts/sheets.py</code> made contact sheets: a 5&times;4 grid of every second frame (so 1 frame per second), each labelled with its file name. There were 49 sheets (hotel 7, festival 9, e-commerce 5, SaaS 7, drink 9, high-rise 7, space 5), each 2560&times;1152. The brief said: "READ THE SHEETS FIRST to map sections to frame ranges. Then read full frames only where you need copy text, layout detail, or colors (about 20&ndash;40 full frames). Do not read every frame."</p>
 
 <h3>Why Gemini was skipped</h3>
-<p>the owner's own pipeline has a script, <code>analyze_long.py</code>, that sends a YouTube URL to Google's Gemini model. Gemini can process sound and picture together and return a chaptered summary with timestamps. Claude first offered it as an optional step to find where each site appears. It then recommended skipping it for two reasons: the Gemini API charges per token, and the frames plus the transcript's chapter times could do the same job. the owner agreed: "please go with your recommendation".</p>
+<p>The owner's own pipeline has a script, <code>analyze_long.py</code>, that sends a YouTube URL to Google's Gemini model. Gemini can process sound and picture together and return a chaptered summary with timestamps. Claude first offered it as an optional step to find where each site appears. It then recommended skipping it for two reasons: the Gemini API charges per token, and the frames plus the transcript's chapter times could do the same job. The owner agreed: "please go with your recommendation".</p>
 
 <h3>The token cost of looking at frames</h3>
 <p>Every image that the model reads uses part of its context window and part of the owner's plan. Claude said this before the start: "1 frame each second of a 15-minute video is 900 images". That is why the agents read sheets first and only 22 to 46 full frames each. The records hold no per-frame token figure, so this page gives none. The effects are visible: a "Coach" hook warned at about 156k context tokens in session 1, then at about 181k, 197k (twice), 221k and 223k. At about 225k Claude itself advised a fresh session for the image work. The site 5 agent stopped responding after about 70 large images were in its context (9 sheets, 46 full frames, 16 or more screenshots). Section 10 has the details.</p>
@@ -455,17 +455,17 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <p>There is one more fact. In the video, at 1:44, the presenter says: "I did prompt it to use the GPT image 2.5 model". So the original photos were themselves AI images. Claude noted that "Whether AI-generated images are protected by copyright is not settled law", and treated them as the creator's material anyway.</p>
 
 <h3>Could quality be "guaranteed"?</h3>
-<p>the owner asked for new images "as good as or exceeding the original" and asked how that can be guaranteed. Claude's answer: "No method can guarantee image quality in advance. Image models give a different result on each run." It proposed a gate that each image must pass, plus the owner's final review. It also set the copyright rule for the new images: generate from written descriptions, and never give an old crop to the model as the starting image, because "If I start from the crops, the new images copy the creator's images, and the copyright problem stays."</p>
+<p>The owner asked for new images "as good as or exceeding the original" and asked how that can be guaranteed. Claude's answer: "No method can guarantee image quality in advance. Image models give a different result on each run." It proposed a gate that each image must pass, plus the owner's final review. It also set the copyright rule for the new images: generate from written descriptions, and never give an old crop to the model as the starting image, because "If I start from the crops, the new images copy the creator's images, and the copyright problem stays."</p>
 
 <h3>Higgsfield: CLI or MCP?</h3>
 <p><strong>The command-line tool (CLI) was used for every image. No MCP tool was called.</strong></p>
-<p>Two Higgsfield connections were visible in the session. The Higgsfield image MCP server needed a sign-in and was not connected. The other active one, <code>higgsfield-bridge</code>, controls Adobe and Blender, not image generation. Claude told the owner this. the owner then pasted Higgsfield's own setup text, which installs the CLI. The installed skill <code>higgsfield-generate</code> says of itself: "Submit jobs to any Higgsfield model. Wraps the <code>higgsfield</code> CLI." Session 2 followed that skill and a memory note that said the CLI was installed and signed in. <strong>No session argued CLI against MCP.</strong> The choice followed from the pasted setup, the skill and the memory note.</p>
+<p>Two Higgsfield connections were visible in the session. The Higgsfield image MCP server needed a sign-in and was not connected. The other active one, <code>higgsfield-bridge</code>, controls Adobe and Blender, not image generation. Claude told the owner this. The owner then pasted Higgsfield's own setup text, which installs the CLI. The installed skill <code>higgsfield-generate</code> says of itself: "Submit jobs to any Higgsfield model. Wraps the <code>higgsfield</code> CLI." Session 2 followed that skill and a memory note that said the CLI was installed and signed in. <strong>No session argued CLI against MCP.</strong> The choice followed from the pasted setup, the skill and the memory note.</p>
 <p>The setup, 24 Sep, 21:49 to 21:56:</p>
 <ol>
 <li><code>npm i -g @higgsfield/cli</code> installed version 1.1.26. The next command failed: <code>/usr/bin/bash: line 3: higgsfield: command not found</code>.</li>
-<li>Claude found the binary in <code>C:\Users\USERNAME\AppData\Roaming\npm</code> and ran it by full path. <code>higgsfield auth token</code> showed a saved sign-in, so no browser login was needed. <code>higgsfield account status --json</code> gave <code>{'credits': 673.91, 'subscription_plan_type': 'plus'}</code> (the email field was filtered out).</li>
+<li>Claude found the binary in <code>C:\Users\&lt;user&gt;\AppData\Roaming\npm</code> and ran it by full path. <code>higgsfield auth token</code> showed a saved sign-in, so no browser login was needed. <code>higgsfield account status --json</code> gave <code>{'credits': 673.91, 'subscription_plan_type': 'plus'}</code> (the email field was filtered out).</li>
 <li><code>npx skills add higgsfield-ai/skills -g -a claude-code -s '*' -y --copy</code> installed 8 skills. Claude warned: "these skills run with full agent permissions. I have not reviewed their contents."</li>
-<li>the owner asked to add the npm folder to his PATH. It was already there. Claude Code had started with an old copy of the PATH. From then on, every script began with <code>export PATH="$PATH:/c/Users/USERNAME/AppData/Roaming/npm"</code>.</li>
+<li>The owner asked to add the npm folder to the user PATH. It was already there. Claude Code had started with an old copy of the PATH. From then on, every script began with <code>export PATH="$PATH:/c/Users/&lt;user&gt;/AppData/Roaming/npm"</code>.</li>
 </ol>
 
 <h3>The model and its settings</h3>
@@ -502,7 +502,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <li><strong>Aspect:</strong> the width-to-height ratio is within 10% of the old one.</li>
 </ol>
 <p>Then each agent had to zoom in at full size and look for "faces, hands, fingers, text, logos, watermarks, melted objects, duplicated limbs", install the image, and take a before/after screenshot of the real page with <code>onpage.py</code>. The rule: "The after must be no worse: overlaid text still readable, hotspots still on their objects, subject not cut off." Each site also got a contact sheet, old image left and new image right, for the owner.</p>
-<p>The gate changed once. The pilot version asked for "at least 2&times; the old size". That was impossible for three images whose old crops were already 2065 to 2545 px wide, because the model's widest output is 3840 px. Claude told the owner: "So 2&times; is not possible with this model, and the check cannot pass." the owner approved the "4K rule" at 22:20.</p>
+<p>The gate changed once. The pilot version asked for "at least 2&times; the old size". That was impossible for three images whose old crops were already 2065 to 2545 px wide, because the model's widest output is 3840 px. Claude told the owner: "So 2&times; is not possible with this model, and the check cannot pass." The owner approved the "4K rule" at 22:20.</p>
 
 <h3>The pilot</h3>
 <p>Five hard images, one per site type, generated from 22:13 to 22:16:</p>
@@ -515,7 +515,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <tr><td>marcus (SaaS)</td><td>600&times;723</td><td>2560&times;3200</td><td>2 &rarr; 352</td></tr>
 <tr><td>living (high-rise)</td><td>2065&times;954</td><td>3840&times;1648</td><td>217 &rarr; 1366</td></tr>
 </table></div>
-<p>The pilot showed four problems. The 2&times; rule could not pass. The new capsule is larger in the frame, so hotspots 01, 03 and 05 no longer sat on their parts. The KALDER model was smaller in the frame. The living-room furniture was arranged differently. the owner's answer: "approved, use 4K rule, re-aim the hotspots". Then the KALDER hero v1 failed on the page: "the model was small, her head sat under the coordinates text, and the parka hotspot landed next to the jacket." Claude generated v2 with the model "centred at 72 percent of the frame width", so the existing hotspots land on the parka and trousers.</p>
+<p>The pilot showed four problems. The 2&times; rule could not pass. The new capsule is larger in the frame, so hotspots 01, 03 and 05 no longer sat on their parts. The KALDER model was smaller in the frame. The living-room furniture was arranged differently. The owner's answer: "approved, use 4K rule, re-aim the hotspots". Then the KALDER hero v1 failed on the page: "the model was small, her head sat under the coordinates text, and the parka hotspot landed next to the jacket." Claude generated v2 with the model "centred at 72 percent of the frame width", so the existing hotspots land on the parka and trousers.</p>
 
 <h3>The full run</h3>
 <p>At 22:33 Claude copied all 75 old files to <code>scratch/old_img/&lt;site&gt;/</code> as a rollback, then started 7 agents, one per site. They ran for 28 to 137 minutes:</p>
@@ -567,7 +567,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <li><strong>12 aspect failures, all accepted.</strong> Each sits in a slot that the page crops to fill (<code>object-fit:cover</code> or <code>background-size:cover</code>), or was installed with <code>--match-old</code> (the night tower). Several were changed on purpose because the new shape fits the real slot better. Example: the old night-market crop was 2.16:1, but the slot shows about 750&times;644, so the old image "lost about half its width". Differences from the old aspect: tower-night 53.5%, gym 49.6%, night-market 42.2%, ensuite 20.4%, gull-king 20.1%, food 19.9%, hero-stadium 16.8%, kwame 13.6%, anders 13.2%, kaia 13.2%, look3 12.0%, nia 11.5%.</li>
 <li><strong>2 sharpness failures, accepted.</strong> <code>t-fabric</code> and <code>t-workshop</code> are tiny inline pictures. Their old files were 195&times;92 video crops, and blocky scaling raises the Laplacian score. At the installed 390&times;184 size the new files score 924 and 1549, against 151 and 240 for the old crops at that size. The agent still called it "a real miss on the gate".</li>
 </ul>
-<p>the owner reviewed all 7 contact sheets at the start of session 3 and rejected no image. Claude had looked at only 3 of the 7 sheets itself.</p>
+<p>The owner reviewed all 7 contact sheets at the start of session 3 and rejected no image. Claude had looked at only 3 of the 7 sheets itself.</p>
 
 <h3>Problems that no script caught</h3>
 <ul>
@@ -579,7 +579,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 </ul>
 
 <h3>Size and weight</h3>
-<p>The installed 4K JPEGs (quality 88) made <code>sites/*/img</code> 87.5 MB, about 10 times the 8.8 MB of the video crops. Claude asked the owner to choose a size. He wrote "re-encode to 2560 px at q82". The result is 43.4 MB, about 4.9 times the crops. Claude had estimated "about 30 MB, but I have not measured it", and afterwards wrote "My estimate of about 30 MB was wrong." The re-encode started from the q88 JPEGs, not the PNGs, so each image was compressed twice. The quality cost was not measured. The full 4K PNGs stay in <code>scratch/higgs/&lt;site&gt;/</code>, outside the repository.</p>
+<p>The installed 4K JPEGs (quality 88) made <code>sites/*/img</code> 87.5 MB, about 10 times the 8.8 MB of the video crops. Claude asked the owner to choose a size. The owner wrote "re-encode to 2560 px at q82". The result is 43.4 MB, about 4.9 times the crops. Claude had estimated "about 30 MB, but I have not measured it", and afterwards wrote "My estimate of about 30 MB was wrong." The re-encode started from the q88 JPEGs, not the PNGs, so each image was compressed twice. The quality cost was not measured. The full 4K PNGs stay in <code>scratch/higgs/&lt;site&gt;/</code>, outside the repository.</p>
 
 
 <h3>Every image: what the original showed and what changed</h3>
@@ -716,9 +716,9 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <h2>6. Text and banners</h2>
 
 <h3>Four questions, four answers</h3>
-<p>In session 3 Claude first got the creator's name from the video metadata (<code>yt-dlp --skip-download --print "%(channel)s | %(title)s | %(uploader_id)s"</code> gave <code>Brendan Jowett | NEW Opus 5.5 is INSANE at Building Websites (Full Showcase) | @brendanautomation</code>). Then it asked the owner four questions in one form. He took Claude's recommended option twice and a different option twice:</p>
+<p>In session 3 Claude first got the creator's name from the video metadata (<code>yt-dlp --skip-download --print "%(channel)s | %(title)s | %(uploader_id)s"</code> gave <code>Brendan Jowett | NEW Opus 5.5 is INSANE at Building Websites (Full Showcase) | @brendanautomation</code>). Then it asked the owner four questions in one form. The owner took Claude's recommended option twice and a different option twice:</p>
 <div class="tw"><table>
-<tr><th>Topic</th><th>Claude's recommended option</th><th>the owner's choice</th></tr>
+<tr><th>Topic</th><th>Claude's recommended option</th><th>The owner's choice</th></tr>
 <tr><td>Banner</td><td>Keep the bar, keep the stats, label them "original build"</td><td><strong>"Relabel, no stats"</strong>: a thin credit bar; delete the time, token and cost cells</td></tr>
 <tr><td>Copy scope</td><td>"Text, keep names": rewrite all text, keep the 7 brand names</td><td>Same (recommended)</td></tr>
 <tr><td>Webcam on evidence frames</td><td>Crop the bottom 160 px</td><td><strong>"Blur the box"</strong>: keep the full frame, blur only the webcam</td></tr>
@@ -820,7 +820,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <h2>8. Evidence for skeptics</h2>
 
 <h3>The question</h3>
-<p>the owner asked: "how can we know that you re-create these websites from scratch and not modifying the frames from the videos ? what evidence can we provide to skeptics". At that time (phase 1) the honest answer had two parts: the pages were code, and the photos came from the video. Claude said: "The honest claim is 'pages rebuilt in code; photos reused from the video'." Today the photos are generated, so the claim is: pages rebuilt in code, photos generated from text prompts, designs and brand names from the video.</p>
+<p>The owner asked: "how can we know that you re-create these websites from scratch and not modifying the frames from the videos ? what evidence can we provide to skeptics". At that time (phase 1) the honest answer had two parts: the pages were code, and the photos came from the video. Claude said: "The honest claim is 'pages rebuilt in code; photos reused from the video'." Today the photos are generated, so the claim is: pages rebuilt in code, photos generated from text prompts, designs and brand names from the video.</p>
 
 <h3>The evidence report</h3>
 <p><code>scripts/evidence.py</code> and <code>scripts/evidence_page.py</code> build a report with one card per site. Each card has four pictures: the video frame, the rebuild, the rebuild with all photos blocked (Chrome refuses every request to the site's <code>img/</code> folder), and the same test halfway down the page. With the photos blocked, every page still shows its full layout, text, buttons and animations, and the 3D can, tower and rocket still render. Only the photo boxes go empty.</p>
@@ -835,7 +835,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <tr><td>7 space</td><td class="n">5</td><td class="n">5</td></tr>
 </table></div>
 <p>On 3 sites fewer requests were refused than there are files, because those pages load some photos only after a click or a hover. The report is published as a private claude.ai Artifact, not in the repository, because it contains video frames. Its webcam areas are blurred (a 280&times;160 box, Gaussian blur radius 30). Only 1 of the 7 blurred frames was checked by eye. Its screenshots show the pages from before the text rewrite, and it says so.</p>
-<p><strong>This public page shows no video stills.</strong> the owner chose that. To compare a rebuild with the original, open the video at the chapter and the live site side by side:</p>
+<p><strong>This public page shows no video stills.</strong> The owner chose that. To compare a rebuild with the original, open the video at the chapter and the live site side by side:</p>
 <div class="tw"><table>
 <tr><th>Site</th><th>Video chapter</th><th>Live rebuild</th><th>Main-thread reference frame</th></tr>
 <tr><td>1 Solenne</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=65s">1:05</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/1-hotel/">sites/1-hotel/</a></td><td><code>f_0030</code></td></tr>
@@ -915,7 +915,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <li><strong>Class name collisions.</strong> The banner's <code>.stats</code> class also styled a stats section (sites 1 and 4); <code>.in</code> collided on sites 4 and 7. On site 4 this made the demo section grow from 860 to 1,228 px after a full scroll. Fix: renames (<code>.bstats</code>, <code>.gin</code>, <code>.inner</code>).</li>
 <li><strong>Tests that hovered on a moving target.</strong> Site 2: <code>pg.hover('.stage[data-s="G"] .burst')</code> failed on a spinning element; fix <code>force=True</code>. Site 3: a hover inside the pinned lookbook failed because <code>scrollTo(0,5000)</code> did not land inside it; fix: scroll by the ScrollTrigger range.</li>
 <li><strong>Small script bugs.</strong> Site 4: <code>TypeError: 'NoneType' object is not subscriptable</code> in an offset search whose range was wrong. Site 6: <code>ValueError: too many values to unpack (expected 2)</code> in a colour-sample loop. Both fixed in the next call.</li>
-<li><strong>Permission prompt blocked an agent.</strong> Site 7 got <code>Permission for this tool use was denied. The tool use was rejected ...</code> on a command that also deleted screenshots with <code>rm</code> and a wildcard. the owner had to answer a prompt on his screen. Fix: <code>.claude/settings.local.json</code> allows <code>rm</code> under <code>scratch/</code>, and the agents were told to delete with Python <code>os.remove</code>, because Claude Code can still ask about a wildcard <code>rm</code> even with an allow rule.</li>
+<li><strong>Permission prompt blocked an agent.</strong> Site 7 got <code>Permission for this tool use was denied. The tool use was rejected ...</code> on a command that also deleted screenshots with <code>rm</code> and a wildcard. The owner had to answer a prompt on the screen. Fix: <code>.claude/settings.local.json</code> allows <code>rm</code> under <code>scratch/</code>, and the agents were told to delete with Python <code>os.remove</code>, because Claude Code can still ask about a wildcard <code>rm</code> even with an allow rule.</li>
 <li><strong>Site 5 hung for more than 2 hours.</strong> Last write 16:13; stopped at 18:40. Detail in section 3. Fix: <code>TaskStop</code>, a new agent, and <code>timeout 180</code> on every command from then on.</li>
 <li><strong>Site 6 and 7 heroes did not match.</strong> The agents' own checks missed the camera, the water, the city and the facade (site 6) and the rocket lighting (site 7). The main thread's stacked comparison found them. Fix: 4 + 1 targeted fix messages.</li>
 <li><strong>Median-of-frames failed.</strong> Site 5 finish: <code>RuntimeWarning: All-NaN slice encountered</code>, <code>hole fraction 0.6055075805938118</code>, then 0.6545 with a looser mask. The old photo was kept.</li>
@@ -1029,7 +1029,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <tr><td>Session 2, image run</td><td>pilot 3 min; agents 28 to 137 min in parallel; 22:09 to 00:57 for all 75</td></tr>
 <tr><td>Session 3, text rewrite</td><td>7 agents 18.5 to 53.6 min in parallel, plus 30.8 min SaaS follow-up</td></tr>
 <tr><td>Session 3, git init to push</td><td>04:50:42 to 04:53:30</td></tr>
-<tr><td>the owner's review of the contact sheets</td><td>about 8 min 40 s</td></tr>
+<tr><td>The owner's review of the contact sheets</td><td>about 8 min 40 s</td></tr>
 </table></div>
 </section>
 
@@ -1216,8 +1216,8 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 
 <h3>The machine</h3>
 <div class="uu"><h4>29. Transcript times are in UTC.</h4>
-<p><span class="lbl">What:</span> Claude Code stores times in UTC. the owner works in local offset.</p>
-<p><span class="lbl">Why it matters:</span> Session 2 started at 22:09 on 24 Sep local time, which is 05:09 on 25 Sep in UTC. A reading without conversion puts it on the wrong day.</p>
+<p><span class="lbl">What:</span> Claude Code stores times in UTC. The owner works in a time zone behind UTC.</p>
+<p><span class="lbl">Why it matters:</span> Session 2 started late on 24 Sep local time, which is already 25 Sep in UTC. A reading without conversion puts it on the wrong day.</p>
 <p><span class="lbl">Here:</span> This page converts every time to local time.</p></div>
 
 <div class="uu"><h4>30. A program can be installed and still "not found".</h4>
