@@ -11,17 +11,29 @@ In that video, Claude Opus 5.5 builds seven sites from scratch. The designs, lay
 animations and brand names are from that video. This repository is not affiliated with
 Brendan Jowett or Anthropic.
 
-## What is in this repository
+## Live sites
 
-| Folder | Site | Notes |
+All seven sites run on GitHub Pages. Click a picture to open the live page.
+
+| Site | Live page | Notes |
 |---|---|---|
-| `sites/1-hotel` | Solenne, cliffside hotel | room carousel, day-cycle clock, booking calendar |
-| `sites/2-festival` | SALTHOWL, music festival | timetable with clash detection, festival map |
-| `sites/3-ecommerce` | KALDER, clothing brand | pinned lookbook with hotspots, shipping map |
-| `sites/4-saas` | Kestrel, finance SaaS | live coded dashboard, ROI calculator |
-| `sites/5-drink` | HYPERLYTE, sports drink | three.js can built in code |
-| `sites/6-highrise` | HALDEN, residential tower | procedural three.js tower and city |
-| `sites/7-space` | KÁRMÁN, space tourism | procedural rocket, Earth shader, Moon pass |
+| [![Solenne, cliffside hotel](journey-img/1-hotel.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/1-hotel/) | [Solenne, cliffside hotel](https://az9713.github.io/opus55-website-rebuilds/sites/1-hotel/) | room carousel, day-cycle clock, booking calendar |
+| [![SALTHOWL, music festival](journey-img/2-festival.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/2-festival/) | [SALTHOWL, music festival](https://az9713.github.io/opus55-website-rebuilds/sites/2-festival/) | timetable with clash detection, festival map |
+| [![KALDER, clothing brand](journey-img/3-ecommerce.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/3-ecommerce/) | [KALDER, clothing brand](https://az9713.github.io/opus55-website-rebuilds/sites/3-ecommerce/) | pinned lookbook with hotspots, shipping map |
+| [![Kestrel, finance SaaS](journey-img/4-saas.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/4-saas/) | [Kestrel, finance SaaS](https://az9713.github.io/opus55-website-rebuilds/sites/4-saas/) | live coded dashboard, ROI calculator |
+| [![HYPERLYTE, sports drink](journey-img/5-drink.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/5-drink/) | [HYPERLYTE, sports drink](https://az9713.github.io/opus55-website-rebuilds/sites/5-drink/) | three.js can built in code |
+| [![HALDEN, residential tower](journey-img/6-highrise.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/6-highrise/) | [HALDEN, residential tower](https://az9713.github.io/opus55-website-rebuilds/sites/6-highrise/) | procedural three.js tower and city |
+| [![KÁRMÁN, space tourism](journey-img/7-space.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites/7-space/) | [KÁRMÁN, space tourism](https://az9713.github.io/opus55-website-rebuilds/sites/7-space/) | procedural rocket, Earth shader, Moon pass |
+
+The 3D sites (5, 6, 7) need WebGL. Use a desktop browser for the full effect.
+
+## How the rebuild was done
+
+[Development journey](https://az9713.github.io/opus55-website-rebuilds/DEVELOPMENT-JOURNEY.html)
+tells, step by step, how Claude Opus 5.5 "watched" the video and rebuilt the sites:
+frames, animations, images, what was not rebuilt, and what went wrong.
+
+## Run locally
 
 Open any `sites/<N-name>/index.html` in a browser. There is no build step.
 The pages load Google Fonts and scripts from cdnjs / jsDelivr.
