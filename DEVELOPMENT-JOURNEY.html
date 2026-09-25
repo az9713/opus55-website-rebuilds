@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Video to Website: Development Journey</title>
+<meta name="description" content="How Claude Opus 5.5 rebuilt seven websites from a YouTube screen recording: frames, animations, generated images, what was not rebuilt, and what went wrong. Reconstructed from four Claude Code sessions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f172a; --card:#1e293b; --card2:#172033; --text:#e2e8f0; --text2:#cbd5e1; --muted:#94a3b8;
+  --acc:#fb923c; --acc2:#2dd4bf; --line:#334155; --line2:#1e293b; --warn:#f87171;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--text2);font:16px/1.65 var(--sans);-webkit-text-size-adjust:100%}
+a{color:var(--acc2);text-decoration:underline;text-underline-offset:2px}
+a:hover{color:var(--acc)}
+h1,h2,h3,h4{color:var(--text);line-height:1.25;font-weight:600}
+h1{font-size:clamp(28px,5vw,44px);margin:0 0 12px}
+h2{font-size:clamp(22px,3.4vw,30px);margin:56px 0 16px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:19px;margin:32px 0 10px;color:var(--acc)}
+h4{font-size:16px;margin:22px 0 8px}
+p{margin:0 0 14px}
+code{font-family:var(--mono);font-size:.88em;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--text);overflow-wrap:anywhere}
+pre{font-family:var(--mono);font-size:13px;line-height:1.5;background:#0b1222;border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;color:var(--text);margin:0 0 16px}
+pre code{background:none;border:0;padding:0;overflow-wrap:normal}
+ul,ol{margin:0 0 16px;padding-left:22px}
+li{margin:4px 0}
+strong{color:var(--text)}
+blockquote{margin:0 0 16px;padding:10px 16px;border-left:3px solid var(--acc);background:var(--card2);border-radius:0 8px 8px 0;color:var(--text)}
+blockquote p:last-child{margin:0}
+.layout{display:block;max-width:1320px;margin:0 auto;padding:0 16px}
+main{min-width:0;max-width:920px}
+header.top{padding:40px 0 8px}
+.kicker{font:500 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--acc2);margin-bottom:14px}
+.meta{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:18px 0}
+.meta dt{color:var(--muted);font-size:14px}
+.meta dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc2);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.note.warn{border-left-color:var(--acc)}
+.note p:last-child{margin:0}
+.rule{background:#1b2a24;border:1px solid #1f4d44;border-radius:8px;padding:10px 14px;margin:0 0 16px;color:var(--text)}
+.rule::before{content:"Rule learned: ";color:var(--acc2);font-weight:600}
+.tw{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:8px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{background:var(--card);color:var(--text);font-weight:600;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;white-space:nowrap}
+.wide td{min-width:140px}
+.wide td:first-child{min-width:110px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0 0 12px}
+details>summary{cursor:pointer;padding:12px 16px;color:var(--text);font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";display:inline-block;width:18px;color:var(--acc)}
+details[open]>summary::before{content:"\2212"}
+details>.inner{padding:0 12px 12px}
+details .tw{background:var(--bg)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:8px 0 22px}
+.thumbs a{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:var(--text2)}
+.thumbs a:hover{border-color:var(--acc)}
+.thumbs img{display:block;width:100%;height:auto;aspect-ratio:960/475;object-fit:cover;background:#0b1222}
+.thumbs span{display:block;padding:8px 12px;font-size:14px}
+.thumbs b{color:var(--text)}
+.flow{list-style:none;padding:0;margin:0 0 18px;counter-reset:f}
+.flow li{counter-increment:f;position:relative;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px 10px 48px;margin:0 0 8px}
+.flow li::before{content:counter(f);position:absolute;left:12px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--acc);color:#1a0f05;font:600 13px/24px var(--mono);text-align:center}
+.flow li b{color:var(--text)}
+.tag{display:inline-block;font:500 12px/1.4 var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.o{color:var(--acc);border-color:#7c4a22}
+.tag.t{color:var(--acc2);border-color:#1f5a52}
+.uu{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 12px}
+.uu h4{margin:0 0 8px;color:var(--text)}
+.uu p{margin:0 0 8px}
+.uu p:last-child{margin:0}
+.uu .lbl{color:var(--acc2);font-weight:600}
+.muted{color:var(--muted)}
+nav.toc{font-size:14px}
+nav.toc ol{list-style:none;padding:0;margin:0}
+nav.toc li{margin:0}
+nav.toc a{display:block;padding:5px 10px;border-radius:6px;color:var(--text2);text-decoration:none;border-left:2px solid transparent}
+nav.toc a:hover{background:var(--card);color:var(--text);border-left-color:var(--acc)}
+.toc-mobile{margin:16px 0 0}
+.toc-side{display:none}
+footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+@media (min-width:1080px){
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:40px}
+  .toc-side{display:block;position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:24px 0}
+  .toc-side .ttl{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:16px 10px 10px}
+  .toc-mobile{display:none}
+}
+@media (max-width:600px){
+  body{font-size:15.5px}
+  .meta{grid-template-columns:1fr}
+  .meta dt{margin-top:6px}
+  table{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="toc-side" aria-label="Table of contents">
+<div class="ttl">Contents</div>
+<nav class="toc">
+<ol>
+<li><a href="#s0">0. How this page was made</a></li>
+<li><a href="#s1">1. The brief and the prompts</a></li>
+<li><a href="#s2">2. How an AI "watches" a video</a></li>
+<li><a href="#s3">3. A team of 7 agents</a></li>
+<li><a href="#s4">4. The crux: animation from still frames</a></li>
+<li><a href="#s5">5. The images and Higgsfield</a></li>
+<li><a href="#s6">6. Text and banners</a></li>
+<li><a href="#s7">7. What was not rebuilt</a></li>
+<li><a href="#s8">8. Evidence for skeptics</a></li>
+<li><a href="#s9">9. Tools, agents and models</a></li>
+<li><a href="#s10">10. What went wrong</a></li>
+<li><a href="#s11">11. Costs and limits</a></li>
+<li><a href="#s12">12. Verification</a></li>
+<li><a href="#s13">13. Unknown unknowns</a></li>
+<li><a href="#s14">14. Where things stand</a></li>
+</ol>
+</nav>
+</aside>
+<main>
+<header class="top">
+<div class="kicker">Development journey &middot; reconstructed</div>
+<h1>Video to Website: Development Journey</h1>
+<p>Claude Opus 5.5 rebuilt the seven websites that Brendan Jowett shows in his YouTube video. It did not have the sites' code. It had only a screen recording. This page tells, step by step, how that was done, and it includes every failure that the records show.</p>
+<dl class="meta">
+<dt>Date</dt><dd>2026-09-24 to 2026-09-25 (four Claude Code sessions)</dd>
+<dt>Deliverable</dt><dd><a href="https://az9713.github.io/opus55-website-rebuilds/">https://az9713.github.io/opus55-website-rebuilds/</a> (7 live sites) and the repository <a href="https://github.com/az9713/opus55-website-rebuilds">github.com/az9713/opus55-website-rebuilds</a></dd>
+<dt>Source video</dt><dd><a href="https://www.youtube.com/watch?v=mPiaap4zEVk">"NEW Opus 5.5 is INSANE at Building Websites (Full Showcase)"</a> by Brendan Jowett (<a href="https://www.youtube.com/@brendanautomation">@brendanautomation</a>)</dd>
+<dt>Owner</dt><dd>the owner. He directed the work. He did not write the code.</dd>
+<dt>Model</dt><dd>Claude Opus 5.5 (<code>claude-opus-5-5</code>) in the main thread of all four sessions</dd>
+</dl>
+<nav class="toc toc-mobile" aria-label="Table of contents">
+<details>
+<summary>Contents (15 sections)</summary>
+<div class="inner">
+<ol>
+<li><a href="#s0">0. How this page was made</a></li>
+<li><a href="#s1">1. The brief and the prompts</a></li>
+<li><a href="#s2">2. How an AI "watches" a video</a></li>
+<li><a href="#s3">3. A team of 7 agents</a></li>
+<li><a href="#s4">4. The crux: animation from still frames</a></li>
+<li><a href="#s5">5. The images and Higgsfield</a></li>
+<li><a href="#s6">6. Text and banners</a></li>
+<li><a href="#s7">7. What was not rebuilt</a></li>
+<li><a href="#s8">8. Evidence for skeptics</a></li>
+<li><a href="#s9">9. Tools, agents and models</a></li>
+<li><a href="#s10">10. What went wrong</a></li>
+<li><a href="#s11">11. Costs and limits</a></li>
+<li><a href="#s12">12. Verification</a></li>
+<li><a href="#s13">13. Unknown unknowns</a></li>
+<li><a href="#s14">14. Where things stand</a></li>
+</ol>
+</div>
+</details>
+</nav>
+</header>
+
+<section id="s0">
+<h2>0. How this page was made, and the seven results</h2>
+
+<h3>The sites</h3>
+<p>Each picture below is a screenshot of the live rebuild. Click a picture to open the live page. The 3D sites (5, 6 and 7) need WebGL. A desktop browser gives the full effect.</p>
+<div class="thumbs">
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/1-hotel/"><img src="journey-img/1-hotel.jpg" alt="Solenne hotel rebuild, hero section" loading="lazy" width="960" height="475"><span><b>1 &middot; Solenne</b> &mdash; cliffside hotel</span></a>
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/2-festival/"><img src="journey-img/2-festival.jpg" alt="SALTHOWL festival rebuild, hero section" loading="lazy" width="960" height="475"><span><b>2 &middot; SALTHOWL</b> &mdash; music festival</span></a>
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/3-ecommerce/"><img src="journey-img/3-ecommerce.jpg" alt="KALDER clothing rebuild, hero section" loading="lazy" width="960" height="475"><span><b>3 &middot; KALDER</b> &mdash; clothing brand</span></a>
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/4-saas/"><img src="journey-img/4-saas.jpg" alt="Kestrel finance software rebuild, hero section" loading="lazy" width="960" height="475"><span><b>4 &middot; Kestrel</b> &mdash; finance software</span></a>
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/5-drink/"><img src="journey-img/5-drink.jpg" alt="HYPERLYTE sports drink rebuild with 3D can" loading="lazy" width="960" height="475"><span><b>5 &middot; HYPERLYTE</b> &mdash; sports drink, 3D can</span></a>
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/6-highrise/"><img src="journey-img/6-highrise.jpg" alt="HALDEN residential tower rebuild with 3D tower" loading="lazy" width="960" height="475"><span><b>6 &middot; HALDEN</b> &mdash; residential tower, 3D</span></a>
+<a href="https://az9713.github.io/opus55-website-rebuilds/sites/7-space/"><img src="journey-img/7-space.jpg" alt="KÁRMÁN space tourism rebuild with 3D rocket" loading="lazy" width="960" height="475"><span><b>7 &middot; K&Aacute;RM&Aacute;N</b> &mdash; space tourism, 3D</span></a>
+</div>
+
+<h3>What is reconstructed, and from what evidence</h3>
+<div class="note warn">
+<p><strong>This page is a reconstruction.</strong> The work happened in four Claude Code sessions. The session that wrote this page started after a <code>/clear</code>, so it had no memory of the earlier work. Everything below comes from the saved records listed here, not from memory.</p>
+</div>
+<div class="tw"><table>
+<tr><th>Session</th><th>Local time (local offset)</th><th>What it did</th><th>Record used</th></tr>
+<tr><td>S1 <code>4c61f10e</code></td><td>Thu 24 Sep 14:57 &rarr; 21:59</td><td>Download, frames, 7 build agents, checks, site 5 hang, evidence report, copyright talk, Higgsfield install</td><td>Main transcript (10.3 MB) and 8 agent transcripts (18&ndash;94 MB each)</td></tr>
+<tr><td>S2 <code>6178a7a4</code></td><td>Thu 24 Sep 22:08 &rarr; Fri 25 Sep ~03:03</td><td>Replaced all 75 photos with Higgsfield images</td><td>Main transcript (13.1 MB) and 7 agent transcripts</td></tr>
+<tr><td>S3 <code>39aca3b5</code></td><td>Fri 25 Sep 03:06 &rarr; 04:54</td><td>New banners, copy rewrite, evidence page, public GitHub repository</td><td>Main transcript (3.9 MB) and 7 agent transcripts</td></tr>
+<tr><td>S4 <code>2c18db54</code></td><td>Fri 25 Sep 07:13 &rarr; open</td><td>GitHub Pages, README, this page</td><td>Live notes of this session</td></tr>
+</table></div>
+<p>The transcripts are JSONL files, one event per line. A small Python script (<code>dump.py</code>) turned them into plain text. That condensed text cuts long tool inputs after about 400 to 500 characters. So some commands, some file contents, and the end of two agent reports (site 3 and <code>site5-finish</code>) are missing. Where a detail is missing, this page says so. Other evidence: <code>HANDOFF.md</code>, <code>TASKS.md</code>, <code>BRIEF.md</code>, <code>README.md</code>, the scripts in <code>scripts/</code> and <code>scratch/higgs/</code>, the job JSON files from Higgsfield, and the git history.</p>
+<p>Some facts were measured again during the reconstruction, for example the aspect check on all 70 generated images. Those facts say "recomputed". All times on this page are the owner's local time, local offset, unless a line says UTC. The transcripts store UTC.</p>
+
+<h3>The whole pipeline on one screen</h3>
+<ol class="flow">
+<li><b>Download.</b> <code>yt-dlp</code> fetched the video-only stream at 1440p (format 308), 600,540,458 bytes.</li>
+<li><b>Cut into stills.</b> <code>ffmpeg</code> saved 2 pictures per second: 1,826 JPEG frames of 2560&times;1440 for the 7 site segments.</li>
+<li><b>Index the stills.</b> A script made 49 contact sheets, 20 labelled frames per sheet, so an agent can find a section before it opens full frames.</li>
+<li><b>Build.</b> Seven Claude agents, one per site, read the sheets, about 22 to 46 full frames each, the narration, and short high-frame-rate clips. Each wrote one HTML file with inline CSS and JavaScript.</li>
+<li><b>Check.</b> Each agent took screenshots in real Chrome at the same scale as the frames and compared them with the frames. The main thread did the same check again and sent fixes back.</li>
+<li><b>Photos, phase 1.</b> The agents cut the photos out of the video frames (75 files).</li>
+<li><b>Photos, phase 2.</b> All 75 were replaced with new images from text prompts: GPT Image 2.5 through the Higgsfield command-line tool, with a measured quality gate.</li>
+<li><b>Text.</b> Seven more agents rewrote every visible string in new words. The seven brand names stayed.</li>
+<li><b>Publish.</b> A public GitHub repository, then GitHub Pages for the live sites.</li>
+</ol>
+</section>
+
+<section id="s1">
+<h2>1. The brief and the prompts</h2>
+<p>the owner typed every message below. The text is verbatim, with his spelling. "brock" in the last prompt means Brendan Jowett, the creator of the video. Messages that the owner pasted from elsewhere are marked "paste". Other "user" events in the transcripts are tool results, agent notifications, or skill texts, and they are not listed.</p>
+
+<h3>Session 1 (24 Sep, build)</h3>
+<div class="tw"><table>
+<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><td>14:57</td><td>"will you be able to "watch" the video https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=21s end-to-end and recreate the seven websites showcased in the video. you will need get the detailed visual for each website to recreate each of them. please confirm one way or another. do not act yet"</td></tr>
+<tr><td>15:08</td><td>"can you do without yt-dlp as it costs $$$ right ?"</td></tr>
+<tr><td>15:15</td><td>"can you remind me 1. what is " analyze_long.py pipeline calls the Gemini API," for ? 2. after that, remind me  recommendation: use yt-dlp + ffmpeg and skip Gemini."</td></tr>
+<tr><td>15:26</td><td>"please go with your recommendation. recreate each of the 7 websites with highest fidelity as the original and capture the animations in each of them. go !"</td></tr>
+<tr><td>~16:45</td><td>"you don't need to ask me about rm in the scratch folder from here on" (quoted by the site 6 agent; the exact minute is not in the condensed log)</td></tr>
+<tr><td>17:12</td><td>"please give an update of the agents' status"</td></tr>
+<tr><td>18:30</td><td>"what happened to site5 ? is it still running ?"</td></tr>
+<tr><td>18:40</td><td>"please stop the agent. start a new one to test and finish index.html."</td></tr>
+<tr><td>19:54</td><td>"give an update of site5-finish status"</td></tr>
+<tr><td>19:56</td><td>(paste of Claude's two questions) then: "On 1. should we keep those working files as evidence or receipt of work ? 2. which  images should i check to make the decision"</td></tr>
+<tr><td>20:04</td><td>"1. Keep the working files as evidence? agree with your recommendations + DO NOT KEEP  video/source.webm (573 MB) 2. what we have are good enough. Please remove as you suggested in 1. you don't need my permission for this one task"</td></tr>
+<tr><td>20:10</td><td>"how can we know that you re-create these websites from scratch and not modifying the frames from the videos ? what evidence can we provide to skeptics"</td></tr>
+<tr><td>20:13</td><td>"yes, produce the evidence report for each site"</td></tr>
+<tr><td>20:34</td><td>"crop out the webcam and publish it publicly &lt;-- can we crop the presenter's face in the "Video frame." and publish evidence/index.html public ? do we still violate some copyright rule or other rules"</td></tr>
+<tr><td>20:54</td><td>"OK even with 1-5 above, any problem publishing the 7 sites in Github"</td></tr>
+<tr><td>21:42</td><td>"i have higgsfield subscription. you can use higgs to replace the 75 photos. the quality must be as good as or exceeding the original. how can that be guaranteed"</td></tr>
+<tr><td>21:49</td><td>(paste) "Set up Higgsfield for me so I can generate images and videos from here. 1. Install the CLI: run <code>npm i -g @higgsfield/cli</code>. 2. Authenticate: run <code>higgsfield auth login</code> ... 3. Install the companion skills: run <code>npx skills add higgsfield-ai/skills</code>."</td></tr>
+<tr><td>21:55</td><td>"add C:\Users\USERNAME\AppData\Roaming\npm to user PATH."</td></tr>
+<tr><td>21:58</td><td><code>/handoff-after-clear</code></td></tr>
+</table></div>
+
+<h3>Session 2 (24&ndash;25 Sep, images)</h3>
+<div class="tw"><table>
+<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><td>22:08</td><td><code>/clear</code>, then <code>/exit</code></td></tr>
+<tr><td>22:09</td><td><code>@HANDOFF.md</code> (the whole instruction; the handoff's "Next task" was the image pilot)</td></tr>
+<tr><td>22:20</td><td>"approved, use 4K rule, re-aim the hotspots"</td></tr>
+<tr><td>02:53</td><td>"re-encode to 2560 px at q82"</td></tr>
+<tr><td>03:01</td><td><code>/handoff-after-clear</code></td></tr>
+</table></div>
+
+<h3>Session 3 (25 Sep, text, banners, repository)</h3>
+<div class="tw"><table>
+<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><td>03:06</td><td><code>/clear</code>, then <code>@HANDOFF.md</code></td></tr>
+<tr><td>03:15</td><td>"My review : None rejected<br>Do both Public GitHub repo and Evidence page tasks. ask  me if questions"</td></tr>
+<tr><td>03:18</td><td>Answers to 4 multiple-choice questions (see section 6): banner "Relabel, no stats"; copy "Text, keep names (Recommended)"; webcam "Blur the box"; repository "opus55-website-rebuilds (Recommended)".</td></tr>
+</table></div>
+
+<h3>Session 4 (25 Sep, Pages and this page)</h3>
+<div class="tw"><table>
+<tr><th>Local</th><th>the owner's message</th></tr>
+<tr><td>07:13</td><td>"please confirm that we are ready to push to the codebase to github."</td></tr>
+<tr><td>07:35</td><td>"please 1. make all 7 sites github pages and make them renderable as live web page in README.md 2. the ultimate goal of this project is to demystify the "video-to-website" generation process. Opus 5.5 "watched" brock's video and subsequently created the websites. i want this process to be reveal. please capture step-by-step how the websites were created using /dev-journey skill, warts and all. include how animations were recreated from static frames, how and why new images were created to avoid rule violations. explain the higgsfield process - was cli or mcp used ? how ? which image model was used ? how each image was recreated but modified ... include also what website features were NOT replicated and why. surface unknown unknowns to this human who is not familiar with this process and address all those unknown issues in the dev journey html also. ask me if any question."</td></tr>
+<tr><td>(answer)</td><td>To the question "should the public journey show video material?" the owner chose "No stills (Recommended)". So this page shows no video frame and no old photo crop. It links to YouTube timestamps.</td></tr>
+</table></div>
+
+<h3>How the brief was interpreted</h3>
+<p>The first message asked two things: can Claude "watch" the video, and can it recreate the sites. It also said "do not act yet". Claude answered with a plan and its limits and did nothing else. The main sentence was: "I cannot play a video stream directly. I can turn the video into still frames, and I can look at those frames as images." It listed what frames do not give: parts the presenter does not show, motion timing and easing, exact fonts and colours, clean photos and 3D, and text smaller than about 12 px.</p>
+<p>"Highest fidelity" was read as: every section the video shows is present, every animation the presenter names is built, and a screenshot of each rebuild matches a frame from the video. Claude wrote this finish line into <code>TASKS.md</code>. "Capture the animations" was read as: build the named effects so that they work, with timing matched by eye. It was not read as frame-exact timing, because Claude had already said that frames cannot measure timing.</p>
+<p>Some rules were active in every session and shaped the output. the owner's global instructions require Simplified Technical English, dark-mode HTML, "questions are read-only" (a question gets an answer, not an action), "never kill a process by name", and "finish, or say what you left". That is why Claude often answered a question and then wrote "You asked a question, so I have not changed anything." The build brief for the 7 agents is <a href="https://github.com/az9713/opus55-website-rebuilds/blob/main/BRIEF.md"><code>BRIEF.md</code></a>. It is public, and it still describes phase 1 (text copied verbatim, photos cropped from frames). Both were replaced later.</p>
+
+<h3>Human-in-the-loop moments</h3>
+<p>the owner acted at these points. Each one is invisible in the finished sites.</p>
+<ol>
+<li>Choice of method: free <code>yt-dlp</code> + <code>ffmpeg</code>, no paid Gemini call.</li>
+<li>Approval of deletes in <code>scratch/</code>, and one permission prompt that he answered by hand.</li>
+<li>The decision to stop the hung site 5 agent and start <code>site5-finish</code>.</li>
+<li>The decision to delete about 1.5 GB of working files, including the video.</li>
+<li>The question about skeptics, which produced the evidence report.</li>
+<li>The questions about copyright, which led to the image and text replacement.</li>
+<li>The Higgsfield subscription, the pasted setup steps, and the PATH request.</li>
+<li>The pilot approval with two rule changes ("use 4K rule, re-aim the hotspots").</li>
+<li>The size choice for images ("2560 px at q82").</li>
+<li>A review of all 7 contact sheets of new images (about 8 min 40 s, none rejected).</li>
+<li>Four answers on banner, copy scope, webcam, and repository name.</li>
+<li>The choice that this page shows no video stills.</li>
+</ol>
+</section>
+
+<section id="s2">
+<h2>2. How an AI "watches" a video</h2>
+
+<h3>What the model can and cannot see</h3>
+<p>Claude Opus 5.5 does not receive a video stream. It receives text and still images. So "watching" here means three inputs: a set of still frames, the spoken words as text, and short bursts of frames taken closer together. The model reads each frame as one picture. It sees layout, colours, readable text and photos. It does not see what happens between two frames, and it does not hear sound.</p>
+<p>The presenter's words filled several of these gaps. The file <code>transcript.txt</code> (28,399 bytes) was already in the project folder when session 1 started. Its origin is not recorded. It holds the narration with timestamps, for example "1:14 ... if I refresh the page, you will see the animations of loading the web page. And you'll see this entire image is also slowly zooming in." That sentence told the hotel agent that a load animation and a slow zoom exist, which a still frame cannot prove.</p>
+
+<h3>Step 1: download (yt-dlp, format 308)</h3>
+<p>the owner asked if <code>yt-dlp</code> costs money. It does not. It is a free open-source downloader with no account or key. Claude listed the formats with <code>yt-dlp -F</code> and chose format 308, a video-only stream at 2560&times;1440 (1440p). Format 308 has no audio. The narration was already in <code>transcript.txt</code>.</p>
+<pre><code>yt-dlp -f 308 -o "video/source.%(ext)s" "https://www.youtube.com/watch?v=mPiaap4zEVk"</code></pre>
+<p>Result: <code>video/source.webm</code>, 600,540,458 bytes (573 MB). the owner later asked to delete it, and it was deleted at 20:04 on 24 Sep.</p>
+
+<h3>Step 2: frames (ffmpeg from imageio_ffmpeg, 2 per second)</h3>
+<p><code>ffmpeg</code> was not on the PATH. Claude did not install it. It found the copy that ships inside the Python package <code>imageio_ffmpeg</code>:</p>
+<pre><code>C:\Users\USERNAME\AppData\Local\Programs\Python\Python313\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe</code></pre>
+<p>It cut one segment per site, with the start and end taken from the chapter times in the transcript, and saved 2 frames per second:</p>
+<pre><code>"$FF" -loglevel error -ss &lt;start&gt; -to &lt;end&gt; -i video/source.webm -vf fps=2 -q:v 2 -start_number 0 frames/&lt;site&gt;/f_%04d.jpg</code></pre>
+<p>Frame <code>f_NNNN</code> shows the video at segment start + N/2 seconds. The frame counts were: hotel 272, festival 324, e-commerce 190, SaaS 250, drink 336, high-rise 268, space 186. The total is 1,826 frames at 2560&times;1440.</p>
+<p>The brief told the agents the frame geometry. The browser page fills about x 0&ndash;2545, y 87&ndash;1354 of each frame. The presenter's webcam covers the bottom-left corner, about x 0&ndash;545, y 1045&ndash;1440, in many frames.</p>
+
+<h3>Step 3: contact sheets</h3>
+<p><code>scripts/sheets.py</code> made contact sheets: a 5&times;4 grid of every second frame (so 1 frame per second), each labelled with its file name. There were 49 sheets (hotel 7, festival 9, e-commerce 5, SaaS 7, drink 9, high-rise 7, space 5), each 2560&times;1152. The brief said: "READ THE SHEETS FIRST to map sections to frame ranges. Then read full frames only where you need copy text, layout detail, or colors (about 20&ndash;40 full frames). Do not read every frame."</p>
+
+<h3>Why Gemini was skipped</h3>
+<p>the owner's own pipeline has a script, <code>analyze_long.py</code>, that sends a YouTube URL to Google's Gemini model. Gemini can process sound and picture together and return a chaptered summary with timestamps. Claude first offered it as an optional step to find where each site appears. It then recommended skipping it for two reasons: the Gemini API charges per token, and the frames plus the transcript's chapter times could do the same job. the owner agreed: "please go with your recommendation".</p>
+
+<h3>The token cost of looking at frames</h3>
+<p>Every image that the model reads uses part of its context window and part of the owner's plan. Claude said this before the start: "1 frame each second of a 15-minute video is 900 images". That is why the agents read sheets first and only 22 to 46 full frames each. The records hold no per-frame token figure, so this page gives none. The effects are visible: a "Coach" hook warned at about 156k context tokens in session 1, then at about 181k, 197k (twice), 221k and 223k. At about 225k Claude itself advised a fresh session for the image work. The site 5 agent stopped responding after about 70 large images were in its context (9 sheets, 46 full frames, 16 or more screenshots). Section 10 has the details.</p>
+<div class="rule">An AI does not watch a video. It reads a sample of stills. What falls between the stills must come from somewhere else.</div>
+</section>
+
+<section id="s3">
+<h2>3. A team of 7 agents</h2>
+
+<h3>The setup</h3>
+<p>Before the agents started, the main thread made the shared inputs and tools: the frames, the sheets, <code>scripts/shot.py</code> (a screenshot tool), <code>TASKS.md</code> (the checklist), and <code>BRIEF.md</code> (the brief). <code>shot.py</code> opens a page in the installed Chrome through Python Playwright at 1600&times;792 CSS pixels with scale 1.6. The output is 2560 pixels wide, the same scale as the frames. It prints the page height and every JavaScript error.</p>
+<p>At 15:36 the main thread started 7 background agents in one message, one per site, type <code>general-purpose</code>. Each got the same instruction, "Read and follow ... BRIEF.md exactly", plus its site, its segment start second, its chapter, and the features that the presenter names. Example for site 7: "One long scroll-driven three.js journey: rocket on the launchpad ..." and "Everything 3D is procedural (no downloaded models or textures; generate planet textures with canvas/noise)."</p>
+<p>The brief set the rules. Output is one self-contained <code>index.html</code> per site with inline CSS and JavaScript. Allowed outside files: Google Fonts, and scripts from cdnjs or jsDelivr (for example three.js, GSAP, Lenis). No downloaded 3D models, because the original build had the same rule. Colours must be sampled from frame pixels. Copy must be "verbatim wherever readable". Interactive features must work. The page must have zero JavaScript errors. The report back must list what differs from the original and why.</p>
+
+<h3>How the main thread checked each site</h3>
+<p>When an agent reported, the main thread did not trust the report alone. It took its own screenshot with <code>shot.py</code>, then ran <code>scripts/cmp.py</code>. That script crops the browser area from a video frame, puts it on top, and puts the rebuild screenshot below, both at 1280 pixels wide. The main thread then looked at the pair and wrote what matched and what did not.</p>
+<div class="tw"><table>
+<tr><th>Site</th><th>Report (local)</th><th>Frame compared</th><th>Result</th></tr>
+<tr><td>3 KALDER</td><td>16:10</td><td>hero vs <code>f_0008</code></td><td>Close match; webcam corner differs</td></tr>
+<tr><td>1 Solenne</td><td>16:16</td><td>hero vs <code>f_0030</code></td><td>Match; hero photo softer (enlarged about 2.2&times;)</td></tr>
+<tr><td>2 SALTHOWL</td><td>16:34</td><td>hero vs <code>f_0036</code></td><td>Match; the countdown differs because it is live</td></tr>
+<tr><td>4 Kestrel</td><td>16:34</td><td>hero and dashboard vs <code>f_0028</code></td><td>Match; dashboard numbers differ because they change live</td></tr>
+<tr><td>6 HALDEN</td><td>16:39</td><td>hero vs <code>f_0008</code></td><td>Sent back with 4 fixes, then re-checked</td></tr>
+<tr><td>7 K&Aacute;RM&Aacute;N</td><td>16:56</td><td>hero vs <code>f_0002</code></td><td>Sent back with a rocket fix, then re-checked</td></tr>
+<tr><td>5 HYPERLYTE</td><td>19:41</td><td>hero vs <code>f_0010</code>, flavours vs <code>f_0110</code></td><td>First agent hung; <code>site5-finish</code> completed it</td></tr>
+</table></div>
+
+<h3>Fixes sent back</h3>
+<p><strong>Site 6, four hero fixes.</strong> The comparison showed four differences. The main thread sent them: "1. Camera framing ... Move the camera to match f_0008: lower, closer, and the tower slightly right of centre. 2. Foreground. The original has water in the bottom third ... Yours shows a ground plane and a row of small brick blocks ... 3. City ... Thin them out, and add 3&ndash;4 taller neighbours like the frame. 4. Tower texture ... Yours reads as a coarse blue/red checker. Make the grid finer and less saturated." The agent fixed all four in about 6 minutes. The tower now spans y &asymp; 75&ndash;445 of 633 pixels (original &asymp; 100&ndash;500). The ground became a reflecting water shader. About half of the city blocks went, and 5 taller neighbours came in. The facade got 12, 10 and 9 bays per face in place of 8, 7 and 6. Two differences stayed: the reflection is sharper and more rippled than the original's soft blur, and the scene is a little more pink.</p>
+<p><strong>Site 7, the rocket.</strong> "The rocket is backlit in the original: dark grey body, a bright rim on its right edge, a thin capsule/nose section, and it stands close against the tower's left side ... Yours is bright white with black bands and stands apart from the tower." The agent darkened the body, added a rim light that fades out by timeline value t=1.2, added a white vertical "K&Aacute;RM&Aacute;N" wordmark, moved the tower from x=3.4 to 2.2, and warmed the pad lights (<code>#ffd6a0</code> flare, <code>#ffc890</code> glow). The rim light turned the ground grey, so the agent made the ground, pad and slab unlit. After the fix, the rocket was still a little further left than in the video, and the rim was weaker.</p>
+<p>The agents' own screenshot rounds had not caught these problems. The main thread's side-by-side check found them.</p>
+<div class="rule">Put the source frame and the rebuild in one image, one above the other. Two separate looks miss what one stacked look shows.</div>
+
+<h3>The site 5 hang</h3>
+<p>The site 5 agent started at 15:36. Its last file write was at 16:13. At 17:12 the owner asked for status. The main thread found no new files for about an hour and sent the agent a status request. No reply came. At 18:30 the gap was 2 hours 17 minutes. The page itself existed: 95 KB, 23,544 px tall, 14 sections, no JavaScript errors, and its hero matched frame <code>f_0010</code>.</p>
+<p>Claude listed three possible causes: a permission prompt waiting on the owner's screen, a hung command, or a stalled agent. It did not act, because the owner had asked a question. At 18:40 the owner said: "please stop the agent. start a new one to test and finish index.html." Claude stopped it with <code>TaskStop</code>, by its own task id, not by a name match. Then it started <code>site5-finish</code> with new rules. Keep the existing file. Test the 8 narrated features in Chrome. Put <code>timeout 180</code> on every browser command, and wait no more than 3 minutes on anything. Delete only inside <code>scratch/5-drink/</code>, with Python.</p>
+<p>The finish agent ran for about 62 minutes. It found all 8 features working and one defect: the footer word "HYPERLYTE" was 1,898 px wide in a 1,600 px window, so its last letter was cut. It added a function <code>fitBig()</code> that sizes the word to 90% of the window width. It also tried to rebuild the hero stadium photo from about 40 frames and failed (section 4).</p>
+<p>The reconstruction found the likely point of the hang. The last logged call of the first agent was a Read of a small 660&times;410 PNG (<code>f176_br.png</code>). No result followed. No command was running. So the stall was probably in the harness, at an image result, in a context that held about 70 large images. This is an inference. The log does not prove it.</p>
+<div class="rule">Give every browser or Python command a timeout. A silent agent looks the same as a busy one until you check its files.</div>
+</section>
+
+<section id="s4">
+<h2>4. The crux: animation from still frames</h2>
+
+<h3>Why a still frame cannot show timing</h3>
+<p>A frame is one instant. At 2 frames per second, 0.5 seconds pass between two frames. Many web animations are shorter than that. A button fade of 300 ms can start and end between two frames, so no frame shows it. Easing is the shape of the speed over time: fast at the start and slow at the end, or the opposite. To see that shape you need many samples inside the animation. Two samples show only a "before" and an "after".</p>
+<p>There is a second problem. The presenter scrolls and moves the mouse by hand. So a change between two frames can come from the animation, from the scroll, or from both. The agent must separate the two.</p>
+
+<h3>The important exception: scroll-linked effects</h3>
+<p>Most effects on these sites do not run on a clock. They follow the scroll position: a word darkens as you scroll past it, a camera moves as you scroll, a section pins in place and slides sideways. For such an effect, time does not matter. What matters is "at scroll position Y, the page looks like this". A frame records one scroll position and one state. If the agent can find the scroll position of each frame, the frames become a table of states. That is why the 3D scroll journeys could be rebuilt with close camera paths, while time-based effects (a loader, a hover, a modal opening) needed other evidence.</p>
+
+<h3>Six ways the agents filled the gap</h3>
+<ol>
+<li><strong>The narration.</strong> The presenter names effects that stills cannot prove: "this entire image is also slowly zooming in", "this pop-up comes up. It sort of fades itself in", "the entire website ... has this moving grain effect". Every site task listed these narrated effects.</li>
+<li><strong>High-frame-rate windows.</strong> The agents cut short clips from the video at 4 to 10 frames per second around one effect, then pasted the frames into one grid image to read as a strip. The table below lists every window.</li>
+<li><strong>Neighbouring frames.</strong> Agents read odd frames next to even ones (for example 203 between 202 and 204), or 2&times;2 grids of successive frames, to see the state between the 1-per-second contact sheets.</li>
+<li><strong>Pixel measurement.</strong> Some agents measured motion with code, not by eye: edge tracking, template matching, and minimum pixel difference. This gave scroll offsets and a parallax ratio.</li>
+<li><strong>Known web patterns.</strong> A grey-to-black change that follows scroll is almost always a "scroll-scrubbed reveal". A section that stays fixed while its content slides is a "pinned" section. The agents built these standard patterns and then tuned them.</li>
+<li><strong>Tuning by comparison.</strong> The agents set durations and easing curves themselves, then took screenshots and compared them with frames, and changed numbers. The logs show no easing curve or duration that was measured from frames.</li>
+</ol>
+
+<h3>Every high-frame-rate window</h3>
+<p>All windows used the same ffmpeg binary on <code>video/source.webm</code>, for example <code>"$FF" -loglevel error -ss 81.5 -t 4.5 -i video/source.webm -vf "fps=6,scale=640:-1" scratch/1-hotel/m_%03d.jpg</code>. Times are seconds into the video.</p>
+<div class="tw"><table>
+<tr><th>Site</th><th>Window (video seconds)</th><th class="n">fps</th><th>What it was for</th></tr>
+<tr><td>1 hotel</td><td>81.5&ndash;86.0</td><td class="n">6</td><td>Page loader (27 frames in one sheet)</td></tr>
+<tr><td>1 hotel</td><td>131&ndash;162</td><td class="n">10</td><td>"A Day at Solenne" photo motion, 310 frames, the longest window</td></tr>
+<tr><td>2 festival</td><td>342.0&ndash;344.5</td><td class="n">8</td><td>The "moving line" at the bottom (Getting There)</td></tr>
+<tr><td>2 festival</td><td>238.0&ndash;239.5</td><td class="n">8</td><td>Pinned image section (the report says 10 fps; the logged command says 8)</td></tr>
+<tr><td>3 e-commerce</td><td>358&ndash;361.5, then 358.6&ndash;360.2</td><td class="n">8, 10</td><td>Page load, first wide, then narrowed to the 1.6 s where the change happens</td></tr>
+<tr><td>3 e-commerce</td><td>395.5&ndash;398.5</td><td class="n">10</td><td>Product window "opens itself up"</td></tr>
+<tr><td>3 e-commerce</td><td>403.5&ndash;406.5</td><td class="n">4</td><td>Jump from lookbook to stores</td></tr>
+<tr><td>4 SaaS</td><td>480.5&ndash;483.5</td><td class="n">4</td><td>Live hero dashboard</td></tr>
+<tr><td>5 drink</td><td>none</td><td class="n">&mdash;</td><td>Only 2 fps frames and odd neighbours were used</td></tr>
+<tr><td>6 high-rise</td><td>853.6&ndash;856.0, plus single frames at 854.3, 854.5, 854.7</td><td class="n">5</td><td>Construction progress diagram</td></tr>
+<tr><td>6 high-rise</td><td>828.6&ndash;830.2</td><td class="n">10</td><td>Amenities photo swap</td></tr>
+<tr><td>6 high-rise</td><td>844.0&ndash;845.2</td><td class="n">5</td><td>Promenade image</td></tr>
+<tr><td>7 space</td><td>899&ndash;905, 914&ndash;920, 947&ndash;959</td><td class="n">4, 4, 2</td><td>Launch, ascent, camera orbit round the rocket</td></tr>
+</table></div>
+
+<h3>Site by site: concrete examples</h3>
+
+<h4>1 &middot; Solenne (hotel)</h4>
+<p>The hotel agent measured the "A Day at Solenne" section with code. A script, <code>edge.py</code>, compared one column of a photo against the background column in each 10 fps frame, to find the photo's top and bottom edge. Output: <code>010 [(453, 1315)] 011 [(397, 1259)] 012 [(378, 1240)] 013 [(303, 1165)] 014 [(191, 1053)]</code>. The photo keeps its 862 px height and moves up 56, 19, 75 and 112 px per 0.1 s. Frames 019 to 022 stay at <code>(274, 808)</code>, a hold. Then a new image enters from below. So the photos form a scrolling stack with holds. The agent built this as a pinned section with parallax.</p>
+<p>The loader came from the 6 fps window: letters rise one by one, a rule grows, and the loader wipes up in about 2.2 s. The day clock was built from the times in the frames (06:10, 08:30, 11:00, 14:30, 18:45, 20:30, 23:50). The sky colour was sampled per time: dawn <code>#e2d5cf</code>, golden <code>#dfb487</code>, dusk <code>#48364e</code>, midnight <code>#0f1626</code>. The word-by-word story reveal was tuned after a screenshot: the progress formula changed from <code>(vh()*.644-r.top)/(vh()*.56)</code> to <code>(vh()*.72-r.top)/(vh()*.5)</code>. No animation library: plain JavaScript and CSS transforms. The agent wrote: "Pop-up image change: I did not check its exact animation style at high frame rate."</p>
+
+<h4>2 &middot; SALTHOWL (festival)</h4>
+<p>The agent identified the narrated "moving line animation at the bottom" from frames. Its note: "Moving line narrated = Getting There route line w/ bus icon progressing on scroll (pink solid behind bus, dotted ahead)." So it is scroll-driven, not a loop. The image section was read as a pinned sideways scroll whose background changes per card. The agent sampled peach <code>#e8bea5</code>, mint <code>#99cdcf</code> and gold <code>#e7b559</code>, and blended between them with a linear colour mix. The film grain became a full-page canvas redrawn every 70 ms; its strength was cut from <code>.10</code> to <code>.055</code> after a comparison. The hero sunburst is a CSS conic gradient that turns once in 120 s. The mouse effect (letters pulled toward the cursor) comes from the narration: "a lot of the elements of text is actually very well responding to my mouse moving around". A still cannot show it. No library.</p>
+
+<h4>3 &middot; KALDER (clothing)</h4>
+<p>This agent measured a parallax ratio. It used OpenCV template matching (<code>cv2.matchTemplate</code>, <code>TM_CCOEFF_NORMED</code>) on a bollard in the hero photo. Between frames <code>f_0008</code> and <code>f_0030</code> the patch moved <code>dy -272</code> (score 0.998). A mountain patch gave the same result (score 0.9987). From this the agent found that the photo moves 0.817 of the page scroll, and built the hero parallax at 1 &minus; 0.817 &asymp; 0.18.</p>
+<p>The load animation came from two windows. The 10 fps strip showed the photo wiping down while it scales from 1.12 to 1, then "Low" rising, then "Pressure". The "opens itself up" product window came from a 10 fps strip: a thin line grows at the click point, and the panel opens from it. This site is the only one of the first four that used GSAP and ScrollTrigger (for the pinned lookbook). Tuning examples: the load timeline <code>delay:.25</code> became <code>delay:.35,paused:true</code> and now starts only after the images load; counter duration 2.2 s became 1.5 s. One counter, "0&euro;", counts down from 25, because one mid-count frame (<code>f_0037</code>) showed that.</p>
+
+<h4>4 &middot; Kestrel (finance software)</h4>
+<p>The hero dashboard is code, not a picture, as the presenter says. The agent read the dashboard at full size by cropping frame regions, then rebuilt it in HTML, CSS and SVG. Its motion came from a 4 fps strip and from sheets of successive 2 fps frames. New rows appear and change from "Queued" to "Matching" to "Matched", the cash figure ticks up, and an agent log types itself. On scroll, the dashboard tilts in 3D and goes flat (CSS <code>perspective:1800px</code>). The ROI calculator was built so its results match four frames exactly (<code>f_0118</code>, <code>f_0120</code>, <code>f_0126</code>, <code>f_0128</code>), for example $422,841 saved and 8 days payback. The step section's scroll formula was tuned from <code>(vh*.72-r.top)/(r.height*.62)</code> to <code>(vh*.5-r.top)/(r.height*.7)</code>. A pop-up uses an overshoot curve, <code>cubic-bezier(.2,1.4,.4,1)</code>, chosen by the agent. No library.</p>
+
+<h4>5 &middot; HYPERLYTE (sports drink, 3D)</h4>
+<p>The can is procedural: three.js r128 geometry built in code, with the label painted on a canvas as a texture. The code waits for the web fonts before it paints the label, so the label uses the Archivo font and not a fallback. The can's path through the page is a keyframe table. Each key holds a scroll position and the can's screen x and y, its height on screen in pixels, and three rotations. Example after a fix: the flavours section holds the can at <code>y:84,h:590</code> with one full turn (<code>ry:Math.PI*2</code>) and a &minus;3 degree tilt. Between keys, the code uses a smoothstep curve. The keys are rebuilt from the live section positions on resize and 1.5 s after load.</p>
+<p>This agent used no high-fps window. It read odd frames (203, 303, 307) next to even ones to see the fall, the spin and the splash. The first renders looked washed out, so it switched off ACES tone mapping (<code>NoToneMapping</code>) and cut <code>envMapIntensity</code> from .9 to .55. The splash is 320 particles over a background photo. The presenter said the original's liquid "doesn't look super realistic".</p>
+<p>The finish agent tried a known method to recover the hero photo behind the text. It took 40 hero frames and masked the text and the can in each. Then it kept the median of the uncovered pixels. It failed. 61% of the pixels (then 65% with a looser mask) were covered in every frame, and the colour mask also removed the sky. Its verdict: "The median composite is worse than the existing plate ... I keep the existing plate."</p>
+
+<h4>6 &middot; HALDEN (residential tower, 3D)</h4>
+<p>The tower is procedural three.js r158. Its facade is a canvas texture of glass bays with bronze mullions. Its mass is three stacked blocks by level range with two setbacks: <code>{from: 4, to: 13, s: 12 ...}, {from: 14, to: 27, s: 10.6 ...}, {from: 28, to: 36, s: 9.4 ...}</code>, plus a crown with a pool. The city uses a seeded random generator, so it looks the same on every load. The sky is rendered into an environment map per time of day, so reflections change from golden hour to dusk.</p>
+<p>Scroll drives 5 chapters with anchors at <code>[0, 778, 1966, 3154, 4342, 5069]</code> CSS pixels. At anchor 0 the camera is at <code>[-31, 6, 95]</code>; at 4342 it is at <code>[-18, 8, 73]</code>. A clock runs 17:30 to 19:36 with the scroll. In the dusk chapter the windows light floor by floor: <code>litTo = lerp(24, 38.6, clamp(s.dusk * 1.6, 0, 1))</code>. The agent put debug hooks on the page (<code>window.__cam</code>, <code>window.__proj</code>) so a test script could read the camera and aim a real mouse hover at level 32 of the 3D tower. It found scroll offsets by pixel difference: between frames 178 and 186 the page moved 204 display pixels. The site task noted that the presenter calls the original tower render weak, and it said: "copy what you see, do not improve the concept."</p>
+
+<h4>7 &middot; K&Aacute;RM&Aacute;N (space tourism, 3D)</h4>
+<p>One fixed three.js r160 canvas sits behind the whole page. Each section carries a scene time t, from 0 (launch pad) to about 9.8 (Moon). Opaque sections hold t still. A helper, <code>track([[t, value], ...])</code>, interpolates the camera position and look direction between keyframes with smoothstep. The agent wrote <code>tshot.py</code> to render the scene at chosen t values without scrolling. It wrote <code>off.py</code> to measure scroll between frame pairs (for example frames 92 to 96: shift &minus;150 px at error 0.40; a match at error 44.88 was rejected).</p>
+<p>The Earth is a shader: noise-based continents, clouds, city lights on the night side, and a thin atmosphere rim. Most tuning changed shader constants, not geometry. Example: the atmosphere term <code>exp(-d*d*14.)*1.2+exp(-d*1.6)*.25</code> became <code>exp(-d*d*70.)*1.1+exp(-d*3.)*.14</code> for a thinner rim. The altitude, velocity, load and mission-clock display takes its key values from numbers read in the frames. To keep the page fast, the canvas skips frames when opaque sections cover the screen.</p>
+
+<h3>What all seven have in common</h3>
+<ul>
+<li>A colour or opacity change that follows scroll was built as a scroll-scrubbed reveal with a progress formula of the form <code>(viewport*a - top)/(height*b)</code>, and <code>a</code> and <code>b</code> were tuned by screenshot.</li>
+<li>Only site 3 used GSAP with ScrollTrigger. The others used plain JavaScript, <code>position:sticky</code>, CSS transforms, canvas and SVG. No site used Lenis.</li>
+<li>All 3D is built in code: canvas textures for the can label, the tower facade and the rocket body; noise shaders for the Earth and Moon. No 3D model file was downloaded.</li>
+<li>Durations and easing curves are the agents' choices. They look close when you compare by eye. They are not measured copies.</li>
+</ul>
+<div class="rule">A still frame gives a state, not a speed. For scroll effects, the state is enough. For time effects, the timing is an estimate from narration, short clips and known patterns.</div>
+</section>
+
+<section id="s5">
+<h2>5. The images: from video crops to Higgsfield</h2>
+
+<h3>Phase 1: photos cut from the video</h3>
+<p>The brief told the agents to cut each photo from the clearest frame with Python PIL, and not to call any paid image API. Claude told the owner this was a cost choice: "Generated replacement images ... would look sharper, but they cost money." The agents cut 75 photo files. Where text, a cursor or the webcam covered a photo, they repaired it:</p>
+<ul>
+<li>Site 1 copied a shifted patch over labels (a "clone stamp"), or pasted the same area from a frame where the label was absent.</li>
+<li>Site 3 used OpenCV inpainting (<code>cv2.INPAINT_TELEA</code>), which fills a masked area from the pixels around it. For the hero's webcam corner it tried to take real pixels from later frames (the rows never all appeared), then used a mirrored copy of the sea beside it.</li>
+<li>Site 4 joined two frames at a measured offset of 553 px to get a full customer photo. It also enlarged three 63-pixel thumbnails to 600&times;723, which made them soft (sharpness score 2 for Marcus).</li>
+<li>Sites 5, 6 and 7 mirrored and blended the neighbouring area over the webcam, or cut the webcam column away. Site 6 had no clear frame of the wine room, so it used a tinted, mirrored copy of the club photo.</li>
+</ul>
+
+<h3>Why they had to go</h3>
+<p>At 20:10 the owner asked how a skeptic could know the sites were rebuilt and not copied. Claude's first sentence was: "Part of what a skeptic suspects is true. The photos are cut from the video frames." Then the owner asked about publishing, first the evidence page and then the sites on GitHub. Claude ranked the risks. It stated: "This is a practical assessment, not legal advice." This page repeats that caveat.</p>
+<div class="tw"><table>
+<tr><th>#</th><th>Problem</th><th>Why (Claude's reasoning at the time)</th><th>Risk given</th><th>What was done</th></tr>
+<tr><td>1</td><td>75 photo files cut from the video</td><td>"full-size copies of the creator's material, not small screenshots used for comparison. A fair-use argument is weak here." A takedown notice can disable a GitHub repository.</td><td>High</td><td>All 75 replaced with generated images (this section)</td></tr>
+<tr><td>2</td><td>Copy text taken word for word</td><td>"Text is easier to protect by copyright than layout." Whether AI-written text has copyright is not settled.</td><td>Medium</td><td>All copy rewritten (section 6)</td></tr>
+<tr><td>3</td><td>The build banner</td><td>It shows the original's time and cost. Readers would think the numbers describe the rebuild.</td><td>Medium (misleading claim)</td><td>Stats removed (section 6)</td></tr>
+<tr><td>4</td><td>Brand names and designs</td><td>Fictional names, so no trademark owner. Layout and style are hard to protect.</td><td>Low</td><td>Creator credited in README and banner</td></tr>
+<tr><td>5</td><td>The <code>yt-dlp</code> download</td><td>YouTube's terms forbid downloading with such a tool. A contract matter, not copyright. The file was already deleted.</td><td>Very low</td><td>Video not in the repository</td></tr>
+<tr><td>&mdash;</td><td>The presenter's face (webcam)</td><td>A real person who did not agree to appear on the page</td><td>Privacy</td><td>Blurred on the private evidence page; no frames on this public page</td></tr>
+</table></div>
+<p>There is one more fact. In the video, at 1:44, the presenter says: "I did prompt it to use the GPT image 2.5 model". So the original photos were themselves AI images. Claude noted that "Whether AI-generated images are protected by copyright is not settled law", and treated them as the creator's material anyway.</p>
+
+<h3>Could quality be "guaranteed"?</h3>
+<p>the owner asked for new images "as good as or exceeding the original" and asked how that can be guaranteed. Claude's answer: "No method can guarantee image quality in advance. Image models give a different result on each run." It proposed a gate that each image must pass, plus the owner's final review. It also set the copyright rule for the new images: generate from written descriptions, and never give an old crop to the model as the starting image, because "If I start from the crops, the new images copy the creator's images, and the copyright problem stays."</p>
+
+<h3>Higgsfield: CLI or MCP?</h3>
+<p><strong>The command-line tool (CLI) was used for every image. No MCP tool was called.</strong></p>
+<p>Two Higgsfield connections were visible in the session. The Higgsfield image MCP server needed a sign-in and was not connected. The other active one, <code>higgsfield-bridge</code>, controls Adobe and Blender, not image generation. Claude told the owner this. the owner then pasted Higgsfield's own setup text, which installs the CLI. The installed skill <code>higgsfield-generate</code> says of itself: "Submit jobs to any Higgsfield model. Wraps the <code>higgsfield</code> CLI." Session 2 followed that skill and a memory note that said the CLI was installed and signed in. <strong>No session argued CLI against MCP.</strong> The choice followed from the pasted setup, the skill and the memory note.</p>
+<p>The setup, 24 Sep, 21:49 to 21:56:</p>
+<ol>
+<li><code>npm i -g @higgsfield/cli</code> installed version 1.1.26. The next command failed: <code>/usr/bin/bash: line 3: higgsfield: command not found</code>.</li>
+<li>Claude found the binary in <code>C:\Users\USERNAME\AppData\Roaming\npm</code> and ran it by full path. <code>higgsfield auth token</code> showed a saved sign-in, so no browser login was needed. <code>higgsfield account status --json</code> gave <code>{'credits': 673.91, 'subscription_plan_type': 'plus'}</code> (the email field was filtered out).</li>
+<li><code>npx skills add higgsfield-ai/skills -g -a claude-code -s '*' -y --copy</code> installed 8 skills. Claude warned: "these skills run with full agent permissions. I have not reviewed their contents."</li>
+<li>the owner asked to add the npm folder to his PATH. It was already there. Claude Code had started with an old copy of the PATH. From then on, every script began with <code>export PATH="$PATH:/c/Users/USERNAME/AppData/Roaming/npm"</code>.</li>
+</ol>
+
+<h3>The model and its settings</h3>
+<p>Model: <strong>GPT Image 2.5</strong>, id <code>gpt_image_2_5</code> (found with <code>higgsfield model get gpt_image_2_5 --json</code>). Settings for all 82 charged generations: <code>--quality high --resolution 4k</code>. Aspect ratios came from the list <code>auto,1:1,3:2,2:3,4:3,3:4,16:9,9:16,21:9,27:16,16:27,9:8,8:9,4:5,5:4</code>. Claude checked the price first:</p>
+<div class="tw"><table>
+<tr><th>Quality, resolution</th><th class="n">Credits per image</th></tr>
+<tr><td>medium, 2k</td><td class="n">1</td></tr>
+<tr><td>medium, 4k</td><td class="n">1.25</td></tr>
+<tr><td>high, 2k</td><td class="n">2.75</td></tr>
+<tr><td>high, 4k</td><td class="n">4.25</td></tr>
+</table></div>
+<p>Claude chose high and 4k without a test at the cheaper settings. The pilot command, one image after another:</p>
+<pre><code>timeout 900 higgsfield generate create gpt_image_2_5 --prompt "$prompt" --aspect_ratio "$ar" \
+  --quality high --resolution 4k --wait --wait-timeout 14m --json &gt; "$name.json" 2&gt; "$name.err"</code></pre>
+<p>For the full run Claude wrote <code>scratch/higgs/gen.sh</code>, used by all 7 agents as <code>bash scratch/higgs/gen.sh &lt;site&gt; &lt;name&gt; &lt;aspect&gt; "&lt;prompt&gt;" [--image ref]</code>. It does this, in order:</p>
+<ol>
+<li>Adds the npm folder to the PATH.</li>
+<li>Changes into <code>scratch/higgs/&lt;site&gt;/</code>. (This step caused 3 path failures, listed below.)</li>
+<li>Renames an older result to <code>&lt;name&gt;_vN</code>, so every earlier try is kept.</li>
+<li>Appends the name, aspect and prompt to <code>prompts.tsv</code> before the call, so failed calls are logged too.</li>
+<li>Runs <code>higgsfield generate create ...</code> and waits.</li>
+<li>Downloads the full PNG from the job's <code>result_url</code>. (The first script took <code>min_result_url</code> by mistake, a small WebP preview. Claude fixed that after it read the job JSON.)</li>
+</ol>
+
+<h3>Reference images: what was allowed</h3>
+<p>The CLI accepts <code>--image</code> with a file path or an upload id. The rule in the agents' brief was: "Generate from TEXT prompts that describe the scene. Never pass an old image ... as <code>--image</code> input. That is a copyright rule. You MAY pass one of OUR new generated PNGs ... for consistency (same garment, same building)." The references were used like this: "Use the reference for the garment design only, not the scene", "use the reference only for materials, palette and light, not its layout", "Use the reference only for the location and light, not for the person or clothes". For the SaaS portraits the rule was stricter: "Do NOT pass marcus.png as --image (it would copy his face); describe the style in text."</p>
+<p>A note on people. The prompts described each person with the same age, gender, hair and clothing as the old image, so the set would still fit the page. The faces are new, because no old image went into the model. Crowds were composed from behind, backlit or as silhouettes, which also removed faces from the festival photos.</p>
+
+<h3>The quality gate</h3>
+<p>The gate script is <code>scratch/higgs/sheet.py</code>. Its final version has three checks per image:</p>
+<ol>
+<li><strong>4K:</strong> the long side is at least 3200 px.</li>
+<li><strong>Sharper:</strong> the sharpness score of the new image, after it is shrunk to the old crop's width, is higher than the old crop's score. The score is the variance of the Laplacian, a standard measure of how strong the fine edges are: <code>cv2.Laplacian(grey, cv2.CV_64F).var()</code>.</li>
+<li><strong>Aspect:</strong> the width-to-height ratio is within 10% of the old one.</li>
+</ol>
+<p>Then each agent had to zoom in at full size and look for "faces, hands, fingers, text, logos, watermarks, melted objects, duplicated limbs", install the image, and take a before/after screenshot of the real page with <code>onpage.py</code>. The rule: "The after must be no worse: overlaid text still readable, hotspots still on their objects, subject not cut off." Each site also got a contact sheet, old image left and new image right, for the owner.</p>
+<p>The gate changed once. The pilot version asked for "at least 2&times; the old size". That was impossible for three images whose old crops were already 2065 to 2545 px wide, because the model's widest output is 3840 px. Claude told the owner: "So 2&times; is not possible with this model, and the check cannot pass." the owner approved the "4K rule" at 22:20.</p>
+
+<h3>The pilot</h3>
+<p>Five hard images, one per site type, generated from 22:13 to 22:16:</p>
+<div class="tw"><table>
+<tr><th>Image</th><th>Old px</th><th>New px</th><th>Sharpness old &rarr; new (at old size)</th></tr>
+<tr><td>golden (hotel hero)</td><td>1145&times;828</td><td>3312&times;2480</td><td>259 &rarr; 2817</td></tr>
+<tr><td>hero (KALDER), v1</td><td>2545&times;1133</td><td>3840&times;1648</td><td>44 &rarr; 469</td></tr>
+<tr><td>hero (KALDER), v2 final</td><td>2545&times;1133</td><td>3840&times;1648</td><td>44 &rarr; 100</td></tr>
+<tr><td>capsule (space)</td><td>2370&times;1415</td><td>3840&times;2160</td><td>59 &rarr; 843</td></tr>
+<tr><td>marcus (SaaS)</td><td>600&times;723</td><td>2560&times;3200</td><td>2 &rarr; 352</td></tr>
+<tr><td>living (high-rise)</td><td>2065&times;954</td><td>3840&times;1648</td><td>217 &rarr; 1366</td></tr>
+</table></div>
+<p>The pilot showed four problems. The 2&times; rule could not pass. The new capsule is larger in the frame, so hotspots 01, 03 and 05 no longer sat on their parts. The KALDER model was smaller in the frame. The living-room furniture was arranged differently. the owner's answer: "approved, use 4K rule, re-aim the hotspots". Then the KALDER hero v1 failed on the page: "the model was small, her head sat under the coordinates text, and the parka hotspot landed next to the jacket." Claude generated v2 with the model "centred at 72 percent of the frame width", so the existing hotspots land on the parka and trousers.</p>
+
+<h3>The full run</h3>
+<p>At 22:33 Claude copied all 75 old files to <code>scratch/old_img/&lt;site&gt;/</code> as a rollback, then started 7 agents, one per site. They ran for 28 to 137 minutes:</p>
+<div class="tw"><table>
+<tr><th>Agent</th><th class="n">Minutes</th><th>Images</th><th class="n">Charged generations</th><th class="n">Credits</th></tr>
+<tr><td>4 SaaS</td><td class="n">28</td><td>4 + 3 thumbnails</td><td class="n">5</td><td class="n">21.25</td></tr>
+<tr><td>7 space</td><td class="n">40</td><td>4</td><td class="n">5</td><td class="n">21.25</td></tr>
+<tr><td>2 festival</td><td class="n">84</td><td>7</td><td class="n">9</td><td class="n">38.25</td></tr>
+<tr><td>3 e-commerce</td><td class="n">85</td><td>14 + 1 derived</td><td class="n">14</td><td class="n">59.5</td></tr>
+<tr><td>5 drink</td><td class="n">101</td><td>9</td><td class="n">11</td><td class="n">46.75</td></tr>
+<tr><td>6 high-rise</td><td class="n">107</td><td>12</td><td class="n">13</td><td class="n">55.25</td></tr>
+<tr><td>1 hotel</td><td class="n">137</td><td>15</td><td class="n">19</td><td class="n">80.75</td></tr>
+</table></div>
+<p>Of the 75 files, 70 are generated images and 5 are derived from them. <code>t-pier</code> is a crop of the new KALDER hero, and <code>t_marcus</code>, <code>t_amara</code>, <code>t_priya</code> and <code>t_tomas</code> are thumbnails of the new portraits. A final check compared all 75 files in <code>sites/*/img/</code> with the old ones: <code>unchanged: []</code>.</p>
+
+<h3>Credits: an exact chain</h3>
+<p>90 calls went through <code>gen.sh</code>. 14 failed before a job existed and cost nothing. 76 were charged at 4.25 credits = 323.0. The pilot was 6 generations (5 plus hero v2) = 25.5. Total: <strong>82 generations = 348.5 credits</strong>. The balance readings agree exactly: 673.91 at the start, 652.66 after the pilot, 648.41 after hero v2, 325.41 at the end. 673.91 &minus; 325.41 = 348.5. Two agents first counted their own failed calls as charged. The hotel agent said 89.25 and then corrected itself: "the real charge is probably 19 x 4.25 = 80.75". The e-commerce agent said 68; the real charge was 59.5. Claude's final figure came from the balance, not from the agents.</p>
+
+<h3>Every Higgsfield failure, verbatim</h3>
+<div class="tw"><table>
+<tr><th>#</th><th>Image</th><th>Error text</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>1</td><td>festival gull-king</td><td><code>Error: Media "scratch/higgs/2-festival/gullref.png" is neither a UUID nor an existing file path.</code></td><td><code>gen.sh</code> changes folder first, so a path from the project root points at nothing</td><td>Absolute path</td></tr>
+<tr><td>2</td><td>space cabin</td><td><code>Error: Media "scratch/higgs/7-space/capsule.png" is neither a UUID nor an existing file path.</code></td><td>Same</td><td>Path relative to the site folder</td></tr>
+<tr><td>3</td><td>drink classified</td><td><code>Error: Media "scratch/higgs/5-drink/pack.png" is neither a UUID nor an existing file path.</code></td><td>Same</td><td><code>cygpath -m</code> absolute path</td></tr>
+<tr><td>4&ndash;5</td><td>e-commerce p-parka (&times;2)</td><td><code>Error: request failed (no response received)</code></td><td>Reference <code>hero.png</code>, 7,578,104 bytes</td><td>2048 px JPEG copy, 285,470 bytes</td></tr>
+<tr><td>6&ndash;7</td><td>high-rise kitchen (&times;2)</td><td>same text</td><td>Reference <code>living.png</code>, about 11 MB</td><td>2048&times;879 JPEG, uploaded once, id reused 7 times</td></tr>
+<tr><td>8&ndash;9</td><td>space cabin (&times;2)</td><td>same text</td><td>Reference <code>capsule.png</code>, about 9 MB</td><td>1920&times;1080 JPEG, uploaded</td></tr>
+<tr><td>10&ndash;11</td><td>festival gull-sculpture (&times;2)</td><td>same text</td><td>Reference <code>gull-king.png</code>, 13,471,244 bytes</td><td>1600&times;1280 JPEG, 642,213 bytes</td></tr>
+<tr><td>12&ndash;13</td><td>hotel room-cliff (&times;2)</td><td>same text</td><td>Reference <code>room-cliff_v1.png</code>, 11,749,613 bytes</td><td>2048 px JPEG, 863,522 bytes</td></tr>
+<tr><td>14</td><td>drink classified</td><td>same text</td><td>Reference <code>pack.png</code>, 10,975,918 bytes</td><td>1600 px JPEG</td></tr>
+</table></div>
+<p>Every failed call was checked against the job list with <code>higgsfield generate list</code>. None had created a job, so none was charged. The pattern "a PNG reference over about 7 MB fails" is an observation, not a proven limit: one 13,093,501-byte PNG did upload and work. All JPEG references of 0.29 to 1.23 MB worked. The 7 agents also sent jobs to one account at the same time, and nobody tested whether that contributed.</p>
+<p>A second size problem cost credits. "4K" at this model means about 8.3 million pixels, not a fixed width. The measured outputs:</p>
+<div class="tw"><table>
+<tr><th>Aspect</th><th>4k output (px)</th><th>Long side &ge; 3200?</th></tr>
+<tr><td>21:9</td><td>3840&times;1648</td><td>yes</td></tr>
+<tr><td>16:9 / 9:16</td><td>3840&times;2160 / 2160&times;3840</td><td>yes</td></tr>
+<tr><td>3:2 / 2:3</td><td>3504&times;2336 / 2336&times;3504</td><td>yes</td></tr>
+<tr><td>4:3</td><td>3312&times;2480</td><td>yes</td></tr>
+<tr><td>5:4 / 4:5</td><td>3200&times;2560 / 2560&times;3200</td><td>yes, exactly 3200</td></tr>
+<tr><td>9:8 / 8:9</td><td>3024&times;2688 / 2688&times;3024</td><td><strong>no</strong></td></tr>
+<tr><td>1:1</td><td>2880&times;2880</td><td><strong>no</strong></td></tr>
+</table></div>
+<p>Six images were first made at 1:1, 9:8 or 8:9 and failed the 4K check: festival gull-king, hotel food, hotel room-cliff, SaaS feather, drink nia, high-rise ensuite. Each needed one more paid generation at 4:5 or 5:4, which is 25.5 credits in total.</p>
+
+<h3>Final gate results</h3>
+<p>The final report and <code>HANDOFF.md</code> say "14 aspect FAILs". That number is wrong. The reconstruction recomputed the aspect check on all 70 generated PNGs: <strong>12</strong> fail the aspect check, and <strong>2</strong> fail the sharpness check. 12 + 2 = 14 gate failures in total.</p>
+<ul>
+<li><strong>12 aspect failures, all accepted.</strong> Each sits in a slot that the page crops to fill (<code>object-fit:cover</code> or <code>background-size:cover</code>), or was installed with <code>--match-old</code> (the night tower). Several were changed on purpose because the new shape fits the real slot better. Example: the old night-market crop was 2.16:1, but the slot shows about 750&times;644, so the old image "lost about half its width". Differences from the old aspect: tower-night 53.5%, gym 49.6%, night-market 42.2%, ensuite 20.4%, gull-king 20.1%, food 19.9%, hero-stadium 16.8%, kwame 13.6%, anders 13.2%, kaia 13.2%, look3 12.0%, nia 11.5%.</li>
+<li><strong>2 sharpness failures, accepted.</strong> <code>t-fabric</code> and <code>t-workshop</code> are tiny inline pictures. Their old files were 195&times;92 video crops, and blocky scaling raises the Laplacian score. At the installed 390&times;184 size the new files score 924 and 1549, against 151 and 240 for the old crops at that size. The agent still called it "a real miss on the gate".</li>
+</ul>
+<p>the owner reviewed all 7 contact sheets at the start of session 3 and rejected no image. Claude had looked at only 3 of the 7 sheets itself.</p>
+
+<h3>Problems that no script caught</h3>
+<ul>
+<li><strong>Hotspots.</strong> A hotspot is a button at x% and y% of an image. The percentages were measured on the old image. A new image puts the parts at other places. On the capsule, Claude drew a 5% grid on the new image. Then it changed 5 positions in <code>sites/7-space/index.html</code> (line 590 at that time; line 577 after the text rewrite), for example hotspot 01 from <code>{x:53.2,y:14.7</code> to <code>{x:49.5,y:10.2</code>. On the KALDER lookbook, the agent changed hotspots at <code>index.html</code> lines 412&ndash;414; one old spot "was on the sea".</li>
+<li><strong>Text over bright areas.</strong> <code>lunch</code> and <code>lemonterr</code> passed the gate but put bright areas behind page text. The second prompts asked for "The whole lower third of the frame lies in the soft, even shade". <code>launch</code> put its orange horizon behind the countdown labels; the fix put the horizon "at about 83% of the image height". <code>classified</code> put the top of the can under the fixed menu bar.</li>
+<li><strong>Content.</strong> The first <code>plunge</code> image had no anatomy defect, but "it put two women's backsides, close up from behind, at the centre of the frame, so I rejected it." The second is a wide side view with the jumper in a rash vest, friends in towels, and a lifeguard that matches the page's "Lifeguards 9&ndash;5" sticker.</li>
+<li><strong>Logos.</strong> On <code>p-shell</code> the agent found "three small logo-like marks on the zipper pulls". It did not regenerate. It removed them with OpenCV inpainting on three boxes of 26&times;19, 16&times;43 and 17&times;42 px in a 2560&times;3200 image, and kept the original as <code>p-shell_raw.bak</code>. The brief said "Regenerate on any defect", so this was a rule set aside, and Claude reported it as one.</li>
+<li><strong>Video UI inside the old crops.</strong> Some old photos contained parts of the page: the capsule's "01&ndash;05" hotspot markers, "01"&ndash;"04" badges on the athlete photos, a "QUICK VIEW" button on a trouser photo, and a blurred patch where the drink's 3D can had been. The new prompts said "no text, no numbers" or "no markers", so these are gone.</li>
+</ul>
+
+<h3>Size and weight</h3>
+<p>The installed 4K JPEGs (quality 88) made <code>sites/*/img</code> 87.5 MB, about 10 times the 8.8 MB of the video crops. Claude asked the owner to choose a size. He wrote "re-encode to 2560 px at q82". The result is 43.4 MB, about 4.9 times the crops. Claude had estimated "about 30 MB, but I have not measured it", and afterwards wrote "My estimate of about 30 MB was wrong." The re-encode started from the q88 JPEGs, not the PNGs, so each image was compressed twice. The quality cost was not measured. The full 4K PNGs stay in <code>scratch/higgs/&lt;site&gt;/</code>, outside the repository.</p>
+
+
+<h3>Every image: what the original showed and what changed</h3>
+<p>How to read the tables. "Original crop showed" describes the old video crop in words, with its pixel size; no old crop is shown on this page. "Prompt" gives the key phrases; every prompt also ends with a "no text / no logos / no watermark" clause unless noted. The full prompts are in <code>scratch/higgs/&lt;site&gt;/prompts.tsv</code> on the owner's machine; they are not in the repository. "Ref" is the <code>--image</code> reference, always one of the new generated images. "Tries" counts charged generations; "+N failed" counts calls that failed before a job existed (no charge). File names on the sites still use the old names, for example <code>anders.jpg</code>, although the visible text now uses new names.</p>
+
+<details>
+<summary>1 &middot; Solenne (hotel) &mdash; 16 files, 20 charged generations (1 pilot + 19)</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>golden</code> (pilot)</td><td>1145&times;828. Aerial golden-hour view of a cliff-top hotel above a calm sea</td><td>4:3. "Aerial photograph at golden hour... Cream limestone villas with arched loggias, green shutters, terracotta roofs, tall cypress... on the right third... infinity pool... Calm sea fills the left half... no people, no text." No ref.</td><td>Building moved to the right third, pool added, sea left clear for the headline. 3312&times;2480.</td><td class="n">1</td></tr>
+<tr data-img><td><code>lemonkey</code></td><td>1145&times;858. Overhead: lemon, espresso, brass key with leather fob on linen</td><td>4:3. "...antique brass room key... tan leather teardrop key fob embossed with the single number 7... majolica plate... glimpse of turquoise sea... No other text"</td><td>Fob text limited to "7" and checked at full size. Plate and sea corner added.</td><td class="n">1</td></tr>
+<tr data-img><td><code>bath</code></td><td>542&times;816. Cliff bathroom, stone tub, arched window</td><td>2:3. "...tall round-arched stone window on the right half... freestanding bathtub carved from one block of cream travertine... No people"</td><td>Window on the right half, tub lower left.</td><td class="n">1</td></tr>
+<tr data-img><td><code>room-cliff</code></td><td>740&times;869. Guest room, bed lower left, open window to cliff and sea</td><td>Try 1 at 8:9. Try 2 at 4:5: "Recreate the reference photograph as closely as possible in a 4:5 frame: same room, same camera position, same light." Ref: try 1 as a 2048 px JPEG.</td><td>Try 1 was 2688&times;3024 and failed 4K. Became the anchor for the other 4 rooms.</td><td class="n">2 +2 failed</td></tr>
+<tr data-img><td><code>room-terrace</code></td><td>740&times;869. Room with glazed doors to a terrace</td><td>4:5. "second guest room in the same... hotel as the reference image... The difference: ... glazed doors... onto a private stone terrace... reed pergola... two cushioned teak loungers". Ref: room-cliff.</td><td>One set with room-cliff; only the view changes.</td><td class="n">1</td></tr>
+<tr data-img><td><code>room-garden</code></td><td>740&times;869. Room to a garden, patterned floor</td><td>4:5. "garden suite... blue-and-white patterned majolica tiles... arched glazed doors... walled garden: a lemon tree... round stone table". Ref: room-cliff.</td><td>Same set framing.</td><td class="n">1</td></tr>
+<tr data-img><td><code>room-seapool</code></td><td>740&times;869. Plunge pool outside, no bed</td><td>4:5. "sea pool suite... glazed doors... onto a private limestone terrace... small rectangular plunge pool cut into the pale rock". Ref: room-cliff.</td><td>Old was an exterior view; new is the set room with the pool through open doors.</td><td class="n">1</td></tr>
+<tr data-img><td><code>room-faro</code></td><td>740&times;869. Room with round porthole window, canopy bed</td><td>4:5. "lighthouse keeper's house suite... dark wooden four-poster canopy bed... deep round porthole window... brass binoculars... old framed nautical chart". Ref: room-cliff.</td><td>Same set framing.</td><td class="n">1</td></tr>
+<tr data-img><td><code>night</code></td><td>1145&times;790. Hotel on the cliff at night</td><td>3:2. "The same cliff-top hotel as the reference image, photographed at night... every arched window... glowing warm amber... thin crescent moon". Ref: golden.</td><td>Matches the new golden building.</td><td class="n">1</td></tr>
+<tr data-img><td><code>infinity</code></td><td>820&times;1030. Loungers by an infinity pool, olive branch</td><td>4:5. "pool terrace of the same cliff-top hotel... two cream-cushioned teak sun loungers... red-and-cream striped linen towel... olive tree framing the corner". Ref: golden.</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>seapools</code></td><td>1145&times;858. Two rock-cut sea pools at dawn</td><td>4:3. "two natural rectangular sea pools cut into flat pale limestone rock... worn stone steps... pale sun just rising"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>cove</code></td><td>1145&times;786. High view into a cove with a small boat</td><td>3:2. "High-angle... secluded Mediterranean cove. A traditional small wooden gozzo fishing boat... beach of pale smooth pebbles"</td><td>Largest final file: 1,309 KB.</td><td class="n">1</td></tr>
+<tr data-img><td><code>dinner</code></td><td>1145&times;803. Dusk terrace dinner table under vines</td><td>3:2. "outdoor restaurant terrace... set for dinner and not yet occupied... glass-hurricane candles... festoon string lights... No people"</td><td>Empty table on purpose, "so there are no faces or hands to check".</td><td class="n">1</td></tr>
+<tr data-img><td><code>food</code></td><td>542&times;543. Plate of prawn crudo, sea behind</td><td>Try 1 at 1:1. Try 2 at 4:5: "Recreate the reference photograph... with a little more sea and sky at the top". Ref: try 1.</td><td>Try 1 was 2880&times;2880 and failed 4K. Aspect failure accepted (cover slot).</td><td class="n">2</td></tr>
+<tr data-img><td><code>lunch</code></td><td>1356&times;528. Panorama under an olive tree to the sea</td><td>21:9. Try 2 added: "The whole lower third of the frame lies in the soft, even shade of the tree... dark and low in contrast"</td><td>Try 1 passed the gate but "its bright vine rows made the panel text hard to read".</td><td class="n">2</td></tr>
+<tr data-img><td><code>lemonterr</code></td><td>1357&times;568. Lemon pergola terraces over the sea</td><td>21:9. Try 2 added: "The whole lower third of the frame lies in cool, even shade under the pergola"</td><td>"Try 1 had a bright path behind the text."</td><td class="n">2</td></tr>
+</table></div></div>
+</details>
+
+<details>
+<summary>2 &middot; SALTHOWL (festival) &mdash; 7 files, 9 charged generations</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>gull-king</code></td><td>890&times;855. Giant driftwood gull sculpture at dusk, crowd with visible people</td><td>Try 1 at 1:1: "giant ten-metre sculpture of a seagull... salvaged weathered boat-hull planks... crowd... all seen from behind... no faces visible". Try 2 at 5:4: "Use the reference image for the exact same giant seagull sculpture... Recompose as a wider landscape". Ref: try 1.</td><td>Try 1 failed 4K. Crowd turned away. 5:4 fits the 676&times;548 slot.</td><td class="n">2 +1 failed</td></tr>
+<tr data-img><td><code>gull-sculpture</code></td><td>1030&times;450. Same sculpture, panorama, crowd faces at the bottom</td><td>21:9. "exact same giant seagull sculpture... headland with a small white lighthouse... crowd... seen from behind... no faces visible". Ref: final gull-king as JPEG.</td><td>Crowd only from behind; sculpture matches gull-king.</td><td class="n">1 +2 failed</td></tr>
+<tr data-img><td><code>confetti</code></td><td>1070&times;865. Sunset crowd with raised arms, confetti; faces visible</td><td>5:4. "shot from inside the crowd facing the sunset... lower third is a dense crowd seen from behind, backlit into near-silhouettes... no faces visible"</td><td>Faces removed. Hand zoom: "All hands have plausible finger counts."</td><td class="n">1</td></tr>
+<tr data-img><td><code>campsite</code></td><td>1050&times;861. Woman in a striped blanket with a cup, tents; face visible</td><td>5:4. "a young woman... wrapped in a striped red, cream and green wool blanket, seen from behind... her hands are hidden inside the blanket; her face is not visible"</td><td>Subject turned away; cup and hands removed.</td><td class="n">1</td></tr>
+<tr data-img><td><code>lasers</code></td><td>1035&times;855. Green lasers over a stage, crowd</td><td>5:4. "Bright green laser beams fan out... a lone DJ... tiny dark silhouette... dark silhouettes... no faces visible"</td><td>Crowd as silhouettes; lighthouse beam added.</td><td class="n">1</td></tr>
+<tr data-img><td><code>night-market</code></td><td>1200&times;555. Stall with a cook at a flaming wok, queue with faces</td><td>5:4. "food stall built from a weathered shipping container... cook... his face hidden in shadow under the cap brim... queue... seen from behind... no lettering on signs"</td><td>2.16:1 &rarr; 5:4 for the 750&times;560 cover slot. The cook shows part of a face in profile. Aspect failure accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>plunge</code></td><td>1035&times;845. Close-up of a woman in a bikini mid-leap, friends and swimmers</td><td>Try 2: "Wide... from the side... a long-sleeved navy rash vest... tucked cannonball... medium-small in the frame... hair swinging across her face... friends wrapped in big towels and hoodies... a lifeguard in a red top holding a rescue tube"</td><td>Try 1 rejected for content (see above). New: wide shot, covered body, hidden face, lifeguard for the page's sticker.</td><td class="n">2</td></tr>
+</table></div></div>
+</details>
+
+<details>
+<summary>3 &middot; KALDER (clothing) &mdash; 16 files, 16 charged generations (2 pilot + 14)</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>hero</code> (pilot)</td><td>2545&times;1133. Woman in an orange parka and black cargo trousers on a wet pier</td><td>21:9. v2: "Tight vertical framing on the model... centred at 72 percent of the frame width... the top edge cuts through her forehead... The left 60 percent of the frame is open... soft and low in detail so large text can sit over it."</td><td>v1 failed on the page (model small, head under text, parka hotspot beside the jacket). v2 fits the existing hotspots.</td><td class="n">2</td></tr>
+<tr data-img><td><code>t-pier</code> (derived)</td><td>174&times;93 inline picture of a pier detail</td><td>Not generated. Crop of the new hero, fitted to 348&times;186.</td><td>Cut from the new hero.</td><td class="n">0</td></tr>
+<tr data-img><td><code>p-parka</code></td><td>589&times;735. Orange hooded parka on light grey</td><td>4:5. "packshot of the burnt-orange technical hooded parka exactly as worn in the reference image... Use the reference for the garment design only, not the scene. Ghost mannequin... flat colour #e2e2e0... no logos, no labels". Ref: hero as 2048 px JPEG.</td><td>Matches the new hero's parka.</td><td class="n">1 +2 failed</td></tr>
+<tr data-img><td><code>p-trouser</code></td><td>589&times;735. Black cargo trousers</td><td>4:5. "wide black cargo trousers exactly as worn in the reference image... Ghost mannequin... #e2e2e0". Ref: hero.</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>p-trouser-alt</code></td><td>589&times;735. Close crop of a trouser leg with the page's "QUICK VIEW" button in it</td><td>4:5. "detail shot of the same black cargo trousers... a close crop of the left leg only". Ref: p-trouser.</td><td>The video's "QUICK VIEW" UI is gone. Hover slot never checked on the page.</td><td class="n">1</td></tr>
+<tr data-img><td><code>p-rollneck</code></td><td>589&times;735. Ecru chunky rollneck</td><td>4:5. "oversized ecru (warm off-white, #ebe6d9) chunky rollneck sweater in boiled merino wool, 7-gauge knit"</td><td>Colours taken from the page's own product data.</td><td class="n">1</td></tr>
+<tr data-img><td><code>p-shell</code></td><td>589&times;735. Black hooded shell jacket</td><td>4:5. "black 3-layer waterproof technical shell jacket... two vertical chest zip pockets... no logos, no labels"</td><td>3 logo-like marks on zip pulls removed by inpainting; original kept as <code>p-shell_raw.bak</code>.</td><td class="n">1</td></tr>
+<tr data-img><td><code>p-fathom</code></td><td>589&times;734. Long charcoal wool coat</td><td>4:5. "long charcoal grey (#48484a) wool coat in double-faced felted loden... tall stand collar"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>p-ballast</code></td><td>589&times;734. Dark olive overshirt</td><td>4:5. "dark olive (#3f3d31) overshirt in 14 oz waxed cotton... two bellows chest pockets"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>m-rollneck</code></td><td>828&times;1033. Rollneck in the product window</td><td>4:5. "exactly the same ecru boiled merino rollneck sweater as in the reference image... filling about 70 percent". Ref: p-rollneck.</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>m-trouser</code></td><td>828&times;1033. Trousers in the product window</td><td>4:5. "exactly the same wide black cargo trousers... filling about 78 percent". Ref: p-trouser.</td><td>Checked inside the opened product window.</td><td class="n">1</td></tr>
+<tr data-img><td><code>look1</code></td><td>614&times;922. Bald bearded man in black shell on the pier</td><td>2:3. "same location as the reference image... Use the reference only for the location and light, not for the person or clothes. A different model: a man in his thirties with a shaved head and short dark beard... no orange anywhere". Ref: hero.</td><td>Hotspots re-aimed (<code>index.html:412</code>).</td><td class="n">1</td></tr>
+<tr data-img><td><code>look2</code></td><td>1382&times;922. Woman in long grey coat, man in olive overshirt, walking</td><td>3:2. "Two models walk side by side... long charcoal grey felted wool loden coat... open dark olive waxed cotton overshirt... Nobody wears orange." Ref: hero.</td><td>Coat hotspot re-aimed; the old spot "was on the sea" (<code>:413</code>).</td><td class="n">1</td></tr>
+<tr data-img><td><code>look3</code></td><td>463&times;922. Red-haired woman in orange beanie on a stone block</td><td>9:16. "young woman with red-brown hair sits on a low weathered stone block... signal-orange lambswool rib beanie... navy blue worsted wool gansey... The beanie is the only orange." Ref: hero.</td><td>Hotspots re-aimed (<code>:414</code>). Aspect failure 12% accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>t-fabric</code></td><td>195&times;92. Fabric swatches with water drops</td><td>21:9. "Macro close-up... four outerwear fabric swatches... burnt-orange technical nylon with beads of rain water... black waxed cotton... ecru knitted wool"</td><td>Installed at 390&times;184. Sharpness failure accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>t-workshop</code></td><td>195&times;92. Hands smoothing fabric on a cutting table</td><td>21:9. "small garment workshop in a room above a Nordic harbour... kraft paper sewing patterns... only hands and forearms visible, no face"</td><td>Installed at 390&times;184. Sharpness failure accepted. Harbour view added.</td><td class="n">1</td></tr>
+</table></div></div>
+</details>
+
+<details>
+<summary>4 &middot; Kestrel (finance software) &mdash; 9 files, 6 charged generations (1 pilot + 5)</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>marcus</code> (pilot)</td><td>600&times;723. Very blurred headshot of a grey-haired man (sharpness score 2)</td><td>4:5. "friendly man in his fifties with short grey-blond hair and a short grey beard... light blue button-down oxford shirt... Plain very dark navy-charcoal background"</td><td>A new, sharp person with the same age, hair and clothing. Style anchor for the set.</td><td class="n">1</td></tr>
+<tr data-img><td><code>t_marcus</code> (derived)</td><td>70&times;82 thumbnail</td><td>Not generated. Centre crop of marcus at 138&times;164.</td><td>&mdash;</td><td class="n">0</td></tr>
+<tr data-img><td><code>amara</code></td><td>776&times;968. Woman with short curly hair, dark turtleneck</td><td>4:5. "confident Black woman in her forties with very short natural curly black hair... gazing thoughtfully off to the left... dark charcoal ribbed turtleneck". marcus deliberately NOT passed as ref.</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>t_amara</code> (derived)</td><td>70&times;82 thumbnail</td><td>Not generated. 140&times;164 from amara.</td><td>&mdash;</td><td class="n">0</td></tr>
+<tr data-img><td><code>priya</code></td><td>600&times;723. Greyscale, blurred: woman, hair back, blazer</td><td>4:5. "South Asian woman in her thirties with long dark brown hair pulled back loosely... charcoal grey tailored blazer"</td><td>In colour, to match the set.</td><td class="n">1</td></tr>
+<tr data-img><td><code>t_priya</code> (derived)</td><td>69&times;82 thumbnail</td><td>Not generated. 138&times;164 from priya.</td><td>&mdash;</td><td class="n">0</td></tr>
+<tr data-img><td><code>tomas</code></td><td>600&times;723. Greyscale, blurred: bearded man, dark overshirt</td><td>4:5. "Latin man in his mid thirties with short thick dark brown hair swept back and a short full dark beard... dark charcoal casual overshirt... white crew-neck t-shirt"</td><td>In colour.</td><td class="n">1</td></tr>
+<tr data-img><td><code>t_tomas</code> (derived)</td><td>69&times;82 thumbnail</td><td>Not generated. 138&times;164 from tomas.</td><td>&mdash;</td><td class="n">0</td></tr>
+<tr data-img><td><code>feather</code></td><td>1297&times;1098. Macro of a barred rust-brown feather on black</td><td>Try 1 at 9:8, try 2 at 5:4: "Extreme macro... single bird feather... warm rust-brown and copper with bold dark brown-black bars... Pure black background"</td><td>Try 1 was 3024&times;2688 and failed 4K. New feather is "brighter and warmer".</td><td class="n">2</td></tr>
+</table></div></div>
+</details>
+
+<details>
+<summary>5 &middot; HYPERLYTE (sports drink) &mdash; 9 files, 11 charged generations</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>pack</code></td><td>1595&times;1044. 4 cans (lime, pink, cyan, orange) with vertical wordmark</td><td>3:2. "four tall slim 355 ml aluminium drink cans... lime green #ccff16... hot pink-red #f0205e... bright cyan #45f3fc... bright orange #f37d12... 'HYPERLYTE' printed vertically... Spelling exactly H-Y-P-E-R-L-Y-T-E... No other text"</td><td>Colours from the page's own data. A sodium/sugar band left out "to reduce spelling risk". Spelling checked at full size.</td><td class="n">1</td></tr>
+<tr data-img><td><code>nia</code></td><td>517&times;461. Runner in rain at night, with a "01" badge in the crop</td><td>Try 2 at 5:4: "Cinematic editorial sports portrait... chest-up... running toward the camera at night in the rain... her whole head is inside the frame... No text, no numbers"</td><td>Try 1 at 9:8 failed 4K; all athletes then used 5:4. Badge gone.</td><td class="n">2</td></tr>
+<tr data-img><td><code>anders</code></td><td>518&times;469. Cyclist on a mountain pass, "02" badge</td><td>5:4. "male road cyclist... matte black cycling helmet... plain black jersey... alpine mountains and a lake... No text, no numbers, no logos"</td><td>Badge gone. Aspect failure accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>kwame</code></td><td>517&times;470. Footballer under stadium light, "03" badge</td><td>5:4. "male professional footballer... shaved head, short dark beard... plain black training t-shirt... empty football stadium... floodlight in the upper right"</td><td>Badge gone. Aspect failure accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>kaia</code></td><td>518&times;469. Athlete with a barbell in front rack, "04" badge</td><td>5:4. "blonde hair in two tight braids... barbell in the front-rack position... all fingers wrapped around the bar... chalk dust"</td><td>Badge gone. Both hands checked. Aspect failure accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>classified</code></td><td>1314&times;1094. Single black can, tone-on-tone wordmark, smoke</td><td>5:4. "Use the reference image only for the exact can shape... matte black... tone-on-tone... Large empty black space above the can: the top rim of the can is at about 30 percent down". Ref: pack as JPEG.</td><td>Try 1 put the can top under the fixed menu bar.</td><td class="n">2 +2 failed</td></tr>
+<tr data-img><td><code>fix</code></td><td>701&times;436. Athlete drinking from a lime can; can and head cut</td><td>3:2. "male athlete... shaved head... crouching low on one knee... drinking from a... lime-green (#ccff16) can... 'HYPERLYTE'... spelling exactly... five fingers wrapped around the can"</td><td>Can and head no longer cut. Installed with <code>--match-old</code>.</td><td class="n">1</td></tr>
+<tr data-img><td><code>hero-stadium</code></td><td>2545&times;1191. Very dark, empty rainy stadium</td><td>16:9. "empty outdoor football stadium at night in a heavy rainstorm... The centre of the frame is dark and empty... no scoreboard"</td><td>No can on purpose: the page draws a 3D can there. Aspect failure accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>splash</code></td><td>2544&times;1096. Golden liquid splash with a blurred patch where the can was, and a grey box</td><td>21:9. "huge crown-shaped splash of clear golden-amber liquid... The middle of the frame... is a softer glowing golden hollow... No can, no bottle, no glass"</td><td>Patch and box gone; centre left empty for the 3D can.</td><td class="n">1</td></tr>
+</table></div></div>
+</details>
+
+<details>
+<summary>6 &middot; HALDEN (residential tower) &mdash; 13 files, 14 charged generations (1 pilot + 13)</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>living</code> (pilot)</td><td>2065&times;954. Penthouse living room, cream sofa, harbour at sunset</td><td>21:9. "luxury penthouse living room at sunset. Floor-to-ceiling glass walls with thin bronze frames... harbour with sailboats... cream boucl&eacute; modular sofa... travertine fireplace wall... no people"</td><td>Furniture arranged differently. Material anchor for the interiors.</td><td class="n">1</td></tr>
+<tr data-img><td><code>kitchen</code></td><td>1236&times;792. Oak kitchen, stone island, harbour window</td><td>3:2. "same apartment and materials as the reference image (use the reference only for materials, palette and light, not its layout)... limed oak joinery... travertine". Ref: living as uploaded JPEG.</td><td>&mdash;</td><td class="n">1 +2 failed</td></tr>
+<tr data-img><td><code>ensuite</code></td><td>796&times;792. Travertine bathroom with stone tub</td><td>Try 2 at 4:5 added: "Keep the bathtub, the window and the vanity inside the central square of the frame". Ref: living.</td><td>Try 1 at 1:1 failed 4K. Aspect failure accepted.</td><td class="n">2</td></tr>
+<tr data-img><td><code>lobby</code></td><td>801&times;999. Double-height lobby, concierge desk</td><td>4:5. "double-height entrance lobby... fluted pale oak panelling... monolithic concierge desk... alabaster pendant... no signage". Ref: living.</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>sky-pool</code></td><td>1044&times;765. Rooftop infinity pool over the harbour</td><td>5:4. "rooftop infinity pool on level 37... pale oak slatted pergola... two cream cushioned sun loungers"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>residents-club</code></td><td>1044&times;768. Lounge with fireplace and bar at dusk</td><td>5:4. "residents' club lounge... dark smoked oak shelving... bar with a travertine counter... no readable book titles". Ref: living.</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>wine-room</code></td><td>1044&times;768. A tinted, mirrored copy of the club photo (the video never showed the wine room clearly)</td><td>5:4. "private residents' wine room... wine lockers behind bronze-framed glass doors... long tasting table... no readable labels". Ref: living.</td><td>Now shows an actual wine room.</td><td class="n">1</td></tr>
+<tr data-img><td><code>gym</code></td><td>1044&times;421. Gym with dumbbells, treadmills, garden glass</td><td>5:4. "gym and wellness floor on level 3... courtyard of tree ferns... two sleek treadmills and a rowing machine... no screens with text, no logos, no brand names". Ref: living.</td><td>2.48:1 &rarr; 5:4 for the cover slot. About 2 px unreadable marks on the treadmills accepted.</td><td class="n">1</td></tr>
+<tr data-img><td><code>promenade</code></td><td>785&times;525. Waterfront promenade, brick warehouses</td><td>3:2. "harbourside promenade at golden hour... timber ferry pavilion... red-brick harbour warehouses with caf&eacute; awnings... no signage"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>mat-brass</code></td><td>663&times;371. Brushed brass swatch (sharpness 8)</td><td>16:9. "Flat material swatch photograph, shot straight on from directly above... a sheet of hand-brushed unlacquered solid brass"</td><td>"The new brass is more yellow than the old swatch."</td><td class="n">1</td></tr>
+<tr data-img><td><code>mat-oak</code></td><td>663&times;371. Pale oak swatch (sharpness 3)</td><td>16:9. Same template: "rift-sawn limed European oak... no knots, no board joints"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>mat-stone</code></td><td>664&times;371. Pale stone swatch (sharpness 0)</td><td>16:9. Same template: "honed pale cream limestone... fine natural fossil flecks"</td><td>&mdash;</td><td class="n">1</td></tr>
+<tr data-img><td><code>tower-night</code></td><td>390&times;1064. Tower at night, crown cut off by the crop</td><td>9:16. "single slender luxury residential tower... exactly in the centre... occupies only the central third... left and right thirds of the frame are empty navy sky... no signage"</td><td>Tower now whole "from crown to waterline". Installed with <code>--match-old</code>. Aspect failure accepted.</td><td class="n">1</td></tr>
+</table></div></div>
+</details>
+
+<details>
+<summary>7 &middot; K&Aacute;RM&Aacute;N (space tourism) &mdash; 5 files, 6 charged generations (1 pilot + 5)</summary>
+<div class="inner"><div class="tw"><table class="wide">
+<tr><th>File</th><th>Original crop showed</th><th>Prompt (key parts) and ref</th><th>Changed on purpose</th><th class="n">Tries</th></tr>
+<tr data-img><td><code>capsule</code> (pilot)</td><td>2370&times;1415. White capsule on a cradle in a dark hangar, with the page's "01&ndash;05" hotspot markers in the image</td><td>16:9. "white conical crewed space capsule on a dark steel ground-transport cradle... row of five round porthole windows... scorched bronze heat shield... no people, no text, no labels, no markers"</td><td>Markers gone. Capsule larger in frame, so 5 hotspots re-aimed.</td><td class="n">1</td></tr>
+<tr data-img><td><code>trainer</code></td><td>913&times;609. Flight surgeon in a dark jacket, hangar with jets</td><td>3:2. "confident Black woman in her early forties, a flight surgeon... dark charcoal-grey zip-up flight jacket... No text, no logos, no watermark, no name tags"</td><td>No name tags.</td><td class="n">1</td></tr>
+<tr data-img><td><code>cabin</code></td><td>1822&times;1079. Woman at a big round window looking at Earth</td><td>16:9. "inside the ALBA crew capsule shown in the reference image... cream-white padded wall panels and a large round porthole window... seen from behind over her shoulder... five fingers". Ref: capsule as uploaded JPEG.</td><td>Matches the new capsule.</td><td class="n">1 +3 failed</td></tr>
+<tr data-img><td><code>launch</code></td><td>2370&times;1079. Rocket and tower at dusk, orange horizon band</td><td>21:9. Try 2: "IMPORTANT composition: the horizon line is LOW, at about 83% of the image height... a very thin, dim orange afterglow line... no bright areas in the sky above the horizon". Ref: capsule.</td><td>Try 1 put the orange band behind the countdown labels. "no markings" on the rocket.</td><td class="n">2</td></tr>
+<tr data-img><td><code>quote</code></td><td>2370&times;999. Earth's night side from orbit, sunrise on the rim</td><td>21:9. "Earth's night side seen from low orbit, just before orbital sunrise... horizon... at about 40% of the image height... city lights... no spacecraft parts"</td><td>Horizon at about 31% of the height (old: 42%); the label above it stays readable.</td><td class="n">1</td></tr>
+</table></div></div>
+</details>
+<p>Totals: 16 + 7 + 16 + 9 + 9 + 13 + 5 = 75 files. 70 are generated; 5 are derived. The tries column sums to 82 charged generations. 12 rejected tries are kept on disk as <code>_v1</code> files. No image needed a third try.</p>
+<div class="rule">An automatic gate measures size and sharpness. It does not see a hotspot on the sea, a logo on a zip, or text over a bright sky. Check every image on the real page.</div>
+</section>
+
+<section id="s6">
+<h2>6. Text and banners</h2>
+
+<h3>Four questions, four answers</h3>
+<p>In session 3 Claude first got the creator's name from the video metadata (<code>yt-dlp --skip-download --print "%(channel)s | %(title)s | %(uploader_id)s"</code> gave <code>Brendan Jowett | NEW Opus 5.5 is INSANE at Building Websites (Full Showcase) | @brendanautomation</code>). Then it asked the owner four questions in one form. He took Claude's recommended option twice and a different option twice:</p>
+<div class="tw"><table>
+<tr><th>Topic</th><th>Claude's recommended option</th><th>the owner's choice</th></tr>
+<tr><td>Banner</td><td>Keep the bar, keep the stats, label them "original build"</td><td><strong>"Relabel, no stats"</strong>: a thin credit bar; delete the time, token and cost cells</td></tr>
+<tr><td>Copy scope</td><td>"Text, keep names": rewrite all text, keep the 7 brand names</td><td>Same (recommended)</td></tr>
+<tr><td>Webcam on evidence frames</td><td>Crop the bottom 160 px</td><td><strong>"Blur the box"</strong>: keep the full frame, blur only the webcam</td></tr>
+<tr><td>Repository</td><td><code>opus55-website-rebuilds</code>, public, push now</td><td>Same (recommended)</td></tr>
+</table></div>
+
+<h3>Why the stats banner was removed</h3>
+<p>The presenter says at 0:31: "Every website will have a banner pinned to the top showing exactly how long Opus took to build it and what it cost". The phase 1 brief told the agents to copy that banner "with the exact numbers seen in your frames", for example 30m 53s, 13.63M tokens and $9.13 for the hotel. Those numbers describe the original build, not this rebuild. In a public repository a reader would take them as the cost of this work. So all 7 banners now read "Rebuilt by <strong>Claude Opus 5.5</strong> from Brendan Jowett's video", with a link to the video. The stats cells, the "i" info button, its tooltip and their CSS were deleted. The agents searched each page's scripts for code that used the removed elements (a missing element would be a JavaScript error) and found none.</p>
+
+<h3>How the copy was rewritten</h3>
+<p>Before any edit, Claude copied all sites to <code>scratch/pre_copy/</code> (43 MB) as a backup and a baseline. Then 7 agents of type <code>builder</code> (model <code>claude-sonnet-5</code>) rewrote one site each. The brief's rules:</p>
+<ul>
+<li>Rewrite every visible string: headings, paragraphs, buttons, labels, captions, form text, tooltips, footer, and strings inside JavaScript that render as text (names, reviews, logs, timetable entries), plus the page title.</li>
+<li>Keep the brand name exactly. Invent new names for every other proper noun from the video.</li>
+<li>Keep each string within about &plusmn;15% of its original length, because big type, word-by-word reveals and letter splitters are sized to the text.</li>
+<li>Change no tags, classes, ids, data attributes, links, CSS or JavaScript logic.</li>
+<li>"no sentence of the original survives word-for-word except the brand name and single-word UI labels where no other word fits".</li>
+<li>Verify with <code>shot.py</code>: 0 JavaScript errors, page height within 5% of the backup.</li>
+</ul>
+<p>Examples of new names:</p>
+<ul>
+<li>Hotel rooms: Cliff Room &rarr; Bluff Room, Casa del Faro &rarr; Villa Lanterna.</li>
+<li>Festival headliner: Mama Krill &rarr; Sister Cod.</li>
+<li>KALDER: collection Low Pressure &rarr; Foul Weather; Halyard Parka &rarr; Bowline Parka.</li>
+<li>Kestrel customer: Oxbow Freight, Inc. &rarr; Windham Freight, Inc.</li>
+<li>Drink: VOLT LIME &rarr; SPARK LIME; headline "SALT THE ENGINE" &rarr; "FUEL THE MACHINE".</li>
+<li>Tower: Ferrier Quay &rarr; Marlin Quay.</li>
+<li>Space: capsule ALBA &rarr; LYRA; missions Threshold, Halo, Selene &rarr; Brink, Ring, Tethys. "K&aacute;rm&aacute;n line" stayed, because it is a real scientific term.</li>
+</ul>
+
+<h3>How the rewrite was checked</h3>
+<p>Claude wrote <code>scratch/textdiff.py</code>. It collects text strings of 12 or more characters from the backup and from the new file and counts the strings that are the same. Before the agents started it showed 100% unchanged, as expected.</p>
+<div class="tw"><table>
+<tr><th>Site</th><th class="n">Strings before</th><th class="n">Unchanged after</th><th class="n">JS errors</th><th>Height before &rarr; after (px)</th></tr>
+<tr><td>1 hotel</td><td class="n">105</td><td class="n">17 (16%)</td><td class="n">0</td><td>17,347 &rarr; 17,394 (+0.27%)</td></tr>
+<tr><td>2 festival</td><td class="n">149</td><td class="n">22 (14%)</td><td class="n">0</td><td>21,882 &rarr; 22,153 (+1.24%)</td></tr>
+<tr><td>3 e-commerce</td><td class="n">72</td><td class="n">20 (27%)</td><td class="n">0</td><td>7,971 &rarr; 7,971 (0%)</td></tr>
+<tr><td>4 SaaS</td><td class="n">259</td><td class="n">146 (56%), then 84 (32%)</td><td class="n">0</td><td>12,838 &rarr; 12,924 (+0.67%)</td></tr>
+<tr><td>5 drink</td><td class="n">93</td><td class="n">34 (36%)</td><td class="n">0</td><td>23,506 &rarr; 23,614 (+0.46%)</td></tr>
+<tr><td>6 high-rise</td><td class="n">136</td><td class="n">48 (35%)</td><td class="n">0</td><td>18,444 &rarr; 18,512 (+0.37%)</td></tr>
+<tr><td>7 space</td><td class="n">138</td><td class="n">21 (15%)</td><td class="n">0</td><td>27,532 &rarr; 27,668 (+0.49%)</td></tr>
+</table></div>
+<p>The "unchanged" numbers are too high. The script also counts CSS selectors and code fragments as text, and Claude said so. The SaaS agent first reported that no sentence survived word for word. The script found 64 multi-word strings that did. Claude sent the same agent back with <code>SendMessage</code>; in 31 more minutes it reworded 62 strings and kept 9 on purpose (for example <code>SOC 2 Type II</code> and a hash line). Some near-copies remain: the high-rise hero still starts "Thirty-eight storeys of", and one hotel paragraph differs from the video's by one verb. Claude's final sentence, "A search for the main hero lines from the video finds none left", is true only for complete lines.</p>
+
+<h3>What stayed the same, on purpose</h3>
+<ul>
+<li>The 7 brand names: Solenne, SALTHOWL, KALDER, Kestrel, HYPERLYTE, HALDEN, K&Aacute;RM&Aacute;N.</li>
+<li>Nav labels and short section labels on all sites.</li>
+<li>Real city names on the KALDER map (Reykjav&iacute;k, Oslo, London, Paris, Seoul, Tokyo). The map code places labels by these names; a rename would misplace labels with no error.</li>
+<li>Numbers that feed code: the space site's HUD, countdown and chart values; the drink's spec chips such as "1,000 MG SODIUM".</li>
+<li>Image file names and code keys, for example <code>anders.jpg</code>, <code>amara.jpg</code>, <code>p-fathom.jpg</code>, <code>gull-king.jpg</code>, and the storage key <code>salthowl-picks</code>. The brief forbade changes to <code>src</code>. So the old names are still visible in the source code.</li>
+</ul>
+<p>Git was started only after the rewrite. So the public history holds only the rewritten pages. The copied text never entered git.</p>
+</section>
+
+<section id="s7">
+<h2>7. What was not rebuilt, and why</h2>
+<p>This table collects every known difference from the original sites. The reasons fall into six groups: <span class="tag o">not in video</span> the presenter never scrolled there; <span class="tag o">webcam</span> the presenter's webcam covered it; <span class="tag o">filler</span> the agent invented it and said so; <span class="tag">font</span> nearest Google Font by eye; <span class="tag">3D</span> a visible difference in the code-built 3D; <span class="tag t">removed</span> deliberately removed or changed after the build.</p>
+<div class="tw"><table class="wide">
+<tr><th>Site</th><th>Feature or section</th><th>Reason</th><th>Detail</th></tr>
+<tr><td>All</td><td>Top banner with build time, tokens, API cost, info button</td><td><span class="tag t">removed</span></td><td>The numbers describe the original build. Replaced by a credit line that links the video.</td></tr>
+<tr><td>All</td><td>Original copy text and proper nouns</td><td><span class="tag t">removed</span></td><td>Rewritten in new words; only the 7 brand names kept (section 6).</td></tr>
+<tr><td>All</td><td>Original photos</td><td><span class="tag t">removed</span></td><td>All 75 replaced with generated images (section 5).</td></tr>
+<tr><td>All</td><td>The presenter's webcam picture</td><td><span class="tag t">removed</span></td><td>Part of the recording, not of the sites. Never built.</td></tr>
+<tr><td>All</td><td>Exact fonts</td><td><span class="tag">font</span></td><td>Every site uses the nearest Google Font chosen by eye; sites 3 and 6 rendered font test pages first.</td></tr>
+<tr><td>All</td><td>Exact animation timing and easing</td><td>timing</td><td>Durations and curves were set by the agents and tuned by comparison, not measured (section 4).</td></tr>
+<tr><td>2, 5, 7</td><td>Countdown values</td><td>live data</td><td>Countdowns count from today's date, not the recording date (for example 112 days where the frame shows 113).</td></tr>
+<tr><td>1 Solenne</td><td>Sections IV to VI and the footer</td><td><span class="tag o">not in video</span></td><td>"The presenter skipped them with the menu and then jumped back to the top." Menu links "THE TABLE" and "SEA POOLS" go to the dusk and dawn moments.</td></tr>
+<tr><td>1 Solenne</td><td>Room pop-up text and images (except Terrace Room), view lines on 4 room cards, 3 of 4 quotes, part of the coves text, booking guest count and total, lower map</td><td><span class="tag o">filler</span> <span class="tag o">webcam</span></td><td>Not readable or not shown.</td></tr>
+<tr><td>1 Solenne</td><td>Decorative serif italic</td><td><span class="tag">font</span></td><td>Newsreader; "The original italic is more decorative."</td></tr>
+<tr><td>1 Solenne</td><td>Room pop-up image change</td><td>not checked</td><td>"I did not check its exact animation style at high frame rate."</td></tr>
+<tr><td>2 SALTHOWL</td><td>Headings of the map, tickets, eat &amp; art and sustainability sections</td><td><span class="tag o">filler</span></td><td>Never seen in the video.</td></tr>
+<tr><td>2 SALTHOWL</td><td>Most set times, menu, art trail, sustainability stats, FAQ answers 2&ndash;8, act pop-up text, footer</td><td><span class="tag o">filler</span> <span class="tag o">webcam</span></td><td>Covered by the webcam or never shown.</td></tr>
+<tr><td>2 SALTHOWL</td><td>A glitch the presenter mentions</td><td><span class="tag t">removed</span></td><td>Deliberately not copied.</td></tr>
+<tr><td>2 SALTHOWL</td><td>Festival map layout</td><td>approximated</td><td>From frames <code>f_0192</code>&ndash;<code>f_0214</code>.</td></tr>
+<tr><td>3 KALDER</td><td>Sections (04), (05) and the footer</td><td><span class="tag o">not in video</span></td><td>The video jumps from the lookbook to the stores (<code>f_0102</code> to <code>f_0104</code>). <code>#workshop</code> is an empty anchor.</td></tr>
+<tr><td>3 KALDER</td><td>Look 04; 4 stockist names; all addresses, phones and hours except the headquarters; most product descriptions; 3 prices</td><td><span class="tag o">filler</span></td><td>Only 8 shop names were readable in <code>f_0116</code>. Only 2 product descriptions were verbatim.</td></tr>
+<tr><td>3 KALDER</td><td>Product photos for 6 items</td><td><span class="tag o">not in video</span></td><td>Their product windows use parts of the lookbook images.</td></tr>
+<tr><td>3 KALDER</td><td>Display face</td><td><span class="tag">font</span></td><td>Bodoni Moda; its thin strokes are a little thicker than the original's.</td></tr>
+<tr><td>4 Kestrel</td><td>Product-tour tabs 2&ndash;4, 11 of 19 integration descriptions, 3 of 4 customer stories, the footer</td><td><span class="tag o">filler</span> <span class="tag o">not in video</span></td><td>"the video never scrolls past the CTA".</td></tr>
+<tr><td>4 Kestrel</td><td>Monthly prices $288 and $888</td><td>computed</td><td>Worked out from the "save 17%" label.</td></tr>
+<tr><td>4 Kestrel</td><td>Part of one step text, two task subtitles, some table rows</td><td><span class="tag o">webcam</span></td><td>Filled in by the agent.</td></tr>
+<tr><td>4 Kestrel</td><td>Heading font</td><td><span class="tag">font</span></td><td>Instrument Sans, "not the original font".</td></tr>
+<tr><td>5 HYPERLYTE</td><td>Centre of the hero stadium photo (phase 1)</td><td><span class="tag o">webcam</span> / covered</td><td>Covered by the title and can in every frame; the median attempt failed. Later replaced by a generated image.</td></tr>
+<tr><td>5 HYPERLYTE</td><td>Splash liquid</td><td><span class="tag">3D</span></td><td>320 particles over a photo; the presenter said the original liquid "doesn't look super realistic".</td></tr>
+<tr><td>5 HYPERLYTE</td><td>Can position in the flavours section</td><td><span class="tag">3D</span></td><td>The can sits a little lower than in the original.</td></tr>
+<tr><td>6 HALDEN</td><td>Footer</td><td><span class="tag o">not in video</span></td><td>"No footer appears in the video, so the page has none."</td></tr>
+<tr><td>6 HALDEN</td><td>Map places after "Chandler Street Tram", milestones after "Topping out", 4th progress stat label, register address rows, kitchen caption start, explorer rows except levels 32, 35, 36</td><td><span class="tag o">filler</span> <span class="tag o">webcam</span></td><td>Never visible or under the webcam.</td></tr>
+<tr><td>6 HALDEN</td><td>First stats row</td><td>inferred</td><td>"it never finished counting in the video"; 38 / 142 / 3.1 taken from the page text.</td></tr>
+<tr><td>6 HALDEN</td><td>Haze, soft reflections, colour</td><td><span class="tag">3D</span></td><td>Less haze; reflection sharper and more rippled; scene more pink and less contrasty.</td></tr>
+<tr><td>7 K&Aacute;RM&Aacute;N</td><td>Halo and Selene mission panels, hotspot cards 01, 04, 05, training days 02&ndash;06, quotes 02&ndash;04, questions section, footer</td><td><span class="tag o">filler</span> <span class="tag o">not in video</span></td><td>"Content I invented because the video does not show it".</td></tr>
+<tr><td>7 K&Aacute;RM&Aacute;N</td><td>Earth and Moon surfaces, sunrise glow, scroll timing</td><td><span class="tag">3D</span></td><td>Noise textures give "blobby" continents; weaker sunrise glow; scene timing against scroll "only approximate". Rocket slightly left of the video's position.</td></tr>
+<tr><td>3, 5, 7</td><td>Page UI inside old photos ("QUICK VIEW", badges "01"&ndash;"04", capsule markers "01"&ndash;"05")</td><td><span class="tag t">removed</span></td><td>Gone with the new images. In phase 1 the site 7 agent removed the visible numbers from the capsule hotspot buttons, because the old photo showed them. The new photo has no numbers. This reconstruction read the current source: line 584 of <code>sites/7-space/index.html</code> draws each button with only <code>aria-label="Hotspot 0${i+1}"</code>. So the five dots on the capsule now carry no visible number (open item, section 14).</td></tr>
+</table></div>
+<div class="rule">Invented text is not a failure if it is labelled. Every agent report listed what it had made up, and that list is the only way a reader can tell.</div>
+</section>
+
+<section id="s8">
+<h2>8. Evidence for skeptics</h2>
+
+<h3>The question</h3>
+<p>the owner asked: "how can we know that you re-create these websites from scratch and not modifying the frames from the videos ? what evidence can we provide to skeptics". At that time (phase 1) the honest answer had two parts: the pages were code, and the photos came from the video. Claude said: "The honest claim is 'pages rebuilt in code; photos reused from the video'." Today the photos are generated, so the claim is: pages rebuilt in code, photos generated from text prompts, designs and brand names from the video.</p>
+
+<h3>The evidence report</h3>
+<p><code>scripts/evidence.py</code> and <code>scripts/evidence_page.py</code> build a report with one card per site. Each card has four pictures: the video frame, the rebuild, the rebuild with all photos blocked (Chrome refuses every request to the site's <code>img/</code> folder), and the same test halfway down the page. With the photos blocked, every page still shows its full layout, text, buttons and animations, and the 3D can, tower and rocket still render. Only the photo boxes go empty.</p>
+<div class="tw"><table>
+<tr><th>Site</th><th class="n">Photo files</th><th class="n">Requests refused in the test</th></tr>
+<tr><td>1 hotel</td><td class="n">16</td><td class="n">15</td></tr>
+<tr><td>2 festival</td><td class="n">7</td><td class="n">7</td></tr>
+<tr><td>3 e-commerce</td><td class="n">16</td><td class="n">14</td></tr>
+<tr><td>4 SaaS</td><td class="n">9</td><td class="n">7</td></tr>
+<tr><td>5 drink</td><td class="n">9</td><td class="n">9</td></tr>
+<tr><td>6 high-rise</td><td class="n">13</td><td class="n">13</td></tr>
+<tr><td>7 space</td><td class="n">5</td><td class="n">5</td></tr>
+</table></div>
+<p>On 3 sites fewer requests were refused than there are files, because those pages load some photos only after a click or a hover. The report is published as a private claude.ai Artifact, not in the repository, because it contains video frames. Its webcam areas are blurred (a 280&times;160 box, Gaussian blur radius 30). Only 1 of the 7 blurred frames was checked by eye. Its screenshots show the pages from before the text rewrite, and it says so.</p>
+<p><strong>This public page shows no video stills.</strong> the owner chose that. To compare a rebuild with the original, open the video at the chapter and the live site side by side:</p>
+<div class="tw"><table>
+<tr><th>Site</th><th>Video chapter</th><th>Live rebuild</th><th>Main-thread reference frame</th></tr>
+<tr><td>1 Solenne</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=65s">1:05</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/1-hotel/">sites/1-hotel/</a></td><td><code>f_0030</code></td></tr>
+<tr><td>2 SALTHOWL</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=198s">3:18</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/2-festival/">sites/2-festival/</a></td><td><code>f_0036</code></td></tr>
+<tr><td>3 KALDER</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=353s">5:53</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/3-ecommerce/">sites/3-ecommerce/</a></td><td><code>f_0008</code></td></tr>
+<tr><td>4 Kestrel</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=471s">7:51</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/4-saas/">sites/4-saas/</a></td><td><code>f_0028</code></td></tr>
+<tr><td>5 HYPERLYTE</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=593s">9:53</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/5-drink/">sites/5-drink/</a></td><td><code>f_0010</code>, <code>f_0110</code></td></tr>
+<tr><td>6 HALDEN</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=755s">12:35</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/6-highrise/">sites/6-highrise/</a></td><td><code>f_0008</code></td></tr>
+<tr><td>7 K&Aacute;RM&Aacute;N</td><td><a href="https://www.youtube.com/watch?v=mPiaap4zEVk&amp;t=885s">14:45</a></td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/7-space/">sites/7-space/</a></td><td><code>f_0002</code></td></tr>
+</table></div>
+
+<h3>Tests anyone can run without trusting us</h3>
+<ol>
+<li><strong>Block the images.</strong> In Chrome DevTools, block the URL pattern <code>*/img/*</code> and reload. The layout, text, animations and 3D stay. A page made from edited video frames would go almost blank.</li>
+<li><strong>Resize the window.</strong> Text wraps and the layout reflows. A picture cannot do that.</li>
+<li><strong>Search the text.</strong> Press Ctrl+F. Headings and paragraphs are real text.</li>
+<li><strong>Use the controls.</strong> Drag the 3D can to any angle; move the ROI sliders to values the video never shows; pick festival sets until two clash; click a floor of the tower.</li>
+<li><strong>Look at live data.</strong> Countdowns use today's date. The SaaS dashboard numbers keep changing.</li>
+<li><strong>Read the source.</strong> Each <code>index.html</code> is 50,450 to 112,384 bytes (measured 25 Sep) of HTML, CSS and JavaScript with no image embedded inside it. The 3D is three.js geometry and shaders, not video.</li>
+</ol>
+
+<h3>What can no longer be proven</h3>
+<p>The agents' crop scripts lived in <code>scratch/</code>. On 24 Sep at 20:04 the owner approved the deletion of the working files, and those scripts went with them. So the exact frame behind each old crop cannot be shown now; only the frame numbers in the agent reports and <code>TASKS.md</code> remain. The order in which the code was written was not recorded either. The old crops themselves are kept, outside the repository, in <code>scratch/old_img/</code> as a rollback.</p>
+</section>
+
+<section id="s9">
+<h2>9. Tools, agents and models</h2>
+
+<h3>Tools and what each one did here</h3>
+<div class="tw"><table class="wide">
+<tr><th>Tool</th><th>What it did in this project</th></tr>
+<tr><td><code>yt-dlp</code></td><td>Downloaded format 308 (1440p, video only). In session 3, read the channel name and title from the metadata.</td></tr>
+<tr><td>ffmpeg 7.1 (inside <code>imageio_ffmpeg</code>)</td><td>Cut 1,826 frames at 2 fps, and short windows at 2 to 10 fps.</td></tr>
+<tr><td>Python PIL, NumPy</td><td>Contact sheets, crops, pixel colour samples, stacked comparison images, image re-encoding.</td></tr>
+<tr><td>OpenCV (<code>cv2</code> 4.13.0)</td><td>Template matching for scroll offsets, inpainting of text and logos, Laplacian sharpness score.</td></tr>
+<tr><td>Playwright (Python) + installed Chrome</td><td>All screenshots and interaction tests; JavaScript error capture; the image-blocking test.</td></tr>
+<tr><td><code>scripts/shot.py</code></td><td>Screenshot at 1600&times;792 CSS px, scale 1.6; prints page height and JS errors.</td></tr>
+<tr><td><code>scripts/cmp.py</code>, <code>scripts/sheets.py</code></td><td>Frame-over-screenshot comparison; contact sheets. Both need the deleted frames.</td></tr>
+<tr><td><code>scripts/evidence.py</code>, <code>evidence_page.py</code></td><td>The evidence report (section 8).</td></tr>
+<tr><td>three.js r128 (cdnjs), r158 and r160 (jsDelivr)</td><td>The 3D can (site 5), tower and city (site 6), rocket, Earth and Moon (site 7).</td></tr>
+<tr><td>GSAP + ScrollTrigger</td><td>Load timeline and pinned lookbook on site 3 only.</td></tr>
+<tr><td>Google Fonts</td><td>Newsreader, Archivo, Bodoni Moda, Instrument Sans, JetBrains Mono, EB Garamond and others as near matches.</td></tr>
+<tr><td>Higgsfield CLI 1.1.26</td><td>All 82 image generations with GPT Image 2.5; uploads; job list checks; credit balance.</td></tr>
+<tr><td><code>scratch/higgs/gen.sh</code>, <code>sheet.py</code>, <code>install.py</code>, <code>onpage.py</code></td><td>Generate; gate and contact sheet; install at the right size; before/after page shot.</td></tr>
+<tr><td><code>scratch/textdiff.py</code></td><td>Counted strings that survived the rewrite.</td></tr>
+<tr><td>git, <code>gh</code> CLI</td><td><code>git init</code> after the rewrite; one commit <code>bf378f9</code>; <code>gh repo create opus55-website-rebuilds --public --source=. --push</code>; the Pages API call.</td></tr>
+<tr><td>GitHub Pages (legacy Jekyll build)</td><td>Serves the 7 sites and this page. <code>README.md</code> becomes the site root.</td></tr>
+<tr><td>claude.ai Artifact</td><td>Private copy of the evidence report.</td></tr>
+<tr><td>Claude Code tools</td><td><code>Agent</code> (start agents), <code>SendMessage</code> (fixes and follow-ups), <code>TaskStop</code> (the hung agent), <code>AskUserQuestion</code> (the 4 questions in session 3, the stills question in session 4), <code>Monitor</code> (watch the pilot).</td></tr>
+<tr><td>Skills</td><td><code>higgsfield-generate</code>, <code>handoff-after-clear</code> (twice), <code>artifact-design</code>, <code>dev-journey</code> (this page).</td></tr>
+<tr><td>Durable notes</td><td><code>HANDOFF.md</code> (resume file, not in git), <code>TASKS.md</code>, memory notes <code>scratch-rm-ok.md</code> and <code>higgsfield-cli.md</code>, <code>.claude/settings.local.json</code> (allows deletes in <code>scratch/</code>).</td></tr>
+</table></div>
+
+<h3>Agents and AI machinery</h3>
+<div class="tw"><table class="wide">
+<tr><th>Session</th><th>Agents</th><th>Model</th><th>Advisor</th></tr>
+<tr><td>S1 build</td><td>7 site agents + <code>site5-finish</code>, type <code>general-purpose</code>, no model override</td><td>Main thread <code>claude-opus-5-5</code>. The agents' model is not in the condensed log; with no override they probably ran on the same model (inference).</td><td>Not recorded in the condensed log</td></tr>
+<tr><td>S2 images</td><td>7 site agents, type <code>general-purpose</code></td><td><code>claude-opus-5-5</code>, effort <code>medium</code>, for main thread and agents</td><td><code>claude-fable-5-1</code>: 6 calls (1 main thread, 5 in 4 agents)</td></tr>
+<tr><td>S3 text</td><td>7 agents, type <code>builder</code>, plus 1 resume of the SaaS agent</td><td>Agents <code>claude-sonnet-5</code>; main thread <code>claude-opus-5-5</code></td><td>1 call (97,438 tokens in, 9,110 out), before any edit</td></tr>
+<tr><td>S4 docs</td><td>Sweep agents that condensed the old transcripts, and the agent that wrote this page</td><td><code>claude-opus-5-5</code></td><td>Consulted before this page was written</td></tr>
+</table></div>
+<p>The "advisor" is a second, stronger model that reads the whole conversation and gives advice. In the saved transcripts its answers are stored encrypted. So this page can say when the advisor was called and what happened next, but not what it said. Example from session 2: the main thread called it at 22:27. Before the agents started at 22:33, it fixed the gate's baseline path, changed the gate to the 4K rule, and wrote <code>gen.sh</code> and the agents' brief. Which of these the advice caused is not known.</p>
+<p>A hook named "Coach" is part of the owner's harness. It adds a warning when a session's context is large, for example "this session is at ~156k context tokens. Every turn from here costs 3x+ baseline." It fired in all four sessions (section 11).</p>
+<p>Agents in one session share one scratch folder. Twice two agents wrote a helper script with the same name (<code>z.py</code> in session 2, <code>rewrite.py</code> in session 3), and one overwrote the other. Section 10 has both cases.</p>
+</section>
+
+<section id="s10">
+<h2>10. What went wrong, and the fixes</h2>
+<p>Error text is verbatim. Each item says what fixed it. Where no fix was needed, it says why.</p>
+
+<h3>Session 1: the build</h3>
+<ol>
+<li><strong>ffmpeg missing.</strong> <code>which ffmpeg</code> found nothing. Fix: the copy inside the Python package <code>imageio_ffmpeg</code>; nothing was installed.</li>
+<li><strong>Output token limit.</strong> Sites 2, 4 and 7 tried to write their whole page (about 110 KB) in one response. The harness stopped them: "Output token limit hit. Resume directly — no apology, no recap of what you were doing. ... Break remaining work into smaller pieces." Fix: part files joined by <code>cat</code> (site 2), <code>build.py</code> (site 4) or <code>build.sh</code> (site 7). Sites 1 and 3 wrote one file in one call and did not hit the limit.</li>
+<li><strong>Heredoc quoting.</strong> Sites 2, 4 and 5 tried to write or append HTML and CSS through a Bash heredoc (sites 2 and 4 after the limit). Bash failed: <code>/usr/bin/bash: -c: line 50: unexpected EOF while looking for matching `''</code> (site 2; line 3 for site 4, line 110 for site 5). Quote characters inside the CSS broke the shell string. The main thread hit the same error later with the evidence script (line 59). Fix every time: write the file with the Write tool, not through the shell.</li>
+<li><strong>Duplicate variable.</strong> Site 5's first run printed <code>errors: ["Identifier 'cur' has already been declared", 'FL is not defined']</code>. One redeclaration stopped the whole script, so the flavour data never loaded. Fix: rename to <code>curEl</code> in 5 places.</li>
+<li><strong>Class name collisions.</strong> The banner's <code>.stats</code> class also styled a stats section (sites 1 and 4); <code>.in</code> collided on sites 4 and 7. On site 4 this made the demo section grow from 860 to 1,228 px after a full scroll. Fix: renames (<code>.bstats</code>, <code>.gin</code>, <code>.inner</code>).</li>
+<li><strong>Tests that hovered on a moving target.</strong> Site 2: <code>pg.hover('.stage[data-s="G"] .burst')</code> failed on a spinning element; fix <code>force=True</code>. Site 3: a hover inside the pinned lookbook failed because <code>scrollTo(0,5000)</code> did not land inside it; fix: scroll by the ScrollTrigger range.</li>
+<li><strong>Small script bugs.</strong> Site 4: <code>TypeError: 'NoneType' object is not subscriptable</code> in an offset search whose range was wrong. Site 6: <code>ValueError: too many values to unpack (expected 2)</code> in a colour-sample loop. Both fixed in the next call.</li>
+<li><strong>Permission prompt blocked an agent.</strong> Site 7 got <code>Permission for this tool use was denied. The tool use was rejected ...</code> on a command that also deleted screenshots with <code>rm</code> and a wildcard. the owner had to answer a prompt on his screen. Fix: <code>.claude/settings.local.json</code> allows <code>rm</code> under <code>scratch/</code>, and the agents were told to delete with Python <code>os.remove</code>, because Claude Code can still ask about a wildcard <code>rm</code> even with an allow rule.</li>
+<li><strong>Site 5 hung for more than 2 hours.</strong> Last write 16:13; stopped at 18:40. Detail in section 3. Fix: <code>TaskStop</code>, a new agent, and <code>timeout 180</code> on every command from then on.</li>
+<li><strong>Site 6 and 7 heroes did not match.</strong> The agents' own checks missed the camera, the water, the city and the facade (site 6) and the rocket lighting (site 7). The main thread's stacked comparison found them. Fix: 4 + 1 targeted fix messages.</li>
+<li><strong>Median-of-frames failed.</strong> Site 5 finish: <code>RuntimeWarning: All-NaN slice encountered</code>, <code>hole fraction 0.6055075805938118</code>, then 0.6545 with a looser mask. The old photo was kept.</li>
+<li><strong>Provenance deleted.</strong> The deletion of <code>scratch/</code> (approved) removed the crop scripts, so the link from each old crop to its frame is gone. Not fixed; stated in the evidence report.</li>
+<li><strong>Higgsfield not found.</strong> <code>higgsfield: command not found</code> right after a successful install. Cause: a stale PATH in the running session. Fix: full path, then a PATH prefix in every script.</li>
+</ol>
+
+<h3>Session 2: the images</h3>
+<ol start="14">
+<li><strong>The gate compared the wrong files.</strong> Hero v2 first printed <code>hero: old 3840x1648 lap 295 | new 3840x1648 lap 67 ... sharper (at crop size) FAIL</code>. The "old" file was hero v1, already installed, not the video crop. Fix: copy the 75 originals to <code>scratch/old_img/</code> and point the gate there. Correct result: <code>old 2545x1133 lap 44 | new 3840x1648 lap 67 (at crop size 100) ... PASS</code>.</li>
+<li><strong>Relative paths</strong> failed 3 times (<code>... is neither a UUID nor an existing file path.</code>), because <code>gen.sh</code> changes folder first. No charge.</li>
+<li><strong>Large reference PNGs</strong> failed 11 times with <code>Error: request failed (no response received)</code>. Each agent found the JPEG fix alone. No charge, but time: the festival agent spent 22:47 to 22:57 on one image.</li>
+<li><strong>"4K" that was not 4K.</strong> Six images at 1:1, 9:8 or 8:9 failed the 3200 px check. 25.5 credits for second tries.</li>
+<li><strong>Shared scratch collision.</strong> The hotel and drink agents both wrote <code>z.py</code> in the shared scratchpad. The hotel agent's next zoom crashed with <code>FileNotFoundError</code> on a 5-drink path. Fix: <code>zoom_1hotel.py</code>.</li>
+<li><strong>Gate crash on old tries.</strong> A whole-site run crashed with <code>FileNotFoundError</code> on <code>feather_v1.png</code>. Fix: skip names that end in <code>_vN</code>. The patch printed <code>SyntaxWarning: invalid escape sequence '\d'</code> but worked.</li>
+<li><strong><code>onpage.py</code> could not reach many image slots:</strong> a carousel changed every 7,000 ms during 6.5 s of waiting (the "after" shot of Amara showed Marcus); hover panels; sideways tracks; images that appear only between 30% and 80% of a section's scroll. Each agent wrote its own script. The trouser hover image was never checked.</li>
+<li><strong>Images that passed the gate but failed the page:</strong> KALDER hero v1, lunch, lemonterr, launch, classified (section 5).</li>
+<li><strong>Rule set aside:</strong> <code>p-shell</code> logos inpainted, not regenerated (section 5). Reported to the owner as a rule set aside.</li>
+<li><strong>Wrong numbers in reports:</strong> "14 aspect FAILs" (12 + 2 is correct); agent credit counts that included failed calls; a brief that said "Generate the rest (16)" but listed 14 names.</li>
+</ol>
+
+<h3>Session 3: text and repository</h3>
+<ol start="24">
+<li><strong>Incomplete rewrite reported as complete.</strong> The SaaS agent said no sentence survived; the check found 64. Fix: the same agent resumed with <code>SendMessage</code>; 62 reworded, 9 kept on purpose.</li>
+<li><strong>A new brand clash made by an agent.</strong> The high-rise agent renamed the builder "Ordell Construct" to "Kestrel Construct". Kestrel is site 4's brand. Claude caught it in the report and ran <code>sed -i 's/Kestrel Construct/Ashby Construct/g'</code>.</li>
+<li><strong>Shared scratch collision again.</strong> Hotel and festival agents both wrote <code>rewrite.py</code>. The hotel agent's edit failed: "File content has changed since it was last read." Its own count checks had stopped the run before any write, so no page was damaged. Fix: <code>rewrite_1hotel_batch*.py</code>.</li>
+<li><strong>Apostrophes.</strong> <code>FAIL [cala-dei-corvi-exp]: expected 1 occurrence(s), found 0</code>: the file had a curly apostrophe (&rsquo;) and the script a straight one (').</li>
+<li><strong>Layout overflow.</strong> The new SaaS badge "Live within 48 hours" wrapped all three badges to two lines. Fix: "Ready in 48 hours" (18 characters against 17).</li>
+<li><strong>Small errors, no effect:</strong> <code>cat: .ignore: Is a directory</code>; <code>File content (25430 tokens) exceeds maximum allowed tokens (25000)</code> when an agent read a whole page; yt-dlp <code>WARNING: [youtube] No supported JavaScript runtime could be found.</code> (the metadata still printed); LF-to-CRLF warnings on <code>git add</code>.</li>
+</ol>
+
+<h3>Session 4: documentation (this page)</h3>
+<ol start="30">
+<li><strong>A safety classifier stopped a tool.</strong> An agent asked to sweep session 1 reported: "A safety classifier stopped my first attempt to write the script that reads the transcript." It wrote nothing. Fix: the main thread wrote a small condenser, <code>dump.py</code>, and ran it itself.</li>
+<li><strong>An agent stalled.</strong> The session 2 sweep failed: "Agent stalled: no progress for 600s (stream watchdog did not recover)". Fix: a rerun on pre-condensed text.</li>
+<li><strong>Parallel writers.</strong> The writer of this page had to wait for two other agents that were still writing the site-by-site notes (<code>sites_1to4.md</code>, <code>sites_5to7.md</code>). It checked once a minute: 3 waits of 60 s, about 3 minutes.</li>
+<li><strong>A harmless 404.</strong> On the live site 1, Chrome logged "Failed to load resource: 404" for <code>https://az9713.github.io/favicon.ico</code>. That is the browser's automatic icon request at the domain root, not a site error.</li>
+<li><strong>Context size.</strong> The Coach hook warned at about 189k tokens in session 4.</li>
+</ol>
+
+<h3>Near-misses</h3>
+<ul>
+<li>The gate nearly rejected a good hero because it compared against the wrong "old" file. The strange "FAIL" result led to the fix.</li>
+<li>The pilot report said the KALDER hotspots "still land on the parka and the trousers". The on-page check showed the parka hotspot beside the jacket. A zoom check alone had not caught it.</li>
+<li>Renaming the real cities on the KALDER map would have moved the map labels with no error message. The agent saw the risk and kept the names.</li>
+<li>The new festival act names changed which genre tag, photo and joke each act gets, because the code picks them from the length of the name. Nothing broke.</li>
+<li>A site 7 SVG edit printed <code>SyntaxWarning: invalid escape sequence '\('</code> and a match count of <code>0</code>, then <code>errors: none</code>. The count suggests the check did not match. The log shows no follow-up.</li>
+</ul>
+
+<h3>Fragile points: things that work now but may not later</h3>
+<ul>
+<li>The pages load three.js, GSAP and fonts from cdnjs, jsDelivr and Google Fonts. If those services change or fail, the 3D and fonts fail.</li>
+<li>The "PNG over about 7 MB fails" rule is an observed pattern with one exception, not a documented limit.</li>
+<li>Seven agents shared one Higgsfield account and one scratch folder at the same time.</li>
+<li>The evidence Artifact shows the pages before the text rewrite.</li>
+<li>Rebuilding frames needs the YouTube video to stay online. The downloaded file was deleted.</li>
+</ul>
+</section>
+
+<section id="s11">
+<h2>11. Costs and limits</h2>
+
+<h3>Money</h3>
+<ul>
+<li><strong>Higgsfield:</strong> 348.5 credits for 82 generations at 4.25 credits each (pilot 25.5, full run 323.0). Balance 673.91 before, 325.41 after (plus plan). The 14 failed calls cost nothing. The records do not give a money value per credit.</li>
+<li><strong>Claude usage:</strong> the sessions ran on the owner's Claude plan. No transcript records a dollar cost for Claude. This page gives none.</li>
+<li><strong>Gemini:</strong> not used, so no cost.</li>
+<li><strong>yt-dlp, ffmpeg, Playwright, OpenCV, GitHub, GitHub Pages:</strong> free.</li>
+</ul>
+<p>For comparison only, the banners in the video show what the <em>original</em> builds cost. These numbers describe Brendan Jowett's build, not this rebuild:</p>
+<div class="tw"><table>
+<tr><th>Original site</th><th>Build time</th><th class="n">Tokens</th><th class="n">API cost</th></tr>
+<tr><td>Hotel</td><td>30m 53s</td><td class="n">13.63M</td><td class="n">$9.13</td></tr>
+<tr><td>Festival</td><td>42m 48s</td><td class="n">22.19M</td><td class="n">$13.10</td></tr>
+<tr><td>E-commerce</td><td>40m 58s</td><td class="n">20.67M</td><td class="n">$11.96</td></tr>
+<tr><td>SaaS</td><td>36m 03s</td><td class="n">21.16M</td><td class="n">$11.73</td></tr>
+<tr><td>Drink</td><td>1h 08m</td><td class="n">46.30M</td><td class="n">$22.43</td></tr>
+<tr><td>High-rise</td><td>1h 09m</td><td class="n">39.75M</td><td class="n">$22.52</td></tr>
+<tr><td>Space</td><td>1h 28m</td><td class="n">71.52M</td><td class="n">$34.23</td></tr>
+</table></div>
+
+<h3>Tokens and context</h3>
+<ul>
+<li>Session 1 main thread: Coach warnings at about 156k, 181k, 197k (twice), 221k and 223k context tokens. At about 225k Claude itself recommended a fresh session for the image work.</li>
+<li>Session 2: warnings at about 200k, 205k, 216k and 235k.</li>
+<li>Session 3: main thread output 26,807 tokens, cache reads 5,182,301; the 7 text agents together wrote 547,374 output tokens with about 183.5M cache-read tokens. Warning at about 151k.</li>
+<li>Session 4: warning at about 189k.</li>
+<li>The build agents of session 1 read 22 to 46 full frames each, plus sheets and screenshots. The hung site 5 agent had about 70 large images in context.</li>
+</ul>
+
+<h3>Disk</h3>
+<div class="tw"><table>
+<tr><th>Item</th><th class="n">Size</th><th>Now</th></tr>
+<tr><td><code>video/source.webm</code></td><td class="n">573 MB</td><td>Deleted 24 Sep 20:04</td></tr>
+<tr><td><code>frames/</code> (1,826 JPEG)</td><td class="n">590 MB</td><td>Deleted</td></tr>
+<tr><td><code>sheets/</code> (49 sheets)</td><td class="n">25 MB</td><td>Deleted</td></tr>
+<tr><td><code>scratch/</code> after session 1</td><td class="n">~300 MB</td><td>All deleted except <code>scratch/verify/</code> (16 MB)</td></tr>
+<tr><td><code>scratch/</code> in session 3</td><td class="n">1.1 GB</td><td>Local only (Higgsfield PNGs, old crops, backups); not in git</td></tr>
+<tr><td><code>sites/*/img</code>, video crops</td><td class="n">8.8 MB</td><td>Kept as rollback in <code>scratch/old_img/</code></td></tr>
+<tr><td><code>sites/*/img</code>, 4K q88</td><td class="n">87.5 MB</td><td>Replaced</td></tr>
+<tr><td><code>sites/*/img</code>, 2560 px q82</td><td class="n">43.4 MB</td><td>Live (largest single site: hotel, 14 MB)</td></tr>
+<tr><td><code>evidence/</code></td><td class="n">2.8 MB</td><td>Local and private Artifact; not in git</td></tr>
+<tr><td><code>journey-img/</code> (7 thumbnails, 960&times;475)</td><td class="n">560 KB</td><td>In git; used on this page and in the README</td></tr>
+</table></div>
+
+<h3>Time</h3>
+<div class="tw"><table>
+<tr><th>Step</th><th>Wall clock</th></tr>
+<tr><td>Session 1, from "go !" (15:26) to agents running (15:36)</td><td>10 min: download, 1,826 frames, 49 sheets, tools, brief</td></tr>
+<tr><td>Site agents, session 1</td><td>site 3 about 35 min, site 1 about 40, site 2 about 49, site 4 about 55, site 6 about 69, site 7 about 82; site 5: hung, then 62 min for <code>site5-finish</code></td></tr>
+<tr><td>Session 2, image run</td><td>pilot 3 min; agents 28 to 137 min in parallel; 22:09 to 00:57 for all 75</td></tr>
+<tr><td>Session 3, text rewrite</td><td>7 agents 18.5 to 53.6 min in parallel, plus 30.8 min SaaS follow-up</td></tr>
+<tr><td>Session 3, git init to push</td><td>04:50:42 to 04:53:30</td></tr>
+<tr><td>the owner's review of the contact sheets</td><td>about 8 min 40 s</td></tr>
+</table></div>
+</section>
+
+<section id="s12">
+<h2>12. Verification</h2>
+
+<h3>What was checked, and how</h3>
+<ul>
+<li><strong>JavaScript errors:</strong> every site, after every change, with <code>shot.py</code> in real Chrome. All 7: <code>errors: none</code>.</li>
+<li><strong>Visual match:</strong> the main thread stacked a video frame over a rebuild screenshot for each hero, plus the dashboard (site 4) and the flavours section (site 5). Sites 6 and 7 were re-checked after fixes. The files are in <code>scratch/verify/</code>, local only.</li>
+<li><strong>Interactions:</strong> Playwright scripts clicked, dragged, hovered and scrolled. Examples: hotel calendar result <code>3 nights ... 1,680</code>; festival share URL <code>?my=SG3.SW3.SL4</code> with <code>1 CLASH</code>; drink accent colour <code>#f0205e</code> after a flavour click; review wall column tops <code>421,-471,418,-469</code> &rarr; <code>394,-448,388,-444</code> in 2 s; space tabs, hotspots, training days, quotes and FAQ all changed state.</li>
+<li><strong>Numbers against frames:</strong> the SaaS ROI results match four frames; the high-rise payment calculator defaults match exactly ($10,293 a month, $1,698,500 loan, 79%, $2.01M interest).</li>
+<li><strong>Images:</strong> the 3-check gate, full-size zoom checks, before/after page shots, 7 contact sheets reviewed by the owner, and a file comparison proving that none of the 75 files matches an old crop.</li>
+<li><strong>Credits:</strong> the balance chain 673.91 &rarr; 325.41 matches 82 &times; 4.25 exactly.</li>
+<li><strong>Text:</strong> <code>textdiff.py</code> counts, a search for 12 marker lines from the video, and page heights within 1.3% of before.</li>
+<li><strong>No old references:</strong> after the deletion, a search of all 7 pages for <code>frames/</code>, <code>scratch/</code> or <code>../../</code> found none.</li>
+<li><strong>Live site:</strong> all 8 URLs (the root and 7 sites) returned HTTP 200. Chrome loaded each live site with 0 JavaScript errors (one harmless favicon 404 on site 1). Live heights: 1-hotel 17,394; 2-festival 22,153; 3-ecommerce 7,971; 4-saas 12,924; 5-drink 23,614; 6-highrise 18,512; 7-space 27,668 px.</li>
+<li><strong>This page:</strong> after assembly, a script counted 75 image rows and 7 collapsible site tables. It matched every contents link to a section id and searched for any video still or local image path. Chrome at 390 px and 1440 px width showed no sideways scroll and no console error.</li>
+</ul>
+
+<h3>What was NOT verified</h3>
+<ul>
+<li>Only the hero of each site (plus one more section on sites 4 and 5) was compared with a frame by the main thread. The other sections rest on the agents' own checks.</li>
+<li>Animation timing and easing were matched by eye, not measured.</li>
+<li>No test on a phone or tablet is recorded, and no test of the 3D sites on a mobile GPU.</li>
+<li>The KALDER <code>p-trouser-alt</code> hover image was never checked on the page.</li>
+<li>Only 1 of the 7 blurred evidence frames was looked at.</li>
+<li>Claude looked at only 3 of the 7 image contact sheets; the owner looked at all 7.</li>
+<li>The quality loss of compressing each image twice was not measured.</li>
+<li>The cause of the site 5 hang is an inference.</li>
+<li>The two <code>textdiff.py</code> counts over-report surviving text; a precise count of copied prose was not made.</li>
+<li>No lawyer reviewed the copyright reasoning.</li>
+</ul>
+</section>
+
+<section id="s13">
+<h2>13. Unknown unknowns</h2>
+<p>This section is for a reader who is new to this kind of work. Each item is a thing that a newcomer does not know to ask about. Each gives what it is, why it matters, and what this project did about it. The legal items are a practical view, not legal advice.</p>
+
+<h3>How the AI "sees"</h3>
+<div class="uu"><h4>1. An AI does not watch a video. It reads still pictures.</h4>
+<p><span class="lbl">What:</span> The model takes images and text. A video must be cut into frames first, and sound must come as text.</p>
+<p><span class="lbl">Why it matters:</span> Everything between two frames is lost unless another source fills it.</p>
+<p><span class="lbl">Here:</span> 1,826 frames at 2 per second, 49 contact sheets, the narration as text, and short 4 to 10 fps clips (sections 2 and 4).</p></div>
+
+<div class="uu"><h4>2. Frame rate limits what motion you can see.</h4>
+<p><span class="lbl">What:</span> At 2 frames per second, anything shorter than 0.5 s can fall between two frames. Speed curves (easing) need many samples.</p>
+<p><span class="lbl">Why it matters:</span> Fades, hovers and pop-ups are often 200 to 600 ms. Their timing cannot be read from 2 fps frames.</p>
+<p><span class="lbl">Here:</span> High-fps windows, odd-numbered neighbour frames, pixel measurement, and tuning by comparison. Scroll-linked effects were easier, because a frame records a scroll state. The timing of time-based effects is the agents' choice.</p></div>
+
+<div class="uu"><h4>3. The presenter's webcam hides part of every screen.</h4>
+<p><span class="lbl">What:</span> Screen recordings often have a picture of the presenter in a corner. Here it covered about x 0&ndash;545, y 1045&ndash;1440 of each 2560&times;1440 frame.</p>
+<p><span class="lbl">Why it matters:</span> Text and images under it do not exist in the recording.</p>
+<p><span class="lbl">Here:</span> Agents looked for other frames where the page had scrolled and the area was visible. Where none existed, they invented text and listed it, or mirrored nearby pixels into the photos. The webcam itself was never built.</p></div>
+
+<div class="uu"><h4>4. What the presenter never scrolled to does not exist for the AI.</h4>
+<p><span class="lbl">What:</span> A screen recording shows only what was on screen.</p>
+<p><span class="lbl">Why it matters:</span> Whole sections can be missing: hotel sections IV to VI, KALDER sections (04) and (05), several footers.</p>
+<p><span class="lbl">Here:</span> Missing sections were left out, not invented, except where a small part was needed to finish a page; each report says which (section 7).</p></div>
+
+<div class="uu"><h4>5. Some text on the rebuilt sites is invented filler.</h4>
+<p><span class="lbl">What:</span> Where text was unreadable, hidden or never shown, the agents wrote plausible text.</p>
+<p><span class="lbl">Why it matters:</span> A reader cannot tell invented text from recovered text by looking.</p>
+<p><span class="lbl">Here:</span> Every agent listed its invented text. After the copy rewrite, all text is new anyway, but the structure (for example 4 customer stories where the video showed 1) still includes invented parts.</p></div>
+
+<div class="uu"><h4>6. Fonts are guessed.</h4>
+<p><span class="lbl">What:</span> A frame shows letter shapes, not a font name. The original fonts may be paid fonts.</p>
+<p><span class="lbl">Why it matters:</span> The type is close, not the same.</p>
+<p><span class="lbl">Here:</span> Nearest Google Fonts by eye; sites 3 and 6 rendered test pages of candidates next to a crop of the original first.</p></div>
+
+<div class="uu"><h4>7. Colours in a video are slightly wrong.</h4>
+<p><span class="lbl">What:</span> Video compression shifts colours a little.</p>
+<p><span class="lbl">Why it matters:</span> A sampled colour is close to, not equal to, the original's value.</p>
+<p><span class="lbl">Here:</span> Sites 1 and 2 averaged 5&times;5 or 7&times;7 pixel boxes to reduce noise. Sites 3 and 4 sampled single pixels.</p></div>
+
+<h3>Images</h3>
+<div class="uu"><h4>8. Image models give a different result every time. Quality cannot be guaranteed.</h4>
+<p><span class="lbl">What:</span> The same prompt gives a new picture on each run.</p>
+<p><span class="lbl">Why it matters:</span> "As good as the original" cannot be promised before the run.</p>
+<p><span class="lbl">Here:</span> A measured gate (size, sharpness, shape), zoom checks, on-page checks, up to 2 retries per image, and the owner's final review. 12 images needed a second try; none needed a third.</p></div>
+
+<div class="uu"><h4>9. A reference image can copy what you meant to avoid.</h4>
+<p><span class="lbl">What:</span> Image models can take a picture as input and make something close to it.</p>
+<p><span class="lbl">Why it matters:</span> If the input is someone else's image, the output can reproduce their work, and a face input can reproduce a face.</p>
+<p><span class="lbl">Here:</span> Only text prompts for new scenes. As references, only this project's own new images, for consistency. Never an old crop. For portraits, not even a new portrait, to avoid copying one face into another.</p></div>
+
+<div class="uu"><h4>10. The rights in AI images are not settled.</h4>
+<p><span class="lbl">What:</span> Whether AI-generated images (and text) can be protected by copyright, and who owns them, is not settled law. The original photos were themselves GPT Image 2.5 outputs, as the presenter says at 1:44.</p>
+<p><span class="lbl">Why it matters:</span> Neither the old photos nor the new ones have a clear legal status.</p>
+<p><span class="lbl">Here:</span> The project treated the old photos as the creator's material and replaced them all. The new images come from the Higgsfield plus plan. No lawyer was asked.</p></div>
+
+<div class="uu"><h4>11. Generated images can contain logos, trademarks and fake text.</h4>
+<p><span class="lbl">What:</span> Image models often add brand-like marks, signs and labels.</p>
+<p><span class="lbl">Why it matters:</span> A mark that looks like a real brand can create a trademark problem, and misspelled text looks bad.</p>
+<p><span class="lbl">Here:</span> Every prompt said "no text, no logos, no watermark", with extras such as "no signage" and "no name tags". The only allowed text was the site's own brand, spelled out letter by letter. Zoom checks still found three logo-like marks on a zip, which were removed.</p></div>
+
+<div class="uu"><h4>12. "4K" does not mean a fixed width.</h4>
+<p><span class="lbl">What:</span> This model makes about 8.3 million pixels. A wide image gets 3840 px across; a square one only 2880&times;2880.</p>
+<p><span class="lbl">Why it matters:</span> A "long side at least 3200 px" rule fails for square shapes.</p>
+<p><span class="lbl">Here:</span> Six second tries at 4:5 or 5:4 (25.5 credits).</p></div>
+
+<div class="uu"><h4>13. Replacing a picture can break the page around it.</h4>
+<p><span class="lbl">What:</span> Hotspots are placed at percentages of an image. Text sits over some images. Pages crop images to fill boxes.</p>
+<p><span class="lbl">Why it matters:</span> A new image can move a product away from its hotspot, or put a bright sky behind white text.</p>
+<p><span class="lbl">Here:</span> Hotspots re-aimed on two sites; five images regenerated with a new composition after an on-page check.</p></div>
+
+<h3>Law and rules</h3>
+<div class="uu"><h4>14. YouTube's terms forbid downloading with tools like yt-dlp.</h4>
+<p><span class="lbl">What:</span> A contract rule between the viewer and YouTube, separate from copyright.</p>
+<p><span class="lbl">Why it matters:</span> The download itself broke the terms, even for private study.</p>
+<p><span class="lbl">Here:</span> Claude stated it plainly. The video was deleted after the build and is not in the repository. The frames were deleted too.</p></div>
+
+<div class="uu"><h4>15. A rebuild still carries the original's design.</h4>
+<p><span class="lbl">What:</span> New text and new photos do not make the layouts, animations and brand names original.</p>
+<p><span class="lbl">Why it matters:</span> The repository is a code study of someone else's designs.</p>
+<p><span class="lbl">Here:</span> The README and every banner credit Brendan Jowett and link the video, and say the project is not affiliated with him or Anthropic. No permission was requested from the creator; Claude called that "the cleanest option".</p></div>
+
+<div class="uu"><h4>16. A public repository with no licence is not free to reuse.</h4>
+<p><span class="lbl">What:</span> Without a LICENSE file, other people get no right to copy the code.</p>
+<p><span class="lbl">Why it matters:</span> Readers may assume the opposite.</p>
+<p><span class="lbl">Here:</span> The README says "No license is set." Adding one is an open item.</p></div>
+
+<div class="uu"><h4>17. Old names can remain in places you do not see.</h4>
+<p><span class="lbl">What:</span> File names, code keys and git history keep text that the page no longer shows.</p>
+<p><span class="lbl">Why it matters:</span> A "rewritten" site can still expose the old names in its source.</p>
+<p><span class="lbl">Here:</span> Git started after the rewrite, so history is clean. Image names such as <code>anders.jpg</code> and the key <code>salthowl-picks</code> remain. <code>BRIEF.md</code>, which is public, still describes the phase 1 method.</p></div>
+
+<h3>Hosting and the browser</h3>
+<div class="uu"><h4>18. File names are case-sensitive on the web host, not on Windows.</h4>
+<p><span class="lbl">What:</span> Windows treats <code>Hero.jpg</code> and <code>hero.jpg</code> as one file. GitHub Pages runs on Linux and treats them as two.</p>
+<p><span class="lbl">Why it matters:</span> A page that works on the owner's PC can show broken images online.</p>
+<p><span class="lbl">Here:</span> After Pages went live, all 8 URLs returned HTTP 200 and Chrome loaded each site with no missing file. None found.</p></div>
+
+<div class="uu"><h4>19. 3D in the browser depends on the device's GPU.</h4>
+<p><span class="lbl">What:</span> Sites 5, 6 and 7 use WebGL through three.js.</p>
+<p><span class="lbl">Why it matters:</span> Phones and older laptops may run it slowly, or not at all.</p>
+<p><span class="lbl">Here:</span> The README says "The 3D sites (5, 6, 7) need WebGL. Use a desktop browser for the full effect." Site 7 skips rendering behind opaque sections to save work. No phone test was done.</p></div>
+
+<div class="uu"><h4>20. Sharp photos make heavy pages.</h4>
+<p><span class="lbl">What:</span> The new photos weighed 87.5 MB at 4K, about 10 times the old crops.</p>
+<p><span class="lbl">Why it matters:</span> Slow loading, mobile data cost, and a large repository.</p>
+<p><span class="lbl">Here:</span> Re-encoded to at most 2560 px, quality 82: 43.4 MB, about 4.9 times the crops. The hotel's images alone are 14 MB.</p></div>
+
+<div class="uu"><h4>21. Pages built from CDN scripts depend on those CDNs.</h4>
+<p><span class="lbl">What:</span> three.js, GSAP and the fonts load from cdnjs, jsDelivr and Google at view time.</p>
+<p><span class="lbl">Why it matters:</span> If a CDN is blocked or changes, the 3D or fonts fail.</p>
+<p><span class="lbl">Here:</span> Pinned versions (r128, r158, r160). No local copies.</p></div>
+
+<h3>Working with AI agents</h3>
+<div class="uu"><h4>22. Every image the AI reads costs context.</h4>
+<p><span class="lbl">What:</span> The model's working memory (the context window) fills with each frame and screenshot.</p>
+<p><span class="lbl">Why it matters:</span> Large contexts cost more per turn and can make a session fail. The Coach hook warned at 150k to 235k tokens in every session.</p>
+<p><span class="lbl">Here:</span> Sheets first, 22 to 46 full frames per agent, one agent per site, and fresh sessions between phases with a <code>HANDOFF.md</code> resume file.</p></div>
+
+<div class="uu"><h4>23. Agents can hang with no error message.</h4>
+<p><span class="lbl">What:</span> A background agent can stop making progress and still look "running".</p>
+<p><span class="lbl">Why it matters:</span> The site 5 agent was silent for more than 2 hours before anyone noticed.</p>
+<p><span class="lbl">Here:</span> Checked by file times, stopped by its own task id, replaced by a finish agent with <code>timeout 180</code> on every command. In session 4 a watchdog stopped a stalled agent after 600 s.</p></div>
+
+<div class="uu"><h4>24. Permission prompts can block an agent silently.</h4>
+<p><span class="lbl">What:</span> Claude Code asks the human before some commands, for example a delete with a wildcard.</p>
+<p><span class="lbl">Why it matters:</span> A background agent waits until someone answers, and the owner may not see the prompt.</p>
+<p><span class="lbl">Here:</span> An allow rule for <code>scratch/</code> in <code>.claude/settings.local.json</code>, deletes with Python instead of <code>rm</code> wildcards, and a memory note that records the owner's approval.</p></div>
+
+<div class="uu"><h4>25. A safety classifier can stop a tool call.</h4>
+<p><span class="lbl">What:</span> The harness can block a command that looks risky.</p>
+<p><span class="lbl">Why it matters:</span> A sweep agent in session 4 stopped with nothing written.</p>
+<p><span class="lbl">Here:</span> The main thread wrote a smaller, clear script itself and ran it.</p></div>
+
+<div class="uu"><h4>26. Agents in parallel share folders and accounts.</h4>
+<p><span class="lbl">What:</span> Agents of one session share a scratch folder; all image agents used one Higgsfield account.</p>
+<p><span class="lbl">Why it matters:</span> Files with the same name overwrite each other; jobs from others appear in your job list.</p>
+<p><span class="lbl">Here:</span> Two script collisions, caught by checks inside the scripts; agents matched jobs by prompt text. Unique names per agent prevent it.</p></div>
+
+<div class="uu"><h4>27. An agent's report can be wrong.</h4>
+<p><span class="lbl">What:</span> Agents summarise their own work, and summaries can overstate it.</p>
+<p><span class="lbl">Why it matters:</span> "none survive word-for-word" was false (64 did); credit counts were too high; "14 aspect fails" was 12.</p>
+<p><span class="lbl">Here:</span> The main thread re-checked with its own tools: screenshots, <code>textdiff.py</code>, the credit balance.</p></div>
+
+<div class="uu"><h4>28. The advisor's advice is not readable later.</h4>
+<p><span class="lbl">What:</span> A stronger model gives advice during the session, but the transcripts store it encrypted.</p>
+<p><span class="lbl">Why it matters:</span> A later audit can see when advice was asked, not what it said.</p>
+<p><span class="lbl">Here:</span> This page reports only the times and the actions that followed.</p></div>
+
+<h3>The machine</h3>
+<div class="uu"><h4>29. Transcript times are in UTC.</h4>
+<p><span class="lbl">What:</span> Claude Code stores times in UTC. the owner works in local offset.</p>
+<p><span class="lbl">Why it matters:</span> Session 2 started at 22:09 on 24 Sep local time, which is 05:09 on 25 Sep in UTC. A reading without conversion puts it on the wrong day.</p>
+<p><span class="lbl">Here:</span> This page converts every time to local time.</p></div>
+
+<div class="uu"><h4>30. A program can be installed and still "not found".</h4>
+<p><span class="lbl">What:</span> A running session keeps the PATH it started with.</p>
+<p><span class="lbl">Why it matters:</span> <code>higgsfield: command not found</code> right after a good install.</p>
+<p><span class="lbl">Here:</span> The folder was already on the user PATH. Every script adds it again at the start. A memory note records the cause.</p></div>
+
+<div class="uu"><h4>31. A script's current folder changes what a path means.</h4>
+<p><span class="lbl">What:</span> A relative path is read from the folder the script is in at that moment.</p>
+<p><span class="lbl">Why it matters:</span> <code>gen.sh</code> changed folder first, so three reference paths pointed at nothing.</p>
+<p><span class="lbl">Here:</span> Absolute paths.</p></div>
+
+<div class="uu"><h4>32. Big uploads can fail with no clear reason.</h4>
+<p><span class="lbl">What:</span> 7.6 to 13.5 MB PNG references got "no response"; the same pictures as 0.3 to 1.2 MB JPEGs worked.</p>
+<p><span class="lbl">Why it matters:</span> The error text does not say "file too large".</p>
+<p><span class="lbl">Here:</span> JPEG copies or upload ids. One 13 MB PNG did work, so the limit is not known exactly.</p></div>
+
+<div class="uu"><h4>33. Deleting working files deletes proof.</h4>
+<p><span class="lbl">What:</span> Scratch folders hold the scripts that show how a result was made.</p>
+<p><span class="lbl">Why it matters:</span> After the approved cleanup, the frame behind each old crop could no longer be shown.</p>
+<p><span class="lbl">Here:</span> <code>scratch/verify/</code> and the durable scripts were kept on purpose; the loss is stated in the evidence report.</p></div>
+</section>
+
+<section id="s14">
+<h2>14. Where things stand</h2>
+
+<h3>Live</h3>
+<div class="tw"><table>
+<tr><th>What</th><th>Link</th></tr>
+<tr><td>GitHub Pages root (the README)</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/">az9713.github.io/opus55-website-rebuilds/</a></td></tr>
+<tr><td>1 Solenne</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/1-hotel/">sites/1-hotel/</a></td></tr>
+<tr><td>2 SALTHOWL</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/2-festival/">sites/2-festival/</a></td></tr>
+<tr><td>3 KALDER</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/3-ecommerce/">sites/3-ecommerce/</a></td></tr>
+<tr><td>4 Kestrel</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/4-saas/">sites/4-saas/</a></td></tr>
+<tr><td>5 HYPERLYTE</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/5-drink/">sites/5-drink/</a></td></tr>
+<tr><td>6 HALDEN</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/6-highrise/">sites/6-highrise/</a></td></tr>
+<tr><td>7 K&Aacute;RM&Aacute;N</td><td><a href="https://az9713.github.io/opus55-website-rebuilds/sites/7-space/">sites/7-space/</a></td></tr>
+<tr><td>Repository</td><td><a href="https://github.com/az9713/opus55-website-rebuilds">github.com/az9713/opus55-website-rebuilds</a> (public, branch <code>main</code>; commits <code>bf378f9</code> and <code>0dc921d</code> before this page)</td></tr>
+</table></div>
+<p>Pages was switched on with <code>gh api -X POST repos/az9713/opus55-website-rebuilds/pages -f "source[branch]=main" -f "source[path]=/"</code>. The build type is "legacy" (Jekyll). No <code>.nojekyll</code> file is needed: Jekyll renders <code>README.md</code> as the root page and copies the plain HTML files as they are. No file or folder name starts with <code>_</code>, so Jekyll skips nothing.</p>
+
+<h3>What is in git and what is not</h3>
+<p>In git: <code>sites/</code> (7 pages and 75 images), <code>scripts/</code>, <code>BRIEF.md</code>, <code>README.md</code>, <code>journey-img/</code>, and this page once it is committed. Kept out by <code>.gitignore</code>: <code>scratch/</code> (old crops, Higgsfield PNGs, verification frames, backups), <code>evidence/</code> (video frames), <code>transcript.txt</code> (the creator's narration), <code>HANDOFF.md</code>, <code>TASKS.md</code>, <code>.claude/</code>, and <code>.ignore/</code>.</p>
+
+<h3>Open items</h3>
+<p>None of these blocks the live sites. Each is an option for the owner, not a promise.</p>
+<ol>
+<li><strong>This page is not committed yet.</strong> The README links to <code>DEVELOPMENT-JOURNEY.html</code> on Pages; that link returns 404 until the file is committed and pushed.</li>
+<li><strong>No licence.</strong> Add a LICENSE file to set reuse terms.</li>
+<li><strong><code>BRIEF.md</code> is public and describes phase 1</strong> ("copy text ... verbatim", "crop photos directly from the frames") and shows a local Windows path. The README explains that photos and text were replaced later. Options: leave it as a historical record, or add a note at its top.</li>
+<li><strong>Old names in file names and code keys</strong> (<code>anders.jpg</code>, <code>amara.jpg</code>, <code>p-fathom.jpg</code>, <code>gull-king.jpg</code>, <code>salthowl-picks</code>). A rename needs matching code edits.</li>
+<li><strong>A few near-verbatim strings</strong> remain (for example the high-rise hero opening "Thirty-eight storeys of").</li>
+<li><strong>Capsule hotspots have no visible numbers</strong> since the new photo (section 7). Adding a number to each button in <code>sites/7-space/index.html</code> line 584 would restore them.</li>
+<li><strong>The evidence Artifact is private and shows the pre-rewrite pages.</strong> Rerun <code>scripts/evidence.py</code> and republish if it should show the current text; share it from its Share menu if wanted. It contains 7 video frames with the webcam blurred.</li>
+<li><strong>Images were compressed twice.</strong> A clean re-encode from the kept 4K PNGs is possible.</li>
+<li><strong>No phone test.</strong> The 3D sites on a phone are untested.</li>
+<li><strong>No page has a <code>&lt;meta name="description"&gt;</code>.</strong></li>
+<li><strong>The creator was not asked for permission.</strong> Claude named this as the option with the least risk.</li>
+</ol>
+
+<h3>Knowledge captured, and where</h3>
+<ul>
+<li><code>HANDOFF.md</code> (local, not in git): current state, rollback location (<code>scratch/old_img/</code>, "Do not delete."), tool limits, next options.</li>
+<li><code>TASKS.md</code> (local): the build checklist and the reference frame per site.</li>
+<li>Memory notes for this project: <code>scratch-rm-ok.md</code> (deletes in <code>scratch/</code> need no approval) and <code>higgsfield-cli.md</code> (install location, stale PATH, output sizes per aspect, the large-PNG failure).</li>
+<li><code>README.md</code>: credit, live links, how it was made, scripts.</li>
+<li>This page: the full journey.</li>
+</ul>
+
+<h3>Rules this project learned</h3>
+<ul>
+<li>Read contact sheets first; open full frames only where you need detail.</li>
+<li>A still frame gives a state, not a speed.</li>
+<li>Stack the source frame and the rebuild in one image to compare them.</li>
+<li>Put a timeout on every browser or Python command.</li>
+<li>Write large files with a file tool, in parts, not through a shell heredoc.</li>
+<li>Never give someone else's image to an image model as input.</li>
+<li>Check every new image on the real page, not only in a gate.</li>
+<li>Check an agent's claim with your own tool before you report it.</li>
+<li>Give every parallel agent unique file names.</li>
+<li>Start git after the content is clean, or the old content stays in history.</li>
+</ul>
+</section>
+
+<footer>
+<p>Written on 2026-09-25 by Claude Opus 5.5 (a subagent of session <code>2c18db54</code>) with the <code>dev-journey</code> skill, from the transcripts of sessions <code>4c61f10e</code>, <code>6178a7a4</code> and <code>39aca3b5</code>, the notes of session <code>2c18db54</code>, and the files in the repository. Designs, layouts, animations and brand names of the seven sites come from Brendan Jowett's video <a href="https://www.youtube.com/watch?v=mPiaap4zEVk">"NEW Opus 5.5 is INSANE at Building Websites (Full Showcase)"</a>. This project is not affiliated with Brendan Jowett or Anthropic. Nothing on this page is legal advice.</p>
+</footer>
+</main>
+</div>
+</body>
+</html>
