@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KÁRMÁN — Space begins about a hundred kilometres up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..600&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e100f; --bg2:#121413; --ink:#ede7dd; --ink2:#cfc8bd; --muted:#9a948a; --dim:#67625b;
+  --accent:#d9a37a; --line:rgba(237,231,221,.12); --line2:rgba(237,231,221,.07); --cost:#ea9f8c;
+  --serif:'Newsreader',Georgia,serif; --sans:'Archivo',Helvetica,Arial,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --pad:105px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scrollbar-color:#3a3a3a #111}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+#gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+main{position:relative;z-index:2}
+
+/* banner */
+.banner{position:fixed;top:0;left:0;right:0;height:45px;z-index:50;background:#0d0c0b;border-bottom:1px solid #1f1d1b;display:flex;align-items:center;justify-content:space-between;padding:0 0 0 18px}
+.banner .built{display:flex;align-items:center;gap:10px;font-size:15px;color:#b0aaa2;letter-spacing:-.005em}
+.banner .built b{color:#fff;font-weight:600}
+.banner .built a{color:inherit;text-decoration:underline}
+.banner .star{width:18px;height:18px}
+
+/* nav */
+.nav{position:fixed;top:45px;left:0;right:0;height:71px;z-index:40;display:flex;align-items:center;padding:0 68px 0 68px;transition:background .5s,border-color .5s,backdrop-filter .5s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(17,18,20,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:rgba(255,255,255,.06)}
+.logo{display:flex;align-items:center;gap:16px;font-weight:500;font-size:17px;letter-spacing:.36em;color:#f3eee6}
+.logo svg{width:24px;height:24px}
+.links{position:absolute;left:460px;display:flex;gap:34px}
+.links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:#b3ada3;padding:6px 0;position:relative;transition:color .3s}
+.links a:hover{color:#f3eee6}
+.links a.on{color:#f6f1e9;font-weight:700}
+.links a.on::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1.5px;background:#d6b59c}
+.navr{margin-left:auto;display:flex;align-items:center;gap:22px}
+.kcount{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:#6b665f}
+.kcount b{color:#f3eee6;font-weight:700;letter-spacing:.06em;margin-left:12px;font-size:12.5px}
+.btn-o{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--accent);border:1px solid #6e4636;padding:12px 19px;font-weight:700;transition:background .3s,color .3s}
+.btn-o:hover{background:var(--accent);color:#121212}
+
+/* eyebrow & type */
+.eb{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:12px}
+.eb::before{content:"";width:26px;height:1px;background:var(--accent);opacity:.8}
+.eb.dot::before{display:none}
+h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:-.022em;color:var(--ink)}
+.h2{font-size:57px;line-height:1.02;margin:22px 0 30px}
+.body{color:var(--ink2);font-size:16.5px;line-height:1.55;max-width:392px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.18s}.rv.d3{transition-delay:.28s}
+
+/* hero */
+.hero{height:100vh;min-height:760px;position:relative;padding:0 68px}
+.hero .eb{position:absolute;top:135px;left:68px}
+.hero .eb::before{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:1}
+.hero h1{position:absolute;top:180px;left:64px;font-size:130px;line-height:.915;letter-spacing:-.035em;max-width:1000px}
+.hero .lede{position:absolute;top:596px;left:68px;font-size:17px;line-height:1.55;color:var(--ink2);max-width:420px}
+.hero .ctas{position:absolute;top:624px;left:792px;display:flex;align-items:center;gap:20px}
+.btn-c{background:#efe9df;color:#161616;font-family:var(--mono);font-size:12px;letter-spacing:.2em;padding:0 26px;height:47px;display:inline-flex;align-items:center;transition:background .3s}
+.btn-c:hover{background:#fff}
+.btn-t{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:#f3eee6;font-weight:700;display:inline-flex;gap:12px;align-items:center}
+.ignite{position:absolute;right:62px;top:686px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:#77716a}
+
+/* flight chapters (transparent over 3D) */
+.ch{position:relative;height:150vh;padding:0 var(--pad)}
+.ch .txt{position:absolute;top:34vh;left:var(--pad);width:490px}
+.ch.r .txt{right:auto;width:490px;left:1007px}
+.ch .h2{margin:22px 0 28px}
+.kline{position:fixed;z-index:3;font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--accent);font-weight:700;display:flex;gap:12px;align-items:center;opacity:0;pointer-events:none;left:1058px}
+.kline::before{content:"";width:36px;height:1px;background:var(--accent)}
+
+/* opaque sections */
+.op{position:relative;background:var(--bg);z-index:2}
+.op::before,.op::after{content:"";position:absolute;left:0;right:0;height:34vh;pointer-events:none}
+.op::before{top:-34vh;background:linear-gradient(to bottom,rgba(14,16,15,0),var(--bg))}
+.op::after{bottom:-34vh;background:linear-gradient(to top,rgba(14,16,15,0),var(--bg))}
+.op+.op::before,.op.nb::after{display:none}
+.wrap{width:1102px;margin:0 auto;position:relative}
+
+/* stats */
+.stats{padding:230px 0 180px}
+.stats .hd{display:flex;justify-content:space-between;align-items:flex-end}
+.stats h2{font-size:78px;line-height:.98;margin-top:34px;width:640px;letter-spacing:-.03em}
+.stats .note{width:436px;color:var(--ink2);font-size:16.5px;line-height:1.55;margin-bottom:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);margin-top:98px;border-top:1px solid var(--line2)}
+.grid3 .c{padding:54px 30px 58px 0;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.grid3 .c:nth-child(3n){border-right:0}
+.grid3 .c:nth-child(3n+2),.grid3 .c:nth-child(3n){padding-left:34px}
+.num{font-family:var(--sans);font-stretch:125%;font-weight:300;font-size:108px;line-height:1;letter-spacing:-.02em;color:#ede7dd}
+.num.or{color:var(--accent)}
+.num small{font-size:36px;color:#8f8a82;margin-left:4px}
+.grid3 .c p{margin-top:28px;color:var(--ink2);font-size:16px;line-height:1.5;max-width:300px}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);margin-top:78px;gap:0}
+.notes div{padding-right:40px}
+.notes h4{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.24em;color:#8a857d;margin-bottom:14px}
+.notes p{color:#a39d93;font-size:15.5px;line-height:1.55}
+</style>
+<style>
+/* missions */
+.missions{padding:190px 0 120px}
+.missions h2{font-size:78px;line-height:.98;margin-top:30px;letter-spacing:-.03em}
+.mtabs{display:grid;grid-template-columns:repeat(3,1fr);margin-top:130px;border-top:1px solid var(--line2)}
+.mtab{text-align:left;padding:34px 0 20px;position:relative;opacity:.5;transition:opacity .4s}
+.mtab::before{content:"";position:absolute;left:0;top:-1px;height:1.5px;width:0;background:var(--accent);transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.mtab.on{opacity:1}.mtab.on::before{width:100%}
+.mtab .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:#cfc8bd;font-weight:700}
+.mtab.on .k{color:var(--accent)}
+.mtab .n{font-family:var(--serif);font-weight:300;font-size:60px;line-height:1.05;letter-spacing:-.02em;margin-top:4px}
+.mpanel{display:grid;grid-template-columns:490px 525px;justify-content:space-between;margin-top:80px}
+.mpanel .big{font-family:var(--serif);font-style:italic;font-weight:300;font-size:132px;line-height:1;letter-spacing:-.035em;margin-left:6px}
+.mpanel .cat{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;margin-top:46px}
+.mpanel .tag{font-family:var(--serif);font-weight:300;font-size:26px;line-height:1.35;color:#d7d0c4;margin-top:26px;max-width:420px}
+.specs{display:grid;grid-template-columns:201px 157px 1fr;margin-top:44px;column-gap:18px}
+.specs>div{padding:22px 0 24px;border-bottom:1px solid var(--line2)}
+.specs .l{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#8a857d;text-transform:uppercase}
+.specs .v{font-size:23px;margin-top:10px;color:#ede7dd;font-weight:300}
+.see{margin-top:48px}
+.see h4{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.26em;color:#8a857d;margin-bottom:10px}
+.see li{list-style:none;display:flex;gap:25px;padding:14px 0;border-bottom:1px solid var(--line2);font-size:16.5px;color:#ddd6ca;line-height:1.5}
+.see li b{font-family:var(--mono);font-size:11.5px;color:var(--accent);padding-top:3px}
+.mcta{margin-top:38px}
+.mcta .btn-c{height:47px}
+.mcta p{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#8a857d;margin-top:22px}
+.chart{border:1px solid rgba(255,255,255,.08);height:460px;position:relative;align-self:start;margin-top:12px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:37.5px 37.5px;background-position:-1px -1px;position:sticky;top:160px}
+.chart .cl{position:absolute;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:#8f8a82}
+.chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.chart svg text{font-family:var(--mono);font-size:9px;letter-spacing:.14em;fill:#cbc4b8}
+.chart svg text.or{fill:var(--accent);font-weight:700}
+
+/* vehicle */
+.vehicle{padding:200px 0 0}
+.vehicle .hd{display:flex;justify-content:space-between;align-items:flex-end}
+.vehicle h2{font-size:78px;line-height:.98;letter-spacing:-.03em;margin-top:30px;width:720px}
+.vehicle .hd .note{width:440px;color:var(--ink2);font-size:16.5px;line-height:1.55;margin-bottom:6px}
+.capwrap{position:relative;margin-top:60px;width:100%}
+.capwrap img{display:block;width:100%;height:auto}
+.hs{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hs::before{content:"";width:10px;height:10px;border-radius:50%;background:#f1c9a6;box-shadow:0 0 10px rgba(241,201,166,.7)}
+.hs::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(233,176,130,.0);transition:border-color .3s,transform .3s}
+.hs.on::after{border-color:rgba(233,176,130,.8)}
+.hs:not(.on)::after{animation:pulse 2.4s infinite}
+@keyframes pulse{0%{border-color:rgba(233,176,130,.6);transform:scale(.6)}100%{border-color:rgba(233,176,130,0);transform:scale(1.6)}}
+.hs span{position:absolute;left:34px;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:#f3eee6;font-weight:700}
+.card{position:absolute;width:387px;background:rgba(24,24,26,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(217,163,122,.6);padding:30px 29px 26px;transition:left .6s cubic-bezier(.2,.7,.2,1),top .6s cubic-bezier(.2,.7,.2,1),opacity .35s}
+.card .k{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#9a948a}
+.card h3{font-size:30px;line-height:1.12;margin:16px 0 14px;letter-spacing:-.015em}
+.card p{font-size:14.5px;line-height:1.5;color:#cfc8bd}
+.card .m{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line2);margin-top:22px;padding-top:22px}
+.card .m .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:#8a857d}
+.card .m .v{font-size:23px;color:#f0c7a3;font-weight:300}
+.vtabs{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line2);margin-top:30px;border-bottom:1px solid var(--line2);padding-bottom:84px}
+.vtab{text-align:left;padding:24px 0 0;position:relative;opacity:.55;transition:opacity .3s}
+.vtab::before{content:"";position:absolute;left:0;top:-1px;height:1.5px;width:0;background:var(--accent);transition:width .6s}
+.vtab.on{opacity:1}.vtab.on::before{width:93%}
+.vtab .k{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#9a948a}
+.vtab.on .k{color:var(--accent);font-weight:700}
+.vtab .n{font-family:var(--serif);font-size:24px;font-weight:300;margin-top:6px}
+.vspecs{display:grid;grid-template-columns:repeat(6,1fr);padding:28px 0 160px;border-top:0}
+.vspecs .l{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#9a948a}
+.vspecs .v{font-stretch:118%;font-weight:300;font-size:40px;margin-top:12px;letter-spacing:-.01em}
+
+/* cabin */
+.cabin{padding:0}
+.cabin .img{position:relative;height:118vh;overflow:hidden}
+.cabin .img img{position:absolute;right:0;top:-6%;height:112%;width:auto;min-width:100%;object-fit:cover;will-change:transform}
+.cabin .img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,16,15,.55),rgba(14,16,15,0) 55%),linear-gradient(to top,var(--bg),rgba(14,16,15,0) 30%),linear-gradient(to bottom,var(--bg),rgba(14,16,15,0) 12%)}
+.cabin .ov{position:absolute;left:244px;top:56vh;z-index:2;width:640px}
+.cabin .ov h2{font-size:90px;line-height:.99;letter-spacing:-.03em;margin-top:26px}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);margin:70px auto 0;width:1102px;border-top:1px solid var(--line2);position:relative}
+.cols4>div{padding:44px 40px 50px 0;border-right:1px solid var(--line2)}
+.cols4>div:nth-child(n+2){padding-left:40px}
+.cols4>div:last-child{border-right:0}
+.cols4 .k{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:#9a948a}
+.cols4 h3{font-size:32px;line-height:1.1;margin:22px 0 16px;letter-spacing:-.015em}
+.cols4 p{font-size:16px;line-height:1.55;color:#cfc8bd}
+
+/* training */
+.training{padding:220px 0 180px}
+.training .hd{display:flex;justify-content:space-between;align-items:flex-end}
+.training h2{font-size:74px;line-height:.98;margin-top:30px;letter-spacing:-.03em}
+.training .hd .note{width:440px;color:var(--ink2);font-size:16.5px;line-height:1.55;margin-bottom:22px}
+.days{display:grid;grid-template-columns:repeat(6,1fr);margin-top:100px;position:relative}
+.days::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line2)}
+.days .bar{position:absolute;left:0;top:0;height:1.5px;background:var(--accent);transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.day{text-align:left;padding-top:24px;position:relative;opacity:.55;transition:opacity .3s}
+.day::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;border:1px solid #6b665f;background:var(--bg)}
+.day.on,.day.done{opacity:1}
+.day.on::before,.day.done::before{background:var(--accent);border-color:var(--accent)}
+.day .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:#9a948a}
+.day.on .k{color:var(--accent);font-weight:700}
+.day .n{font-family:var(--serif);font-size:22px;font-weight:300;margin-top:6px}
+.dpanel{display:grid;grid-template-columns:571px 1fr;gap:75px;margin-top:70px}
+.dimg{height:490px;overflow:hidden;position:relative}
+.dimg img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .5s}
+.dnum{font-family:var(--sans);font-stretch:125%;font-weight:300;font-size:92px;line-height:1;color:var(--accent);display:flex;align-items:baseline;gap:14px;margin-top:4px}
+.dnum small{font-family:var(--mono);font-size:11px;color:#8a857d;letter-spacing:.2em}
+.dpanel .k2{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;margin-top:32px}
+.dpanel h3{font-size:44px;line-height:1.05;margin:14px 0 22px;letter-spacing:-.02em}
+.dpanel .p{font-size:16.5px;line-height:1.55;color:#cfc8bd;max-width:460px}
+.sched{margin-top:28px;border-top:1px solid var(--line2)}
+.sched div{display:flex;gap:28px;padding:12px 0;border-bottom:1px solid var(--line2);font-size:15.5px;color:#ddd6ca}
+.sched b{font-family:var(--mono);font-size:12.5px;color:#ede7dd;width:38px;padding-top:2px}
+.dnav{display:flex;align-items:center;gap:12px;margin-top:28px}
+.dnav button{width:45px;height:45px;border-radius:50%;border:1px solid #3d3a37;display:flex;align-items:center;justify-content:center;transition:border-color .3s}
+.dnav button:hover{border-color:var(--accent)}
+.dnav span{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#8a857d;margin-left:10px}
+.dfade{transition:opacity .35s, transform .35s}
+.dfade.out{opacity:0;transform:translateY(10px)}
+
+/* quote & countdown */
+.quote,.count{position:relative;height:100vh;min-height:760px}
+.quote .bg,.count .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.quote .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg),rgba(14,16,15,.25) 30%,rgba(14,16,15,.2) 70%,var(--bg))}
+.quote .inner{position:absolute;left:244px;top:36vh;width:1100px}
+.quote blockquote{font-family:var(--serif);font-weight:300;font-size:74px;line-height:1.08;letter-spacing:-.022em;margin-top:30px;min-height:240px;max-width:840px}
+.quote .who{display:flex;gap:18px;align-items:baseline;margin-top:40px;font-size:15px}
+.quote .who span{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:#8a857d}
+.qdots{display:flex;gap:16px;margin-top:80px}
+.qdots button{width:44px;text-align:left;font-family:var(--mono);font-size:10px;color:#77716a;padding-top:10px;position:relative}
+.qdots button::before{content:"";position:absolute;top:0;left:0;width:100%;height:1px;background:#3a3834}
+.qdots button i{position:absolute;top:0;left:0;height:1px;background:#e8e0d4;width:0}
+.qdots button.on{color:#ede7dd}
+.count .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg),rgba(14,16,15,0) 18%,rgba(14,16,15,0) 75%,rgba(14,16,15,.5))}
+.count .inner{position:absolute;left:244px;top:40vh;width:1300px}
+.count .eb::before{content:"";width:26px}
+.count .eb i{width:7px;height:7px;border-radius:50%;background:#e2584a;display:inline-block;box-shadow:0 0 8px #e2584a}
+.cd{display:flex;align-items:flex-start;margin-top:10px}
+.cd .u{width:260px;position:relative}
+.cd .u b{font-family:var(--sans);font-stretch:125%;font-weight:300;font-size:176px;line-height:1.02;letter-spacing:-.02em;display:block}
+.cd .u span{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:#8f8a82;display:block;margin-top:14px}
+.cd .col{width:84px;position:relative}
+.cd .col::before,.cd .col::after{content:"";position:absolute;left:30px;width:9px;height:9px;background:var(--accent);opacity:.8}
+.cd .col::before{top:65px}.cd .col::after{top:120px}
+.cfacts{display:flex;gap:65px;margin-top:52px;border-top:1px solid rgba(255,255,255,.12);padding-top:26px;width:846px}
+.cfacts .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:#8f8a82}
+.cfacts .v{font-size:18px;margin-top:8px}
+.count .btn-c{margin-top:44px}
+
+/* faq & footer */
+.faq{padding:200px 0 140px}
+.faq h2{font-size:70px;line-height:1;margin:30px 0 70px;letter-spacing:-.03em}
+.qa{border-top:1px solid var(--line2)}
+.qa:last-child{border-bottom:1px solid var(--line2)}
+.qa button{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;padding:28px 0;font-family:var(--serif);font-size:30px;font-weight:300}
+.qa button i{font-style:normal;font-family:var(--mono);font-size:18px;color:var(--accent);transition:transform .4s}
+.qa.open button i{transform:rotate(45deg)}
+.qa .a{overflow:hidden;max-height:0;transition:max-height .5s cubic-bezier(.2,.7,.2,1)}
+.qa .a p{padding:0 0 30px;color:#cfc8bd;max-width:640px;font-size:16.5px}
+footer{border-top:1px solid var(--line2);padding:70px 0 140px;color:#8a857d;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;align-items:flex-end}
+footer .logo{font-size:15px}
+
+/* HUD + rail */
+.hud{position:fixed;left:0;right:0;bottom:0;height:90px;z-index:30;pointer-events:none;transition:opacity .6s;background:linear-gradient(to top,rgba(10,10,10,.35),rgba(10,10,10,0))}
+.hud::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(255,255,255,.1)}
+.hud .row{position:absolute;right:78px;top:24px;display:flex;gap:44px}
+.hud .it{display:flex;flex-direction:column;align-items:flex-start;min-width:118px}
+.hud .l{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#9a948a}
+.hud .v{font-family:var(--sans);font-weight:300;font-size:24px;line-height:1.1;margin-top:4px;color:#f3eee6;white-space:nowrap;text-align:right;align-self:stretch}
+.hud .v small{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#8f8a82;margin-left:6px}
+.hud .v em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:4px}
+.rail{position:fixed;right:39px;top:211px;height:366px;width:2px;z-index:30;pointer-events:none}
+.rail .ln{position:absolute;left:0;top:0;bottom:0;width:1px;background:rgba(255,255,255,.18)}
+.rail .pr{position:absolute;left:0;top:0;width:1px;background:var(--accent)}
+.rail .d{position:absolute;left:-4px;width:9px;height:9px;border-radius:50%;border:1px solid #bdb6ab;background:#0c0c0c;margin-top:-4px;transition:background .3s,border-color .3s}
+.rail .d.on{background:var(--accent);border-color:var(--accent)}
+.rail .mk{position:absolute;left:-7px;width:15px;height:15px;margin-top:-7px;border-radius:50%;border:1px solid var(--accent)}
+.rail .mk::before{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.rail .mk span{position:absolute;right:26px;top:-1px;font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="banner">
+  <div class="built"><svg class="star" viewBox="0 0 24 24"><g stroke="#e0785a" stroke-width="1.6" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M7 2.8l10 18.4M2.8 7l18.4 10M17 2.8 7 21.2M21.2 7 2.8 17"/></g></svg><span>Rebuilt by <b>Claude Opus 5.5</b> from <a href="https://www.youtube.com/watch?v=mPiaap4zEVk" target="_blank" rel="noopener">Brendan Jowett's video</a></span></div>
+</div>
+
+<nav class="nav" id="nav">
+  <a href="#top" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#f3eee6" stroke-width="1.3"><path d="M4.5 13a7.5 7.5 0 0 1 15 0"/><path d="M1.5 13h21"/><path d="M5.5 16.2a7.5 7.5 0 0 0 13 0"/></svg>KÁRMÁN</a>
+  <div class="links">
+    <a href="#missions" data-nav="missions">MISSIONS</a>
+    <a href="#vehicle" data-nav="vehicle">VEHICLE</a>
+    <a href="#training" data-nav="training">TRAINING</a>
+    <a href="#crew" data-nav="crew">CREW</a>
+    <a href="#questions" data-nav="questions">QUESTIONS</a>
+  </div>
+  <div class="navr">
+    <span class="kcount">K-73 IN<b class="kc">22d 20:18:33</b></span>
+    <a href="#launch" class="btn-o">CLAIM A SEAT</a>
+  </div>
+</nav>
+
+<div class="kline" id="kline">KÁRMÁN LINE · 100 KM</div>
+
+<main id="top">
+  <section class="hero" data-t0="0" data-t1="0.3" data-hero>
+    <div class="eb dot rv">PAD 3 · SOLANO COAST · 34°12′ S</div>
+    <h1 class="rv d1">Space begins about a hundred kilometres up.</h1>
+    <p class="lede rv d2">KÁRMÁN carries eight travellers past that mark at once. Eleven minutes out to the black and home, five days orbiting the planet, or a week around the Moon's far side.</p>
+    <div class="ctas rv d3"><a class="btn-c" href="#missions">CHOOSE A MISSION</a><a class="btn-t" href="#ascent">WATCH THE ASCENT <span>↓</span></a></div>
+    <div class="ignite">SCROLL TO IGNITE</div>
+  </section>
+
+  <section class="ch" id="ascent" data-t0="0.3" data-t1="1.0">
+    <div class="txt"><div class="eb rv">01 · LIFTOFF · T+00:00:12</div><h2 class="h2 rv d1">Nine engines, then a stillness nobody predicts.</h2><p class="body rv d2">Seven thousand kilonewtons push off the pad in one motion. The roar stays outside. Inside you notice the airframe flexing, your own breath, and the commander calling out figures.</p></div>
+  </section>
+  <section class="ch r" data-t0="1.0" data-t1="2.0">
+    <div class="txt"><div class="eb rv">01 · MAX-Q · 11 KM</div><h2 class="h2 rv d1">One minute up, the roughest stretch of the ride.</h2><p class="body rv d2" style="max-width:490px">Peak aerodynamic load, 34 kilopascals against the nose cone. It rattles for twenty seconds, then eases as the atmosphere thins away.</p></div>
+  </section>
+  <section class="ch" data-t0="2.0" data-t1="3.0">
+    <div class="txt"><div class="eb rv">01 · 72 KM · MACH 5.1</div><h2 class="h2 rv d1">The blue fades and slides into violet.</h2><p class="body rv d2" style="max-width:480px">Out there the air is a thousandth as thick as what you breathed at the coast. Nobody has named this particular shade yet. Most voyagers attempt one regardless.</p></div>
+  </section>
+
+  <section class="op stats" data-op>
+    <div class="wrap">
+      <div class="hd">
+        <div><div class="eb rv">SAFETY AND ENGINEERING RECORD</div><h2 class="rv d1">We flew three hundred and eighteen times before a person came aboard.</h2></div>
+        <p class="note rv d2">Every figure below is checked each quarter by the Solano Flight Safety Board and published in full, including the flights we would sooner forget. As of 21 September 2026.</p>
+      </div>
+      <div class="grid3">
+        <div class="c rv"><div class="num" data-count="142">142</div><p>Uncrewed test flights before our first passenger</p></div>
+        <div class="c rv d1"><div class="num" data-count="32">32</div><p>Crewed flights flown since March 2023</p></div>
+        <div class="c rv d2"><div class="num" data-count="180">180</div><p>Voyagers carried past the Kármán line</p></div>
+        <div class="c rv"><div class="num or">0</div><p>Injuries among crew or passengers. We plan to hold that at zero</p></div>
+        <div class="c rv d1"><div class="num" data-count="21">21</div><p>Flights on WREN B-07, our most-flown booster</p></div>
+        <div class="c rv d2"><div class="num"><span data-count="0.2" data-dec="1">0.2</span><small>s</small></div><p>Time from an abort call to capsule separation</p></div>
+      </div>
+      <div class="notes">
+        <div class="rv"><h4>ABORT MODES</h4><p>Three separate systems, live from the pad through to the parachutes.</p></div>
+        <div class="rv d1"><h4>SCRUBS, 2026</h4><p>11 of 23 windows held. We wait on weather, never the calendar.</p></div>
+        <div class="rv d2"><h4>HEAT SHIELD MARGIN</h4><p>41% above our hottest re-entry, measured in flight, not modelled.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch r" data-t0="3.0" data-t1="3.8">
+    <div class="txt"><div class="eb rv">02 · 94 KM · T+00:02:26</div><h2 class="h2 rv d1">Stars, at eight o'clock in the morning.</h2><p class="body rv d2" style="max-width:490px">They show up before you register that the sky is gone. No twinkle at all: still, sharp, and far more of them than feels plausible.</p></div>
+  </section>
+  <section class="ch" data-t0="3.8" data-t1="4.8" data-kline>
+    <div class="txt" style="top:22vh"><div class="eb rv">02 · THE LINE · 100 KM</div><h2 class="h2 rv d1" style="font-size:82px;line-height:.98">Beyond here, a wing has nothing left to push against.</h2><p class="body rv d2" style="max-width:470px">Everything past this point is orbit, or a long fall. There is no wall, no jolt to mark it. The commander reads the number once, low, and the cabin quiets.</p></div>
+  </section>
+  <section class="ch r" data-t0="4.8" data-t1="5.6" data-kline>
+    <div class="txt" style="top:44vh"><div class="eb rv">02 · SEPARATION · T+00:02:51</div><h2 class="h2 rv d1">WREN heads back down. You carry on up.</h2><p class="body rv d2" style="max-width:480px">The booster drops away below and touches down on the coast pad eight minutes later. Engines cut out. Your straps go slack. The window belongs to you now.</p></div>
+  </section>
+
+  <section class="op missions" id="missions" data-op>
+    <div class="wrap">
+      <div class="eb rv">THE MISSIONS</div>
+      <h2 class="rv d1">Three ways over the<br>line.</h2>
+      <div class="mtabs rv d2">
+        <button class="mtab on" data-m="0"><div class="k">SUBORBITAL · 11 MIN</div><div class="n">Brink</div></button>
+        <button class="mtab" data-m="1"><div class="k">ORBITAL · 5 DAYS</div><div class="n">Ring</div></button>
+        <button class="mtab" data-m="2"><div class="k">LUNAR FLYBY · 7 DAYS</div><div class="n">Tethys</div></button>
+      </div>
+      <div class="mpanel">
+        <div class="dfade" id="mleft"></div>
+        <div class="chart rv" id="chart">
+          <div class="cl" style="left:21px;top:21px">TRAJECTORY</div>
+          <div class="cl" style="right:21px;top:21px">ALTITUDE EXAGGERATED</div>
+          <svg id="csvg" viewBox="0 0 525 460" preserveAspectRatio="none"></svg>
+          <div class="cl" id="cfl" style="left:21px;bottom:22px">PAD 3 · T+0:00</div>
+          <div class="cl" id="cfr" style="right:21px;bottom:22px">SPLASHDOWN · T+11:40</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="op vehicle" id="vehicle" data-op>
+    <div class="wrap">
+      <div class="hd">
+        <div><div class="eb rv">THE VEHICLE · LYRA ON WREN</div><h2 class="rv d1">Eight seats, seven windows, and one instruction: let them see.</h2></div>
+        <p class="note rv d2">LYRA is a capsule designed outward from the window. Our engineers got the glass first, then had to build a spacecraft around it. It rides WREN, a booster that lands on the coast and reflies inside nine days.</p>
+      </div>
+    </div>
+    <div class="capwrap" id="capwrap">
+      <img src="img/capsule.jpg" alt="LYRA capsule on its transport cradle">
+      <div id="hsl"></div>
+      <div class="card" id="vcard"></div>
+    </div>
+    <div class="wrap">
+      <div class="vtabs" id="vtabs"></div>
+      <div class="vspecs">
+        <div class="rv"><div class="l">HEIGHT</div><div class="v">3.6 m</div></div>
+        <div class="rv d1"><div class="l">DIAMETER</div><div class="v">4.2 m</div></div>
+        <div class="rv d1"><div class="l">PRESSURISED VOLUME</div><div class="v">11.2 m³</div></div>
+        <div class="rv d2"><div class="l">LIFE SUPPORT</div><div class="v">12 days</div></div>
+        <div class="rv d2"><div class="l">CABIN NOISE, MAX-Q</div><div class="v">48 dB</div></div>
+        <div class="rv d3"><div class="l">WREN REFLIGHTS</div><div class="v">9 days</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" data-t0="5.6" data-t1="6.6">
+    <div class="txt" style="top:24vh"><div class="eb rv">03 · ORBIT · 540 KM</div><h2 class="h2 rv d1" >Nothing holds you up here. You are falling around the planet.</h2><p class="body rv d2" style="max-width:480px">At 7.6 kilometres a second, the ground drops away beneath you exactly as fast as you drop toward it. It looks and feels like floating. It is precisely the reverse.</p></div>
+  </section>
+  <section class="ch r" data-t0="6.6" data-t1="7.3">
+    <div class="txt" style="top:24vh"><div class="eb rv">03 · NIGHT PASS · T+0D 06:40</div><h2 class="h2 rv d1" >By night the coastlines glow in strings of sodium light.</h2><p class="body rv d2" style="max-width:500px">Cities outline whole continents. Storms flash over the ocean as if someone were photographing them from below. Nobody sleeps through their first pass in darkness.</p></div>
+  </section>
+  <section class="ch" data-t0="7.3" data-t1="8.0">
+    <div class="txt" style="top:26vh"><div class="eb rv">03 · SUNRISE · EVERY 92 MINUTES</div><h2 class="h2 rv d1" style="font-size:82px;line-height:.98;width:640px">Sixteen sunrises daily. Each lasts eight seconds flat.</h2><p class="body rv d2" style="max-width:500px">A thin blue band, a red edge, then the sun all at once, with no atmosphere left to blur it. Ring voyagers see eighty of these. Most give up counting near twelve.</p></div>
+  </section>
+
+  <section class="op cabin" data-op>
+    <div class="img"><img src="img/cabin.jpg" alt="Two voyagers at the LYRA window, Earth below" id="cabimg">
+      <div class="ov"><div class="eb rv">THE CABIN</div><h2 class="rv d1">We built the cabin around the window, then the window around you.</h2></div>
+    </div>
+    <div class="cols4">
+      <div class="rv"><div class="k">01 · SEAT</div><h3>Moulded to your frame.</h3><p>Your seat liner comes from a scan taken on your first day of training. It carries you through 5.4 g and travels home with you after.</p></div>
+      <div class="rv d1"><div class="k">02 · GLASS</div><h3>Fused silica, 42 centimetres thick.</h3><p>Three panes, the inner one heated, mounted close enough to your face that the frame drops out of view. Every voyager gets their own.</p></div>
+      <div class="rv d2"><div class="k">03 · LIGHT</div><h3>Dim enough to see by.</h3><p>Cabin lighting falls to 2 lux on the night side, warm and low near the floor, so your eyes adjust to both the stars and the cities beneath them.</p></div>
+      <div class="rv d3"><div class="k">04 · AIR</div><h3>Sea-level, at 21°C.</h3><p>Sea-level pressure, 40% humidity, filtered and cycled every ninety seconds. Tethys stocks twelve days of it for a seven-day trip.</p></div>
+    </div>
+  </section>
+
+  <section class="op training" id="training" data-op>
+    <div class="wrap">
+      <div class="hd">
+        <div><div class="eb rv">THE TRAINING PROGRAMME</div><h2 class="rv d1">Six days to turn into<br>crew.</h2></div>
+        <p class="note rv d2">Ring voyagers train for six days at Solano Coast. Brink uses only three of them, and Tethys adds fifteen more spread across two months. You leave able to handle everything in the cabin you will almost certainly never need.</p>
+      </div>
+      <div class="days rv" id="days"><div class="bar" id="dbar"></div></div>
+      <div class="dpanel">
+        <div class="dimg rv"><img id="dimg" src="img/trainer.jpg" alt="Flight surgeon at Solano Coast"></div>
+        <div class="dfade rv d1" id="dright"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="crew" data-t0="8.0" data-t1="8.8">
+    <div class="txt" style="top:62vh"><div class="eb rv">04 · TRANS-LUNAR INJECTION</div><h2 class="h2 rv d1" >A five-minute-fifty burn, and Earth's pull releases you.</h2><p class="body rv d2" style="max-width:480px">Tethys departs orbit at 39,000 km/h. Within the hour, the planet you have spent your whole life on shrinks into the window frame.</p></div>
+  </section>
+  <section class="ch" data-t0="8.8" data-t1="9.4">
+    <div class="txt" style="top:62vh"><div class="eb rv">04 · COAST · T+1D 20H</div><h2 class="h2 rv d1" >Two days out, the entire Earth hides behind your thumb.</h2><p class="body rv d2" style="max-width:470px">You watch weather systems spin, the day-night line sweep an ocean, both poles glowing white at once. Everything anyone has ever done sits inside that small circle.</p></div>
+  </section>
+  <section class="ch r" data-t0="9.4" data-t1="9.8">
+    <div class="txt" style="top:56vh"><div class="eb rv">04 · FAR SIDE · LOSS OF SIGNAL</div><h2 class="h2 rv d1" >Behind the Moon, the radio falls silent for forty-one minutes.</h2><p class="body rv d2" style="max-width:490px">No Earth, no ground crew on the line. Only the far side sliding past 8,200 kilometres below, terrain fewer than forty people have ever seen with their own eyes.</p></div>
+  </section>
+  <section class="ch" data-t0="9.8" data-t1="10" style="height:130vh">
+    <div class="txt" style="top:48vh"><div class="eb rv">04 · ACQUISITION OF SIGNAL · 384,400 KM</div><h2 class="h2 rv d1" style="font-size:82px">Then it climbs.</h2><p class="body rv d2" style="max-width:470px">Earthrise, above a grey horizon, in complete silence. Then a voice from Solano Coast, delayed four light-seconds, asking how the view looks.</p><a href="#launch" class="btn-o rv d3" style="display:inline-block;margin-top:40px">RESERVE TETHYS</a></div>
+  </section>
+
+  <section class="op quote" data-op>
+    <div class="bg" style="background-image:url(img/quote.jpg)"></div>
+    <div class="inner">
+      <div class="eb rv">IN THEIR OWN WORDS</div>
+      <blockquote class="dfade rv d1" id="qtext"></blockquote>
+      <div class="who dfade rv d2" id="qwho"></div>
+      <div class="qdots" id="qdots"></div>
+    </div>
+  </section>
+
+  <section class="op count" id="launch" data-op>
+    <div class="bg" style="background-image:url(img/launch.jpg)"></div>
+    <div class="inner">
+      <div class="eb dot rv"><i></i>NEXT LAUNCH · K-73 · BRINK</div>
+      <div class="cd rv d1">
+        <div class="u"><b id="cdd">22</b><span>DAYS</span></div><div class="col"></div>
+        <div class="u"><b id="cdh">20</b><span>HOURS</span></div><div class="col"></div>
+        <div class="u"><b id="cdm">16</b><span>MINUTES</span></div><div class="col"></div>
+        <div class="u"><b id="cds">40</b><span>SECONDS</span></div>
+      </div>
+      <div class="cfacts rv d2">
+        <div><div class="l">WINDOW OPENS</div><div class="v">06:12 local · 17 Oct 2026</div></div>
+        <div><div class="l">PAD</div><div class="v">LC-3, Solano Coast</div></div>
+        <div><div class="l">WEATHER, L-24 DAYS</div><div class="v">88% go</div></div>
+        <div><div class="l">SEATS OPEN</div><div class="v">2 of 6</div></div>
+      </div>
+      <a class="btn-c rv d3" href="#questions">CLAIM A SEAT ON K-73</a>
+    </div>
+  </section>
+
+  <section class="op faq" id="questions" data-op>
+    <div class="wrap">
+      <div class="eb rv">QUESTIONS</div>
+      <h2 class="rv d1">What voyagers ask us first.</h2>
+      <div id="faq"></div>
+    </div>
+  </section>
+  <footer class="op" data-op>
+    <div class="wrap">
+      <div><a class="logo" href="#top"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#f3eee6" stroke-width="1.3"><path d="M4.5 13a7.5 7.5 0 0 1 15 0"/><path d="M1.5 13h21"/><path d="M5.5 16.2a7.5 7.5 0 0 0 13 0"/></svg>KÁRMÁN</a><p style="margin-top:18px">Solano Coast Spaceport · Pad 3 · 34°12′ S</p></div>
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em">© 2026 KÁRMÁN FLIGHT SYSTEMS</p>
+    </div>
+  </footer>
+</main>
+
+<div class="hud" id="hud">
+  <div class="row">
+    <div class="it"><span class="l">ALTITUDE</span><span class="v" id="halt">0.0<small>KM</small></span></div>
+    <div class="it"><span class="l">VELOCITY</span><span class="v" id="hvel">0<small>KM/H</small></span></div>
+    <div class="it"><span class="l">LOAD</span><span class="v" id="hload">1.00<small>G</small></span></div>
+    <div class="it"><span class="l">MISSION CLOCK</span><span class="v" id="hclk">T−00:00:10<em>.00</em></span></div>
+  </div>
+</div>
+<div class="rail" id="rail"><div class="ln"></div><div class="pr" id="rpr"></div><div id="rdots"></div><div class="mk" id="rmk"><span id="rlab">0.0 km</span></div></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+$$('.op').forEach(o=>{const n=o.nextElementSibling;if(n&&n.classList.contains('op'))o.classList.add('nb')});
+// reveals + counters
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);
+  e.target.querySelectorAll('[data-count]').forEach(countUp);}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+function countUp(el){const to=+el.dataset.count,dec=+(el.dataset.dec||0),t0=performance.now();
+  (function f(n){const k=Math.min(1,(n-t0)/1600),e=1-Math.pow(1-k,3);el.textContent=(to*e).toFixed(dec);if(k<1)requestAnimationFrame(f)})(t0);}
+// nav solid + active
+const nav=$('#nav'), navT=['missions','vehicle','training','crew','questions'].map(id=>[id,document.getElementById(id)]);
+function onScroll(){const y=scrollY;nav.classList.toggle('solid',y>30);
+  let cur=null;for(const [id,el] of navT){if(el.getBoundingClientRect().top<innerHeight*.5)cur=id}
+  $$('.links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===cur));}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+// countdown to K-73
+const target=Date.now()+((22*24+20)*3600+18*60+33)*1000;
+const p2=n=>String(n).padStart(2,'0');
+function tick(){let s=Math.max(0,Math.floor((target-Date.now())/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;
+  $('.kc').textContent=`${d}d ${p2(h)}:${p2(m)}:${p2(s)}`;$('#cdd').textContent=p2(d);$('#cdh').textContent=p2(h);$('#cdm').textContent=p2(m);$('#cds').textContent=p2(s);}
+tick();setInterval(tick,1000);
+
+// missions
+const M=[
+ {name:'Brink',cat:'SUBORBITAL',tag:'Straight up, over the line, and home before your coffee cools.',
+  specs:[['Fare per seat','US$480,000'],['Duration','11 min 40 s'],['Peak load','5.4 g'],['Apogee','107 km'],['Weightless','4 min 10 s'],['Training','3 days']],
+  see:['The coast, all 1,100 kilometres of it, visible in every direction at once','The sky shifting from blue to black in under a minute, at eight in the morning','The atmosphere as a thin blue film, far thinner than you pictured it','Your pen, drifting silently off the armrest'],
+  dep:'10% DEPOSIT · US$48,000 · REFUNDABLE TO L-90 DAYS',fl:'PAD 3 · T+0:00',fr:'SPLASHDOWN · T+11:40'},
+ {name:'Ring',cat:'ORBITAL',tag:'Five days at 540 kilometres, sixteen sunrises daily, and a window that never runs short of Earth.',
+  specs:[['Fare per seat','US$2,400,000'],['Duration','5 days'],['Peak load','3.2 g'],['Altitude','540 km'],['Weightless','4 d 21 h'],['Training','6 days']],
+  see:['Eighty sunrises, each lasting eight seconds','Coastlines outlined in sodium light on every night pass','Storms flashing over the ocean, seen from above','The full curve of the planet inside one window'],
+  dep:'10% DEPOSIT · US$240,000 · REFUNDABLE TO L-90 DAYS',fl:'PAD 3 · T+0:00',fr:'SPLASHDOWN · T+5D'},
+ {name:'Tethys',cat:'LUNAR FLYBY',tag:'A week around the Moon’s far side, and home with a view nobody else can put into words.',
+  specs:[['Fare per seat','US$14,500,000'],['Duration','7 days'],['Peak load','4.1 g'],['Farthest','391,700 km'],['Weightless','6 d 20 h'],['Training','21 days']],
+  see:['The whole Earth hiding behind your thumb','Forty-one minutes of quiet behind the Moon','The far side sliding past 8,200 kilometres below','Earthrise, above a grey horizon'],
+  dep:'10% DEPOSIT · US$1,450,000 · REFUNDABLE TO L-180 DAYS',fl:'PAD 3 · T+0:00',fr:'SPLASHDOWN · T+7D'}];
+function chartSVG(i){
+  const earth='<path d="M-1 374 Q262 318 526 374 L526 412 L-1 412Z" fill="#1c2233"/><path d="M-1 374 Q262 318 526 374" fill="none" stroke="#4a5d8f" stroke-width="7" opacity=".6"/><path d="M-1 380 Q262 324 526 380" fill="none" stroke="#9fb0d6" stroke-width="1" opacity=".35"/>';
+  if(i===0) return earth+`<path d="M4 180 Q262 118 522 180" fill="none" stroke="#9a948a" stroke-dasharray="2 5" stroke-width="1"/>
+   <line x1="36" y1="141" x2="36" y2="362" stroke="#555" stroke-width="1"/><text x="44" y="144">107 KM</text><text x="30" y="261">— 50 KM</text>
+   <path id="tp" d="M132 362 C150 300, 200 144, 269 144 C338 144, 390 300, 411 364" fill="none" stroke="#ece6dc" stroke-width="1.2"/>
+   <path d="M132 362 C150 300, 200 144, 269 144 C338 144, 390 300, 411 364" fill="none" stroke="#d9a37a" stroke-width="2" pathLength="100" stroke-dasharray="0 17 50 100"/>
+   <g fill="#111" stroke="#eee"><circle cx="132" cy="362" r="3.5"/><circle cx="158" cy="272" r="3.5"/><circle cx="269" cy="144" r="3.5"/><circle cx="385" cy="281" r="3.5"/><circle cx="411" cy="364" r="3.5"/></g>
+   <circle id="cdot" r="5" fill="#d9a37a" opacity=".9"/>
+   <text x="269" y="120" text-anchor="middle" class="or">4 MIN 10 S WEIGHTLESS</text><text x="269" y="130" text-anchor="middle">APOGEE · 107 KM</text>
+   <text x="520" y="200" text-anchor="end" class="or">KÁRMÁN LINE · 100 KM</text><text x="150" y="275" text-anchor="end">MECO · T+2:21</text>
+   <text x="394" y="284">RE-ENTRY · 5.4 G</text><text x="124" y="365" text-anchor="end">LIFTOFF · T+0:00</text><text x="419" y="367">SPLASHDOWN</text>`;
+  if(i===1) return `<ellipse cx="262" cy="230" rx="200" ry="120" fill="none" stroke="#9a948a" stroke-dasharray="2 5"/><circle cx="262" cy="230" r="88" fill="#1c2233" stroke="#4a5d8f" stroke-width="6" opacity=".9"/>
+   <ellipse id="tp" cx="262" cy="230" rx="150" ry="100" fill="none" stroke="#ece6dc" stroke-width="1.2" class="traj"/><circle id="cdot" r="5" fill="#d9a37a"/>
+   <text x="262" y="112" text-anchor="middle" class="or">540 KM · 92 MIN / ORBIT</text><text x="262" y="355" text-anchor="middle">80 ORBITS · 5 DAYS</text><text x="440" y="236">KÁRMÁN LINE</text>`;
+  return `<circle cx="95" cy="270" r="46" fill="#1c2233" stroke="#4a5d8f" stroke-width="5"/><circle cx="440" cy="170" r="20" fill="#3a3a3a" stroke="#777"/>
+   <path id="tp" class="traj" d="M95 222 C200 150, 380 110, 440 140 C480 160, 470 200, 440 202 C380 210, 200 320, 95 318" fill="none" stroke="#ece6dc" stroke-width="1.2"/><circle id="cdot" r="5" fill="#d9a37a"/>
+   <text x="440" y="118" text-anchor="middle" class="or">FAR SIDE · 8,200 KM</text><text x="95" y="345" text-anchor="middle">EARTH</text><text x="280" y="250">384,400 KM</text><text x="380" y="235">LOSS OF SIGNAL · 41 MIN</text>`;
+}
+let mi=0,dotT=0;
+function renderM(i){const m=M[i],L=$('#mleft');
+  L.innerHTML=`<div class="big">${m.name}</div><div class="cat">${m.cat}</div><div class="tag">${m.tag}</div>
+   <div class="specs">${m.specs.map(s=>`<div><div class="l">${s[0]}</div><div class="v">${s[1]}</div></div>`).join('')}</div>
+   <div class="see"><h4>WHAT YOU WILL SEE</h4><ul>${m.see.map((s,k)=>`<li><b>0${k+1}</b>${s}</li>`).join('')}</ul></div>
+   <div class="mcta"><a class="btn-c" href="#launch">RESERVE ${m.name.toUpperCase()}</a><p>${m.dep}</p></div>`;
+  $('#csvg').innerHTML=chartSVG(i);$('#cfl').textContent=m.fl;$('#cfr').textContent=m.fr;
+  const tp=$('#tp');if(tp&&tp.getTotalLength){const len=tp.getTotalLength();tp.style.strokeDasharray=len;tp.style.strokeDashoffset=len;tp.getBoundingClientRect();tp.style.transition='stroke-dashoffset 1.8s cubic-bezier(.3,.6,.2,1)';tp.style.strokeDashoffset=0;}
+}
+$$('.mtab').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.m;if(i===mi)return;mi=i;$$('.mtab').forEach(x=>x.classList.toggle('on',x===b));
+  const L=$('#mleft');L.classList.add('out');setTimeout(()=>{renderM(i);L.classList.remove('out')},300)}));
+renderM(0);
+(function anim(){dotT=(dotT+0.0025)%1;const tp=$('#tp'),d=$('#cdot');if(tp&&d&&tp.getTotalLength){const L=tp.getTotalLength(),p=tp.getPointAtLength(L*dotT);d.setAttribute('cx',p.x);d.setAttribute('cy',p.y)}requestAnimationFrame(anim)})();
+
+// vehicle hotspots
+const HS=[
+ {x:49.5,y:10.2,k:'01 · OBSERVATION DOME',n:'Observation dome',h:'A seventh window, facing up.',p:'The docking hatch also serves as a dome of fused silica. On the climb it faces the black; in orbit it looks straight down at Earth.',l:'APERTURE',v:'64 cm'},
+ {x:56.0,y:39.4,k:'02 · VOYAGER WINDOWS',n:'Voyager windows',h:'One window per seat, no sharing.',p:'Six ports ring the widest section of the hull, each angled 12° down so the horizon lands in the centre of the glass once you are strapped in.',l:'DIAMETER',v:'42 cm'},
+ {x:33.9,y:53.0,k:'03 · THRUSTER PODS',n:'Thruster pods',h:'Sixteen small hands.',p:'Paired thrusters across four pods rotate the capsule so your window points at what matters: the coast, the terminator, the Moon. Attitude holds within a tenth of a degree.',l:'THRUSTERS',v:'16 × 440 N'},
+ {x:49.7,y:53.7,k:'04 · PARACHUTE BAY',n:'Parachute bay',h:'Four canopies. One would do.',p:'Two drogues and four mains, packed behind a single panel. Splashdown lands at 24 km/h, a short distance off the coast pad.',l:'MAINS',v:'4 × 35 m'},
+ {x:70.0,y:66.0,k:'05 · HEAT SHIELD',n:'Heat shield',h:'The oldest piece of the design.',p:'An ablative base that takes re-entry at 2,700 °C and gets swapped after every flight, carrying 41% margin over our hottest re-entry.',l:'PEAK TEMP',v:'2,700 °C'}];
+let vi=1;
+$('#hsl').innerHTML=HS.map((h,i)=>`<button class="hs" data-i="${i}" style="left:${h.x}%;top:${h.y}%" aria-label="Hotspot 0${i+1}"></button>`).join('');
+$('#vtabs').innerHTML=HS.map((h,i)=>`<button class="vtab" data-i="${i}"><div class="k">0${i+1}</div><div class="n">${h.n}</div></button>`).join('');
+function setV(i){vi=i;const h=HS[i],c=$('#vcard');c.style.opacity=0;
+  setTimeout(()=>{c.innerHTML=`<div class="k">${h.k}</div><h3>${h.h}</h3><p>${h.p}</p><div class="m"><span class="l">${h.l}</span><span class="v">${h.v}</span></div>`;
+   let left=h.x+2.8, top=h.y-16; if(left>78)left=h.x-24; c.style.left=left+'%';c.style.top=Math.max(4,top)+'%';c.style.opacity=1},200);
+  $$('.hs').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));$$('.vtab').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));}
+$$('.hs,.vtab').forEach(b=>b.addEventListener('click',()=>setV(+b.dataset.i)));
+setV(1);
+// auto-advance hotspots while in view
+let vTimer=setInterval(()=>{const r=$('#capwrap').getBoundingClientRect();if(r.top<innerHeight*.4&&r.bottom>innerHeight*.6)setV((vi+1)%5)},4200);
+
+// cabin parallax
+const cab=$('#cabimg');addEventListener('scroll',()=>{const r=cab.parentElement.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){cab.style.transform=`translateY(${(r.top)*-0.12}px) scale(${1.04+Math.max(-.04,r.top/innerHeight*0.04)})`}},{passive:true});
+
+// training
+const D=[
+ {n:'Medicine and fit',k:'DAY ONE · MEDICINE AND FIT',h:'We assess you, then build the gear to fit.',p:'Your flight surgeon works through forty checks, none of which involve running. After that, we scan your body for a liner shaped to hold you steady at 5.4 g.',img:'img/trainer.jpg',s:[['07:00','Bloods, ECG and an unhurried breakfast'],['09:30','Full-body scan for your seat mould'],['13:00','Flight suit fitting, first pass'],['16:00','Opening briefing with your commander']]},
+ {n:'The centrifuge',k:'DAY TWO · THE CENTRIFUGE',h:'Your body learns the climb before liftoff does.',p:'Three sessions in the long-arm centrifuge, working up to the full ascent profile. By the third, you read your checklist aloud at 5.4 g.',img:'img/launch.jpg',s:[['08:00','Breathing and straining technique'],['10:00','Centrifuge session one, 3 g'],['13:30','Session two, the full ascent'],['16:00','Session three, with checklist']]},
+ {n:'Weightless',k:'DAY THREE · WEIGHTLESS',h:'Twenty-five seconds at a stretch.',p:'A morning of parabolic flights above the coast. You learn to move with one finger, to eat properly, and to leave your pen where it lands.',img:'img/cabin.jpg',s:[['06:30','Light breakfast, briefing'],['08:00','Parabolic flight, 30 arcs'],['12:00','Debrief and lunch'],['15:00','Cabin movement drills']]},
+ {n:'The capsule',k:'DAY FOUR · THE CAPSULE',h:'Every switch you will likely never touch.',p:'A full day in the LYRA simulator with your crew: normal flight, cabin leaks, a dead radio and a fire. Your commander watches closely for how well you take instruction.',img:'img/capsule.jpg',s:[['08:00','Seat fit in the actual liner'],['10:00','Standard flight, start to finish'],['14:00','Off-nominal drills'],['17:00','Crew debrief']]},
+ {n:'Water',k:'DAY FIVE · WATER',h:'Splashdown, then the hatch opens.',p:'In the survival pool at Solano Coast, in full suit, against waves. You exit the capsule, board the raft and await pickup, twice over.',img:'img/quote.jpg',s:[['08:30','Suit-up and pool briefing'],['10:00','Exit drill in calm water'],['13:00','Exit drill in waves, after dark'],['16:00','Raft and pickup']]},
+ {n:'The walk out',k:'DAY SIX · THE WALK OUT',h:'You show up a guest and depart as crew.',p:'A launch-day rehearsal from wake-up through strap-in, then your wings, your patch, and dinner with everyone who flew before you.',img:'img/launch.jpg',s:[['05:00','Launch-day wake-up'],['07:00','Walking out to Pad 3'],['09:00','Strap-in rehearsal'],['19:00','Crew dinner']]}];
+let di=0;
+$('#days').insertAdjacentHTML('beforeend',D.map((d,i)=>`<button class="day" data-i="${i}"><div class="k">DAY 0${i+1}</div><div class="n">${d.n}</div></button>`).join(''));
+function setD(i){di=(i+6)%6;const d=D[di],R=$('#dright'),img=$('#dimg');R.classList.add('out');img.style.opacity=0;
+  $$('.day').forEach((b,k)=>{b.classList.toggle('on',k===di);b.classList.toggle('done',k<di)});$('#dbar').style.width=(di*100/6+100/6*0.48)+'%';
+  setTimeout(()=>{R.innerHTML=`<div class="dnum">0${di+1}<small>/ 06</small></div><div class="k2">${d.k}</div><h3>${d.h}</h3><p class="p">${d.p}</p>
+   <div class="sched">${d.s.map(s=>`<div><b>${s[0]}</b>${s[1]}</div>`).join('')}</div>
+   <div class="dnav"><button aria-label="Previous day" id="dp">‹</button><button aria-label="Next day" id="dn">›</button><span>USE ← → TO MOVE BETWEEN DAYS</span></div>`;
+   img.src=d.img;img.style.opacity=1;R.classList.remove('out');$('#dp').onclick=()=>setD(di-1);$('#dn').onclick=()=>setD(di+1);},di===0&&!R.innerHTML?0:300);}
+$$('.day').forEach(b=>b.addEventListener('click',()=>setD(+b.dataset.i)));
+addEventListener('keydown',e=>{const r=$('#training').getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){if(e.key==='ArrowRight')setD(di+1);if(e.key==='ArrowLeft')setD(di-1)}});
+setD(0);
+
+// quotes
+const Q=[['“I’d rehearsed a whole speech for the window. Not one word of it came out.”','Noor Kessler','BRINK · K-38 · 2025'],
+ ['“Borders stop meaning much by your second orbit. They never quite come back.”','Kaito Devereux','RING · K-51 · 2026'],
+ ['“Behind the Moon it turned so quiet I could hear my own wristwatch.”','Priya Solberg','TETHYS · K-44 · 2025'],
+ ['“The commander read out the number, and nobody spoke for a full minute.”','Ilya Marchetti','BRINK · K-60 · 2026']];
+let qi=0,qStart=performance.now();
+$('#qdots').innerHTML=Q.map((q,i)=>`<button data-i="${i}"><i></i>0${i+1}</button>`).join('');
+function setQ(i){qi=i;qStart=performance.now();const t=$('#qtext'),w=$('#qwho');t.classList.add('out');w.classList.add('out');
+  setTimeout(()=>{t.textContent=Q[i][0];w.innerHTML=`${Q[i][1]}<span>${Q[i][2]}</span>`;t.classList.remove('out');w.classList.remove('out')},t.textContent?300:0);
+  $$('#qdots button').forEach((b,k)=>{b.classList.toggle('on',k===i);b.querySelector('i').style.width=k<i?'100%':'0'})}
+$$('#qdots button').forEach(b=>b.addEventListener('click',()=>setQ(+b.dataset.i)));setQ(0);
+(function qa(n){const k=(n-qStart)/7000;const bar=$$('#qdots button')[qi].querySelector('i');bar.style.width=Math.min(100,k*100)+'%';if(k>=1)setQ((qi+1)%4);requestAnimationFrame(qa)})(performance.now());
+
+// faq
+const F=[['How fit does a voyager need to be?','Managing three flights of stairs and an hour of comfortable sitting is usually enough to qualify. Your flight surgeon has the final call, on day one, not us.'],
+ ['What if the launch gets scrubbed?','We wait for the next window, usually inside 48 hours. Your seat, your crew and your liner all travel with you. A scrub is never billed to you.'],
+ ['Am I allowed to bring anything along?','A personal allowance of 1.5 kg, cleared through the crew office beforehand. Most voyagers pack a photograph and then never remember to look at it.'],
+ ['Can I get my deposit back?','Fully refundable, up to 90 days before launch on Brink and Ring, and 180 days on Tethys.']];
+$('#faq').innerHTML=F.map(f=>`<div class="qa rv"><button>${f[0]}<i>+</i></button><div class="a"><p>${f[1]}</p></div></div>`).join('');
+$$('.qa').forEach(q=>{io.observe(q);q.querySelector('button').onclick=()=>{const o=q.classList.toggle('open');q.querySelector('.a').style.maxHeight=o?q.querySelector('.a').scrollHeight+'px':0}});
+})();
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
+const canvas=document.getElementById('gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));
+renderer.setSize(innerWidth,innerHeight,false);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,innerWidth/innerHeight,0.05,6000);
+scene.add(camera);
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});
+
+const NOISE=`
+vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;}
+vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);}vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){const vec2 C=vec2(1./6.,1./3.);const vec4 D=vec4(0.,.5,1.,2.);vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);
+vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;
+i=mod289(i);vec4 p=permute(permute(permute(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+float n_=0.142857142857;vec3 ns=n_*D.wyz-D.xzx;vec4 j=p-49.*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.*x_);
+vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.-abs(x)-abs(y);vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+vec4 s0=floor(b0)*2.+1.;vec4 s1=floor(b1)*2.+1.;vec4 sh=-step(h,vec4(0.));vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);m=m*m;return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}
+float fbm(vec3 p,int o){float a=.5,s=0.;for(int i=0;i<8;i++){if(i>=o)break;s+=a*snoise(p);p=p*2.03+vec3(1.7,9.2,3.1);a*=.5;}return s;}
+vec3 hash33(vec3 p){p=vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6)));return fract(sin(p)*43758.5453);}
+`;
+const VS=`varying vec3 vObj;varying vec3 vW;varying vec3 vN;varying vec2 vUv;
+void main(){vObj=position;vUv=uv;vec4 w=modelMatrix*vec4(position,1.);vW=w.xyz;vN=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;}`;
+
+/* ---------- textures ---------- */
+function canvasTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;}
+const glowTex=canvasTex(128,128,(g,w,h)=>{const r=g.createRadialGradient(64,64,0,64,64,64);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.18,'rgba(255,240,220,.75)');r.addColorStop(.45,'rgba(255,200,150,.18)');r.addColorStop(1,'rgba(255,180,120,0)');g.fillStyle=r;g.fillRect(0,0,w,h)});
+const flareTex=canvasTex(256,64,(g,w,h)=>{let r=g.createRadialGradient(128,32,0,128,32,32);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.3,'rgba(255,245,230,.6)');r.addColorStop(1,'rgba(255,230,200,0)');g.fillStyle=r;g.fillRect(96,0,64,64);
+  const l=g.createLinearGradient(0,0,256,0);l.addColorStop(0,'rgba(255,240,220,0)');l.addColorStop(.5,'rgba(255,245,235,.55)');l.addColorStop(1,'rgba(255,240,220,0)');g.fillStyle=l;g.fillRect(0,30,256,4)});
+const smokeTex=canvasTex(128,128,(g,w,h)=>{for(let i=0;i<14;i++){const x=40+Math.random()*48,y=40+Math.random()*48,rr=18+Math.random()*26;const r=g.createRadialGradient(x,y,0,x,y,rr);r.addColorStop(0,'rgba(255,255,255,.35)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,w,h)}});
+const bodyTex=canvasTex(512,1024,(g,w,h)=>{g.fillStyle='#8f8b85';g.fillRect(0,0,w,h);g.strokeStyle='rgba(0,0,0,.06)';for(let y=0;y<h;y+=128){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke()}
+  const s=g.createLinearGradient(0,h,0,h*0.6);s.addColorStop(0,'rgba(40,30,25,.55)');s.addColorStop(1,'rgba(40,30,25,0)');g.fillStyle=s;g.fillRect(0,0,w,h);
+  g.save();g.translate(w*0.93,h*0.62);g.rotate(-Math.PI/2);g.fillStyle='#f2eee8';g.font='500 40px Archivo, Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('K Á R M Á N',0,0);g.restore()});
+bodyTex.wrapS=THREE.RepeatWrapping;
+
+/* ---------- sky dome (launch mode) ---------- */
+const skyU={top:{value:new THREE.Color()},mid:{value:new THREE.Color()},hor:{value:new THREE.Color()},sunDir:{value:V3(0,0,-1)},sunAmt:{value:1},op:{value:1}};
+const sky=new THREE.Mesh(new THREE.SphereGeometry(2500,48,24),new THREE.ShaderMaterial({uniforms:skyU,side:THREE.BackSide,depthWrite:false,transparent:true,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform vec3 top,mid,hor,sunDir;uniform float sunAmt,op;varying vec3 vW;
+ void main(){vec3 d=normalize(vW-cameraPosition);float e=d.y;vec3 c=mix(hor,mid,smoothstep(-0.02,0.2,e));c=mix(c,top,smoothstep(0.2,0.75,e));
+ float s=max(dot(d,sunDir),0.);c+=vec3(1.,.62,.3)*pow(s,10.)*0.22*sunAmt*smoothstep(0.35,-0.05,e)+vec3(1.,.8,.55)*pow(s,120.)*0.8*sunAmt;
+ c=mix(c,hor*0.5,smoothstep(0.,-0.1,e));gl_FragColor=vec4(c,op);}`}));
+sky.renderOrder=-5;scene.add(sky);
+
+/* ---------- stars ---------- */
+const SN=3200,sp=new Float32Array(SN*3),ss=new Float32Array(SN);
+for(let i=0;i<SN;i++){const u=Math.random()*2-1,a=Math.random()*Math.PI*2,r=Math.sqrt(1-u*u);sp.set([r*Math.cos(a)*2000,u*2000,r*Math.sin(a)*2000],i*3);ss[i]=Math.pow(Math.random(),6)*2.4+0.7;}
+const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(sp,3));sg.setAttribute('sz',new THREE.BufferAttribute(ss,1));
+const starU={op:{value:0},pr:{value:renderer.getPixelRatio()}};
+const stars=new THREE.Points(sg,new THREE.ShaderMaterial({uniforms:starU,transparent:true,depthWrite:false,toneMapped:false,blending:THREE.AdditiveBlending,
+ vertexShader:`attribute float sz;uniform float pr;varying float vs;void main(){vs=sz;gl_PointSize=sz*pr;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+ fragmentShader:`uniform float op;varying float vs;void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.1,d);gl_FragColor=vec4(vec3(1.,.97,.92),a*op*min(1.,vs*.55));}`}));
+stars.renderOrder=-10;stars.frustumCulled=false;scene.add(stars);
+
+/* ---------- launch site ---------- */
+const launch=new THREE.Group();scene.add(launch);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(8000,8000),new THREE.MeshBasicMaterial({color:0x1f1611}));ground.rotation.x=-Math.PI/2;launch.add(ground);
+const pad=new THREE.Mesh(new THREE.CylinderGeometry(16,18,0.8,48),new THREE.MeshBasicMaterial({color:0x221a16}));pad.position.y=0.4;launch.add(pad);
+const slab=new THREE.Mesh(new THREE.BoxGeometry(60,0.6,8),new THREE.MeshBasicMaterial({color:0x1a1411}));slab.position.set(-8,0.3,-10);launch.add(slab);
+// tower lattice
+const towerMat=new THREE.MeshStandardMaterial({color:0x1d1917,roughness:.7,metalness:.3});
+const tw=new THREE.Group();tw.position.set(2.2,0.8,-0.2);launch.add(tw);
+const TH=27,tb=[];
+for(const [x,z] of [[-1,-1],[1,-1],[1,1],[-1,1]]){const m=new THREE.Mesh(new THREE.BoxGeometry(.13,TH,.13),towerMat);m.position.set(x*1.05,TH/2,z*1.05);tw.add(m)}
+const brace=new THREE.BoxGeometry(.07,1,.07),bi=new THREE.InstancedMesh(brace,towerMat,15*8+15*4);let bk=0;const mm=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler();
+for(let l=0;l<15;l++){const y0=l*1.8,y1=y0+1.8;for(let f=0;f<4;f++){const ang=f*Math.PI/2;for(const dir of[1,-1]){const L=Math.hypot(2.1,1.8);e.set(0,ang,dir*Math.atan2(2.1,1.8));q.setFromEuler(e);
+  const c=V3(0,(y0+y1)/2,1.05).applyAxisAngle(V3(0,1,0),ang);mm.compose(c,q,V3(1,L,1));bi.setMatrixAt(bk++,mm)}
+  e.set(0,ang,Math.PI/2);q.setFromEuler(e);mm.compose(V3(0,y1,1.05).applyAxisAngle(V3(0,1,0),ang),q,V3(1,2.1,1));bi.setMatrixAt(bk++,mm)}}
+tw.add(bi);
+const mast=new THREE.Mesh(new THREE.CylinderGeometry(.05,.08,7,6),towerMat);mast.position.y=TH+3.5;tw.add(mast);
+const arm=new THREE.Mesh(new THREE.BoxGeometry(2.6,.35,.5),towerMat);arm.position.set(-1.2,19.5,0);tw.add(arm);
+function spr(tex,color,sx,sy,op=1){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:op,toneMapped:false,fog:false}));s.scale.set(sx,sy||sx,1);return s}
+const beacon=spr(glowTex,0xff3322,1.6);beacon.position.set(0,TH+7,0);tw.add(beacon);
+for(let i=0;i<8;i++){const s=spr(glowTex,0xfff0d8,0.9,0.9,.9);s.position.set((i%2?1.1:-1.1),3+i*3.1,1.2);tw.add(s)}
+const poles=[];
+for(const [x,z] of [[-10,6],[-6,7],[7.5,6],[10,4]]){const p=new THREE.Mesh(new THREE.CylinderGeometry(.08,.1,9,6),towerMat);p.position.set(x,4.5,z);launch.add(p);
+  const f=spr(flareTex,0xffd6a0,6.5,1.5,.8);f.position.set(x,9.2,z+0.2);launch.add(f);const g=spr(glowTex,0xffc890,5.5,5.5,.8);g.position.copy(f.position);launch.add(g);poles.push(g)}
+const sunSpr=spr(glowTex,0xfff2dc,320,320,1);sunSpr.position.set(150,28,-1500);launch.add(sunSpr);
+const sunCore=spr(glowTex,0xffffff,90,90,1);sunCore.position.copy(sunSpr.position);launch.add(sunCore);
+// smoke
+const smoke=new THREE.Group();launch.add(smoke);const puffs=[];
+for(let i=0;i<90;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:smokeTex,color:0xf1d2b0,transparent:true,depthWrite:false,opacity:0}));
+  const a=Math.random()*Math.PI*2,r=2+Math.pow(Math.random(),.7)*26;s.userData={a,r,y:Math.random()*5,sz:4+Math.random()*7,d:Math.random()};smoke.add(s);puffs.push(s)}
+
+/* ---------- lights ---------- */
+const hemi=new THREE.HemisphereLight(0xb9a3a0,0x2a1a12,1.1);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffe2c4,2.2);scene.add(sun);scene.add(sun.target);
+const rim=new THREE.DirectionalLight(0xfff0dc,0);scene.add(rim);scene.add(rim.target);
+const fill=new THREE.DirectionalLight(0xffffff,0.9);camera.add(fill);fill.position.set(0,0,1);fill.target.position.set(0,0,-1);camera.add(fill.target);
+
+/* ---------- rocket ---------- */
+const white=new THREE.MeshStandardMaterial({color:0xece8e0,roughness:.5,metalness:.05});
+const black=new THREE.MeshStandardMaterial({color:0x151515,roughness:.55,metalness:.2});
+const bodyMat=new THREE.MeshStandardMaterial({map:bodyTex,roughness:.5,metalness:.05});
+const rocket=new THREE.Group();scene.add(rocket);
+const booster=new THREE.Group(),upper=new THREE.Group();rocket.add(booster,upper);
+function cyl(rt,rb,h,y,mat,seg=40){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),mat);m.position.y=y+h/2;return m}
+booster.add(cyl(.95,1.0,1.2,0,black),cyl(.95,.95,12.5,1.2,bodyMat),cyl(.95,.95,1.5,13.7,black));
+for(let i=0;i<9;i++){const a=i/8*Math.PI*2,r=i?0.62:0;const b=new THREE.Mesh(new THREE.CylinderGeometry(.12,.26,.6,12,1,true),black);b.position.set(Math.cos(a)*r,-.25,Math.sin(a)*r);booster.add(b)}
+for(let i=0;i<4;i++){const f=new THREE.Mesh(new THREE.BoxGeometry(.9,.7,.06),black);const a=i*Math.PI/2+Math.PI/4;f.position.set(Math.cos(a)*1.3,14.8,Math.sin(a)*1.3);f.rotation.y=-a;booster.add(f)}
+for(let i=0;i<4;i++){const f=new THREE.Mesh(new THREE.BoxGeometry(.08,2.2,.9),black);const a=i*Math.PI/2+Math.PI/4;f.position.set(Math.cos(a)*1.02,1.4,Math.sin(a)*1.02);f.rotation.y=-a;booster.add(f)}
+upper.add(cyl(.95,.95,3.2,15.2,black),cyl(.95,.95,.45,18.4,black),cyl(.34,.8,2.3,18.85,white),cyl(.62,.66,.18,19.5,black),cyl(.22,.34,.35,21.15,black));
+const winMat=new THREE.MeshBasicMaterial({color:0xff9a5a,toneMapped:false});
+for(const a of [-.35,.1,.5]){const w=new THREE.Mesh(new THREE.SphereGeometry(.09,10,8),winMat);w.position.set(Math.sin(a)*0.66,19.4+(a===.1?0.25:0),Math.cos(a)*0.66);upper.add(w)}
+/* plume */
+const plumeU={pw:{value:1},col:{value:new THREE.Color(1,.6,.3)}};
+const plumeMat=new THREE.ShaderMaterial({uniforms:plumeU,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform float pw;uniform vec3 col;varying vec2 vUv;varying vec3 vN;varying vec3 vW;
+ void main(){vec3 V=normalize(cameraPosition-vW);float f=abs(dot(normalize(vN),V));float v=vUv.y;
+ float a=pow(v,1.6)*pow(f,1.3)*pw;vec3 c=mix(col,vec3(1.,.97,.92),pow(v,1.2)*f);gl_FragColor=vec4(c*a,a);}`});
+const pg=new THREE.CylinderGeometry(.75,2.6,1,32,1,true);pg.translate(0,-.5,0);
+const plume=new THREE.Mesh(pg,plumeMat),plume2=new THREE.Mesh(pg,plumeMat);plume2.scale.set(.5,1,.5);
+const plumeG=new THREE.Group();plumeG.add(plume,plume2);plumeG.position.y=-.4;booster.add(plumeG);
+const nozGlow=spr(glowTex,0xffe8c8,9,9,1);nozGlow.position.y=-1.4;booster.add(nozGlow);
+const nozGlow2=spr(glowTex,0xffb070,26,26,.5);nozGlow2.position.y=-3;booster.add(nozGlow2);
+
+/* ---------- earth ---------- */
+const R=100;
+const earthU={sunDir:{value:V3(0,0,-1)},time:{value:0},night:{value:1}};
+const earth=new THREE.Mesh(new THREE.SphereGeometry(R,320,160),new THREE.ShaderMaterial({uniforms:earthU,toneMapped:false,vertexShader:VS,fragmentShader:NOISE+`
+uniform vec3 sunDir;uniform float time,night;varying vec3 vObj;varying vec3 vW;varying vec3 vN;
+void main(){vec3 p=normalize(vObj);vec3 N=normalize(vN);vec3 V=normalize(cameraPosition-vW);
+ float c=fbm(p*1.25+vec3(3.1,1.2,.7),7)+.14*snoise(p*.55);
+ float land=smoothstep(.07,.095,c);
+ float dz=fbm(p*2.6+vec3(7.),4);
+ vec3 lc=mix(vec3(.13,.29,.10),vec3(.30,.40,.16),smoothstep(-.3,.3,dz));
+ lc=mix(lc,vec3(.62,.52,.34),smoothstep(.05,.35,dz)*smoothstep(.75,.2,abs(p.y)));
+ float ice=smoothstep(.8,.9,abs(p.y)+.06*snoise(p*9.));
+ vec3 oc=mix(vec3(.015,.06,.2),vec3(.04,.2,.36),smoothstep(-.05,.085,c));
+ vec3 surf=mix(oc,lc,land);surf=mix(surf,vec3(.9,.93,.95),ice);
+ vec3 q=p*2.4+.45*vec3(fbm(p*1.8,3),fbm(p*1.8+5.,3),fbm(p*1.8+9.,3));
+ float cl=smoothstep(.12,.55,fbm(q*1.35+vec3(time*.003,0.,0.),6));
+ float ndl=dot(N,sunDir);float lam=max(ndl,0.)*1.05+.004;
+ vec3 col=surf*lam;col=mix(col,vec3(1.)*lam*1.02,cl*.92);
+ vec3 H=normalize(sunDir+V);col+=vec3(1.,.9,.75)*pow(max(dot(N,H),0.),70.)*(1.-land)*(1.-cl)*.45*smoothstep(.05,.3,ndl);
+ float coast=exp(-abs(c-.085)*55.);
+ float city=smoothstep(.62,.95,snoise(p*22.)*.5+.5+coast*.3);
+ float spk=pow(max(snoise(p*950.)*.5+.5-.4,0.)/.6,2.);
+ float spk2=pow(max(snoise(p*420.+4.)*.5+.5-.45,0.)/.55,2.);
+ float lights=land*(1.-ice)*(city*(.02+spk*1.6+spk2*.6)+coast*(spk*.9+spk2*.4)+spk2*.03);
+ float nf=(1.-smoothstep(-.2,.04,ndl))*night;
+ col+=vec3(1.,.66,.32)*lights*nf*(1.-cl*.5)*1.25;
+ col+=vec3(.9,.35,.12)*exp(-pow(ndl/.05,2.))*.06;
+ float fr=pow(1.-max(dot(N,V),0.),3.);col+=vec3(.35,.55,1.)*fr*smoothstep(-.1,.4,ndl)*.7;
+ gl_FragColor=vec4(col,1.);}`}));
+scene.add(earth);
+const atmoU={sunDir:earthU.sunDir,H:{value:.9},gain:{value:1}};
+const atmo=new THREE.Mesh(new THREE.SphereGeometry(R+14,160,80),new THREE.ShaderMaterial({uniforms:atmoU,side:THREE.BackSide,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform vec3 sunDir;uniform float H,gain;varying vec3 vW;
+ void main(){vec3 ro=cameraPosition;vec3 rd=normalize(vW-ro);float tc=max(-dot(ro,rd),0.);vec3 cp=ro+rd*tc;float b=length(cp);
+  float h=max(b-${R}.,0.);float dens=exp(-h/H);float line=exp(-h/(H*.18));
+  float sa=dot(normalize(cp),sunDir);float sv=max(dot(rd,sunDir),0.);
+  vec3 night=vec3(.36,.24,.62);vec3 tw=vec3(1.,.5,.22);vec3 day=vec3(.35,.58,1.);
+  vec3 c=mix(night,tw,smoothstep(-.28,.02,sa));c=mix(c,day,smoothstep(0.,.3,sa));
+  float I=dens*(.22+.7*smoothstep(-.45,.15,sa))+line*.3*smoothstep(-.4,.1,sa);
+  I+=dens*(pow(sv,20.)*.9+pow(sv,5.)*.3)*(1.-smoothstep(-.12,.06,sa)*.8);
+  gl_FragColor=vec4(c*I*gain,1.);}`}));
+atmo.renderOrder=2;scene.add(atmo);
+/* karman arc — lives in camera space */
+const karU={op:{value:0}};
+const kar=new THREE.Mesh(new THREE.RingGeometry(78,82,256,1,Math.PI/2-.75,1.5),new THREE.ShaderMaterial({uniforms:karU,transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending,toneMapped:false,
+ vertexShader:`varying vec3 vObj;void main(){vObj=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+ fragmentShader:`uniform float op;varying vec3 vObj;void main(){float r=length(vObj.xy);float d=abs(r-80.);float a=exp(-d*d*70.)*1.1+exp(-d*3.)*.14;
+ float ang=atan(vObj.y,vObj.x);float fade=smoothstep(.75,.2,abs(ang-1.5708));a*=fade*(.8+.4*sin(ang*90.)*sin(ang*37.));gl_FragColor=vec4(vec3(1.,.86,.66)*a*op,1.);}`}));
+kar.renderOrder=6;camera.add(kar);
+
+/* ---------- moon ---------- */
+const MOON=V3(0,0,900),MR=27;
+const moonU={sunDir:earthU.sunDir};
+const moon=new THREE.Mesh(new THREE.SphereGeometry(MR,320,160),new THREE.ShaderMaterial({uniforms:moonU,toneMapped:false,vertexShader:VS,fragmentShader:NOISE+`
+uniform vec3 sunDir;varying vec3 vObj;varying vec3 vW;varying vec3 vN;
+float crat(vec3 x){vec3 i=floor(x),f=fract(x);float h=0.;for(int a=-1;a<=1;a++)for(int b=-1;b<=1;b++)for(int c=-1;c<=1;c++){vec3 g=vec3(a,b,c);vec3 o=hash33(i+g);vec3 r=g+o-f;float d=length(r);
+ if(o.z<.42)continue;float rad=.14+.34*o.x*o.y+.06*o.y;float xx=d/rad;if(xx<1.)h+=(xx*xx-1.)*.5*rad;h+=exp(-pow((xx-1.)*4.,2.))*.18*rad;}return h;}
+void main(){vec3 p=normalize(vObj);
+ float h=crat(p*4.)*1.1+crat(p*11.+3.)*.45+crat(p*30.+7.)*.14+crat(p*80.)*.04+fbm(p*24.,4)*.06;
+ float alb=.6+.12*fbm(p*3.,4)+.05*fbm(p*18.,3);float mare=smoothstep(.0,.3,fbm(p*1.4+2.,4));alb*=1.-.42*mare;alb+=.06*smoothstep(-.02,.02,-h)*0.;
+ vec3 N=normalize(vN);vec3 dpx=dFdx(vW),dpy=dFdy(vW);float hs=h*1.1;float dhx=dFdx(hs),dhy=dFdy(hs);
+ vec3 r1=cross(dpy,N),r2=cross(N,dpx);float det=dot(dpx,r1);vec3 gr=sign(det)*(dhx*r1+dhy*r2);vec3 Np=normalize(abs(det)*N-gr);
+ float ndl=max(dot(Np,sunDir),0.);float lit=smoothstep(-.05,.1,dot(N,sunDir));
+ vec3 col=vec3(alb)*vec3(1.,.98,.95)*(ndl*.95*lit+.02);gl_FragColor=vec4(col,1.);}`}));
+moon.position.copy(MOON);scene.add(moon);
+
+/* ---------- small capsule (space) ---------- */
+function makeCapsule(){const g=new THREE.Group();
+ g.add(cyl(.95,1.0,.35,-.35,new THREE.MeshStandardMaterial({color:0x3a2a1e,roughness:.8})));
+ g.add(cyl(.45,.95,1.9,0,white),cyl(.62,.66,.2,.8,black),cyl(.3,.45,.3,1.9,black));
+ const trunk=cyl(.95,.95,2.4,-2.75,white);g.add(trunk);
+ for(const y of[-2.2,-1.5,-.9]){g.add(cyl(.96,.96,.22,y,black))}
+ for(const a of[-.4,.3]){const w=new THREE.Mesh(new THREE.SphereGeometry(.1,8,6),winMat);w.position.set(Math.sin(a)*.78,.7,Math.cos(a)*.78);g.add(w)}
+ return g;}
+const cap=makeCapsule();scene.add(cap);
+/* ---------- trajectory lines ---------- */
+const lineMat=new THREE.LineBasicMaterial({color:0xd08a5c,transparent:true,opacity:.75,toneMapped:false});
+const orbitPts=[];for(let i=0;i<=256;i++){const a=i/256*Math.PI*2;orbitPts.push(V3(Math.cos(a)*108.5,Math.sin(a)*108.5*.18,Math.sin(a)*108.5))}
+const orbit=new THREE.Line(new THREE.BufferGeometry().setFromPoints(orbitPts),lineMat);orbit.rotation.z=.35;scene.add(orbit);
+const tli=new THREE.CatmullRomCurve3([V3(-108,0,0),V3(-95,12,120),V3(-60,25,380),V3(-30,22,700),V3(-10,10,860),V3(32,4,905),V3(0,-6,940),V3(-36,-4,895),V3(-45,-14,700),V3(-40,-20,420),V3(20,-14,130),V3(108,0,0)]);
+const tliLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints(tli.getPoints(600)),lineMat);scene.add(tliLine);
+
+/* ---------- rig ---------- */
+const rp=new THREE.Group();scene.add(rp);rp.add(rocket);rocket.position.y=-10;
+const ease=k=>k*k*(3-2*k);
+function track(pts,lin){return t=>{if(t<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){const[a,va]=pts[i],[b,vb]=pts[i+1];if(t<=b){let k=(t-a)/(b-a);if(!lin)k=ease(k);
+  return Array.isArray(va)?va.map((x,j)=>x+(vb[j]-x)*k):va+(vb-va)*k}}return pts[pts.length-1][1]}}
+const D2R=Math.PI/180;
+// launch mode
+const T={
+ fw:track([[0,0],[.5,0],[1.3,1]]),
+ cOff:track([[0,[-17,-6,62]],[.3,[-9,-6,62]],[.6,[-3,-6,66]],[1,[0,-6,85]],[1.4,[-6,-14,58]],[1.7,[-14,-16,48]],[2.1,[-22,-6,40]],[2.5,[6,-4,34]],[3.05,[8,-3,34]]]),
+ lOff:track([[0,[-16,3,0]],[.3,[-8,3,0]],[.6,[-1,5,0]],[1,[0,12,0]],[1.4,[0,2,0]],[1.7,[0,0,0]],[2.1,[0,0,0]],[2.5,[4,-9,0]],[3.05,[5,-10,0]]]),
+ rz:track([[0,0],[1.15,0],[1.6,-.26],[1.95,-.2],[2.35,.95],[3.05,1]]),
+ pl:track([[0,0],[.3,0],[.36,4],[1,9],[1.6,14],[2.3,60],[3.05,70],[4.2,60],[4.4,0]]),
+ pwid:track([[0,1],[1.6,1.3],[2.3,2.4],[3.05,2.8],[4.3,3]]),
+ smoke:track([[0,0],[.3,0],[.45,.75],[.9,1],[1.5,1]]),
+ top:track([[0,[.33,.27,.31]],[.6,[.18,.19,.3]],[1,[.1,.15,.33]],[1.6,[.1,.17,.38]],[2.3,[.12,.08,.22]],[3.05,[.06,.05,.1]]]),
+ mid:track([[0,[.5,.41,.41]],[.6,[.36,.31,.38]],[1,[.22,.23,.38]],[1.6,[.12,.19,.4]],[2.3,[.15,.11,.26]],[3.05,[.1,.07,.2]]]),
+ hor:track([[0,[.78,.58,.44]],[.6,[.72,.53,.44]],[1,[.55,.42,.42]],[1.6,[.2,.24,.42]],[2.3,[.22,.18,.32]],[3.05,[.25,.2,.38]]]),
+ stars:track([[0,0],[1.5,0],[2.1,.35],[3.05,.8],[6,1],[9.9,1]]),
+ // space mode
+ sa:track([[3.05,0],[8.8,.25],[10,.25]]),
+ sh:track([[3.05,1.2],[3.8,1.45],[4.3,1.55],[4.8,1.9],[5.2,2.5],[5.6,3.7],[6.1,6],[6.6,8.5],[8,8.5],[8.3,9],[8.5,12],[8.8,32]]),
+ spit:track([[3.05,18],[3.8,11],[4.3,1],[4.8,-1],[5.2,-4],[5.6,-12],[6.1,-30],[6.6,-35],[7,-45],[7.3,-30],[7.6,-20],[8,-22],[8.3,-22],[8.5,-45],[8.8,-60]]),
+ syaw:track([[3.05,0],[5.2,0],[5.6,-10],[6.6,-10],[7.3,0]]),
+ sroll:track([[3.05,0],[5.2,0],[5.6,8],[6.1,-10],[6.6,-6],[7.3,0]]),
+ sun:track([[3.05,[.45,-.3,-1]],[3.8,[.5,-.1,-1]],[4.3,[.55,-.05,-1]],[4.8,[.6,-.1,-1]],[5.2,[.65,-.3,-1]],[5.6,[.7,-.3,-1]],[6.6,[.7,-.36,-1]],[7.3,[.1,-.3,-1]],[7.8,[.05,-.13,-1]],[8,[.05,-.1,-1]],[8.3,[.05,-.07,-1]],[8.5,[.1,-.28,-1]],[8.7,[.5,.15,-.6]],[8.8,[.8,.35,-.2]],[9,[-.1,.55,1]],[9.4,[.3,.4,1]],[10,[.45,.3,1]]]),
+ wS:track([[8.8,0],[9,1],[9.5,1],[9.6,0]]),
+ wM:track([[9.5,0],[9.6,1]]),
+ spos:track([[9,[30,40,340]],[9.4,[0,70,720]],[9.5,[0,60,790]]]),
+ slook:track([[9,[-15,5,0]],[9.4,[0,0,0]],[9.5,[0,0,0]]]),
+ mpos:track([[9.5,[0,0,72]],[9.6,[0,0,72]],[9.7,[0,14,36]],[9.8,[0,20,21.5]],[9.85,[0,27.1,10.1]],[9.9,[0,28,5.7]],[10,[0,28.1,4]]]),
+ mlook:track([[9.5,[-34,0,0]],[9.6,[-34,0,0]],[9.7,[0,29,-11.5]],[9.8,[0,26,-28]],[9.85,[0,22,-40]],[9.9,[0,23,-44]],[10,[0,17.8,-44.9]]]),
+ rl:track([[3.05,[-8,6,-34]],[3.8,[-2,8,-40]],[4.3,[0,9,-44]],[4.6,[10,-4,-40]],[5,[16,-10,-45]]]),
+ rr:track([[3.05,[0,0,1]],[3.8,[0,0,1.05]],[4.3,[0,0,1.1]],[4.6,[0,.4,1.45]],[5,[0,.5,1.55]]]),
+ sep:track([[4.35,0],[5,1]]),
+ kar:track([[3.85,0],[4.1,1],[5.4,1],[5.6,0]]),
+ karY:track([[3.9,.18],[4.3,.225],[4.6,.305],[5.2,.295],[5.6,.28]]),
+ capv:track([[8.85,0],[8.95,1],[9.3,1],[9.35,0],[9.85,0],[9.9,1]]),
+ capl:track([[8.9,[9,-1,-16]],[9.2,[13,-2.5,-18]],[9.35,[16,-3,-18]],[9.85,[-4,5,-22]],[9.9,[-3.4,6.2,-22]],[10,[-2.6,7.2,-22]]],true),
+ caprot:track([[8.9,[.2,1.3,.1]],[9.3,[.3,1.6,.2]],[9.85,[.5,.3,-.6]],[10,[.6,.5,-.7]]]),
+ orbitOp:track([[5.5,0],[5.7,.7],[8.6,.7],[8.8,0]]),
+ tliOp:track([[8.8,0],[9,.75],[9.6,.75],[9.7,0]]),
+};
+const HUD=[[0,0,0,1,-10],[.3,0,0,1,0],[.6,.9,311,1.36,11.74],[1,1.9,702,1.68,25.74],[1.6,6.5,1446,2.18,51.73],[2,35.4,4491,2.91,103],[2.5,62,5835,3.13,122],[3,72,6198,3.18,128.66],[3.8,94,7300,3.37,146],[4.3,98.7,7510,3.18,150.65],[4.6,115.8,11016,.19,237],[5.2,162,21732,.84,444.8],[5.6,186,24000,.86,600],[6.1,233.3,26375,.89,1075],[6.6,540,27340,0,5000],[7,539.9,27350,0,22055],[7.8,539.6,27370,0,88178],[8,540,27380,0,88900],[8.3,605.9,38304,1.03,93128],[8.6,2060,31898,.87,107927],[9,29662,16283,.33,137681],[9.4,251080,4789,0,200544],[9.5,309904,4325,0,232369],[9.6,379501,4095,0,264224],[9.8,391713,5500,0,288601],[9.9,386584,7849,0,313043],[10,384402,8857,0,324059]];
+function hudAt(t){for(let i=0;i<HUD.length-1;i++){const a=HUD[i],b=HUD[i+1];if(t<=b[0]){const k=Math.max(0,(t-a[0])/(b[0]-a[0]));return a.map((x,j)=>x+(b[j]-x)*k)}}return HUD[HUD.length-1]}
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+const p2=n=>String(Math.floor(n)).padStart(2,'0');
+function clock(s){const neg=s<0;s=Math.abs(s);const fr=Math.floor((s%1)*100);let S=Math.floor(s);const d=Math.floor(S/86400);S%=86400;
+  return `T${neg?'−':'+'}${d?d+'d ':''}${p2(S/3600)}:${p2(S%3600/60)}:${p2(S%60)}<em>.${String(fr).padStart(2,'0')}</em>`}
+const $=id=>document.getElementById(id);
+const hAlt=$('halt'),hVel=$('hvel'),hLoad=$('hload'),hClk=$('hclk'),hud=$('hud'),kline=$('kline'),rpr=$('rpr'),rmk=$('rmk'),rlab=$('rlab');
+const RT=[0,3,5.6,8,10],RY=[0,125,183,263,366];
+$('rdots').innerHTML=RY.map(y=>`<div class="d" style="top:${y}px"></div>`).join('');const rdots=[...document.querySelectorAll('.rail .d')];
+function railY(t){for(let i=0;i<4;i++)if(t<=RT[i+1])return RY[i]+(RY[i+1]-RY[i])*(t-RT[i])/(RT[i+1]-RT[i]);return 366}
+
+/* ---------- scroll → t ---------- */
+let KP=[],OPS=[];
+function layout(){const vh=innerHeight;KP=[];
+ document.querySelectorAll('[data-t0]').forEach(s=>{const top=s.offsetTop,b=top+s.offsetHeight,t0=+s.dataset.t0,t1=+s.dataset.t1;
+  if(s.hasAttribute('data-hero'))KP.push([0,t0],[Math.max(1,b-vh*.5),t1]);else KP.push([top-vh*.5,t0],[b-vh*.5,t1])});
+ KP.sort((a,b)=>a[0]-b[0]);OPS=[...document.querySelectorAll('[data-op]')];}
+function scrollT(){const y=scrollY;if(y<=KP[0][0])return KP[0][1];for(let i=0;i<KP.length-1;i++){const[a,ta]=KP[i],[b,tb]=KP[i+1];if(y<=b)return b>a?ta+(tb-ta)*(y-a)/(b-a):tb}return KP[KP.length-1][1]}
+layout();addEventListener('resize',layout);addEventListener('load',layout);setTimeout(layout,800);
+let tS=scrollT(),last=performance.now(),skip=0;
+
+/* ---------- per-frame ---------- */
+const tmpQ=new THREE.Quaternion(),tmpE=new THREE.Euler(),UP=V3(0,1,0);
+const fog=new THREE.Fog(0x000000,250,2600);
+function surfCam(t){const a=T.sa(t),h=T.sh(t);const pos=V3(0,R+h,0).applyAxisAngle(V3(1,0,0),a);const up0=pos.clone().normalize();
+ let fwd=V3(0,0,-1).applyAxisAngle(V3(1,0,0),a);fwd.applyAxisAngle(up0,T.syaw(t)*D2R);const right=fwd.clone().cross(up0).normalize();
+ const pit=T.spit(t)*D2R;fwd.applyAxisAngle(right,pit);let up=up0.clone().applyAxisAngle(right,pit);up.applyAxisAngle(fwd,T.sroll(t)*D2R);
+ return {pos,look:pos.clone().add(fwd.multiplyScalar(50)),up}}
+function moonCam(t){const p=V3(...T.mpos(t)),lk=V3(...T.mlook(t));const up=t<9.62?UP.clone():p.clone().normalize();return {pos:p.add(MOON),look:lk.add(MOON),up}}
+function update(t,time){
+ const mode1=t<3.05;
+ sky.visible=mode1;launch.visible=mode1&&t<2.4;earth.visible=atmo.visible=!mode1;moon.visible=t>9.3;
+ starU.op.value=T.stars(t);
+ if(mode1){
+  const ry=t<.32?0:t<1?30*Math.pow((t-.32)/.68,2):30+700*Math.pow(t-1,1.6);
+  const ref=V3(0,10+T.fw(t)*ry,0);
+  camera.up.copy(UP);camera.position.copy(ref).add(V3(...T.cOff(t)));camera.lookAt(ref.clone().add(V3(...T.lOff(t))));
+  rp.position.set(0,10+ry,0);rp.quaternion.setFromEuler(tmpE.set(0,.35,T.rz(t)));
+  const [a,b,c]=T.top(t),[d,e2,f]=T.mid(t),[g,h,i]=T.hor(t);skyU.top.value.setRGB(a,b,c);skyU.mid.value.setRGB(d,e2,f);skyU.hor.value.setRGB(g,h,i);
+  skyU.sunDir.value.copy(sunSpr.position).normalize();skyU.sunAmt.value=Math.max(0,1-t*1.2);
+  scene.fog=fog;fog.color.setRGB(g*.55,h*.5,i*.5);
+  const bl=Math.min(1,Math.max(0,(1.2-t)/.4));sun.position.copy(rp.position).add(V3(-60,30,40));sun.target.position.copy(rp.position);sun.intensity=2.2-.9*bl;hemi.intensity=.9-.35*bl;
+  rim.position.copy(rp.position).add(V3(60,15,-50));rim.target.position.copy(rp.position);rim.intensity=6*bl;fill.intensity=.9-.6*bl;hemi.color.setRGB(d+.2,e2+.2,f+.2);
+  const sm=T.smoke(t);puffs.forEach(p=>{const u=p.userData,gr=1+Math.max(0,t-.35)*1.6;p.position.set(Math.cos(u.a)*u.r*gr,u.y+u.sz*.35+Math.max(0,t-.35)*4*u.d,Math.sin(u.a)*u.r*gr*.6+2);
+   const s=u.sz*(0.6+gr*.8);p.scale.set(s,s,1);p.material.opacity=sm*(.85-.3*u.d)});
+  const lit=Math.max(0,1-t*1.3);poles.forEach(p=>p.material.opacity=.9);
+  booster.visible=upper.visible=true;upper.position.y=0;booster.rotation.z=0;booster.position.set(0,0,0);
+ } else {
+  scene.fog=null;rim.intensity=0;fill.intensity=.9;
+  const sc=surfCam(t),mc=moonCam(t),ws=T.wS(t),wm=T.wM(t);
+  let pos=sc.pos,look=sc.look,up=sc.up;
+  if(ws>0){const p=V3(...T.spos(t)),l=V3(...T.slook(t));pos=pos.clone().lerp(p,ws);look=look.clone().lerp(l,ws);up=up.clone().lerp(UP,ws).normalize()}
+  if(wm>0){pos=pos.clone().lerp(mc.pos,wm);look=look.clone().lerp(mc.look,wm);up=up.clone().lerp(mc.up,wm).normalize()}
+  camera.position.copy(pos);camera.up.copy(up);camera.lookAt(look);
+  const sd=V3(...T.sun(t)).normalize();earthU.sunDir.value.copy(sd);
+  camera.updateMatrixWorld();
+  // rocket in camera space
+  const showR=t<5.1;booster.visible=showR;const sep=T.sep(t);upper.visible=showR&&sep<.6;
+  if(showR){rp.position.copy(camera.localToWorld(V3(...T.rl(t))));const r=T.rr(t);rp.quaternion.copy(camera.quaternion).multiply(tmpQ.setFromEuler(tmpE.set(r[0],r[1],r[2])));
+   upper.position.y=sep*26;booster.rotation.z=sep*.5;booster.position.set(sep*2,-sep*3,0)}
+  sun.position.copy(rp.position).add(sd.clone().multiplyScalar(100));sun.target.position.copy(rp.position);sun.intensity=2.6;hemi.intensity=.25;hemi.color.setRGB(.5,.45,.6);
+  karU.op.value=T.kar(t);const ky=T.karY(t),hh=Math.tan(20*D2R)*60;kar.position.set(0,(.5-ky)*2*hh-80*1.58,-60);kar.scale.setScalar(1.58);
+  kline.style.opacity=T.kar(t);kline.style.top=(ky*innerHeight-5)+'px';
+  const cv=T.capv(t);cap.visible=cv>.01;if(cap.visible){cap.position.copy(camera.localToWorld(V3(...T.capl(t))));const r=T.caprot(t);cap.quaternion.copy(camera.quaternion).multiply(tmpQ.setFromEuler(tmpE.set(r[0],r[1]+time*.05,r[2])));cap.scale.setScalar(.5*cv)}
+  lineMat.opacity=Math.max(T.orbitOp(t),T.tliOp(t));orbit.visible=T.orbitOp(t)>.01;tliLine.visible=T.tliOp(t)>.01;
+ }
+ if(mode1){kar.material.uniforms.op.value=0;kline.style.opacity=0;cap.visible=false;orbit.visible=tliLine.visible=false}
+ const pl=T.pl(t),pw=T.pwid(t);plumeG.visible=pl>.05;plumeG.scale.set(pw,pl,pw);plumeU.pw.value=Math.min(1,pl/3)*(1+.08*Math.sin(time*40));
+ nozGlow.visible=nozGlow2.visible=pl>.05;nozGlow.scale.setScalar(6+pw*2);nozGlow2.scale.setScalar(14+pw*9);nozGlow2.position.y=-3-pl*.15;
+ sky.position.copy(camera.position);stars.position.copy(camera.position);
+ earthU.time.value=time;earth.rotation.set(t<8.9?-1.15:-.25,time*.004+(t<8.9?0:2.2),0);
+ // HUD
+ const hv=hudAt(t);hAlt.innerHTML=(hv[1]<1000?hv[1].toFixed(1):fmt(hv[1]))+'<small>KM</small>';hVel.innerHTML=fmt(hv[2])+'<small>KM/H</small>';hLoad.innerHTML=hv[3].toFixed(2)+'<small>G</small>';
+ hClk.innerHTML=clock(hv[4]+(t>0.3&&t<10?0:0));
+ const ry2=railY(t);rpr.style.height=ry2+'px';rmk.style.top=ry2+'px';rlab.textContent=(hv[1]<1000?hv[1].toFixed(1):fmt(hv[1]))+' km';rdots.forEach((d,i)=>d.classList.toggle('on',RY[i]<=ry2+1));
+}
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+ const target=window.__T!==undefined?window.__T:scrollT();if(Math.abs(target-tS)>.35)tS=target;else tS+=(target-tS)*Math.min(1,dt*5);if(Math.abs(target-tS)<1e-4)tS=target;
+ const vh=innerHeight;let covered=false,hideHud=false;
+ let cf=0;for(const s of OPS){const r=s.getBoundingClientRect();if(r.top<=1&&r.bottom>=vh-1)covered=true;if(r.top<vh*.72&&r.bottom>vh*.28)hideHud=true;cf+=Math.max(0,Math.min(vh,r.bottom)-Math.max(0,r.top))/vh}
+ if(cf>.45&&(++skip%4))covered=true;
+ hud.style.opacity=hideHud?0:1;
+ update(tS,now/1000);
+ if(!covered||window.__T!==undefined)renderer.render(scene,camera);
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+window.__setT=v=>{tS=v};window.__dbg=()=>[camera.position.toArray(),T.wS(tS),T.wM(tS),tS];
+</script>
+</body>
+</html>

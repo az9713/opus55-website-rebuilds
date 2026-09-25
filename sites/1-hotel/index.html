@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solenne — Vertoli, Costa Salvena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#ece8dc; --cream2:#f3f0e7; --paper:#f7f4ee;
+  --ink:#1f1a16; --ink2:#3b342e; --muted:#766f65; --faint:#b9b2a6; --line:#d6cfc1;
+  --accent:#b04b2f; --cta:#a84a2e; --teal:#3e6670; --peach:#f1d6c0;
+  --serif:'Newsreader',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif;
+  --pad:84px; --banner:46px;
+  --ease:cubic-bezier(.22,.7,.12,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scrollbar-width:thin}
+body{background:var(--cream);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.sans{font-family:var(--sans)}
+.eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:16px}
+.eyebrow i{font-family:var(--serif);font-size:17px;letter-spacing:0;color:var(--accent);text-transform:none}
+.eyebrow:after{content:"";width:40px;height:1px;background:currentColor;opacity:.6}
+.h2{font-weight:300;font-size:88px;line-height:1.02;letter-spacing:-.02em}
+.h2 em{font-style:italic;color:var(--accent);font-weight:300}
+.ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.ln>span{display:inline-block;transform:translateY(108%);transition:transform 1.2s var(--ease)}
+.in .ln>span{transform:none}
+.in .ln:nth-child(2)>span{transition-delay:.12s}.in .ln:nth-child(3)>span{transition-delay:.24s}
+.fade{opacity:0;transform:translateY(28px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease)}
+.fade.in{opacity:1;transform:none}
+
+/* ---------- build banner ---------- */
+.banner{position:fixed;top:0;left:0;right:0;height:var(--banner);background:#1b1b19;color:#fff;z-index:100;display:flex;align-items:center;font-family:'Inter',sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.banner .by{display:flex;align-items:center;gap:12px;padding-left:18px;font-size:15px;color:#bdb9b2;letter-spacing:-.01em}
+.banner .by b{color:#fff;font-weight:700}
+.banner .star{width:18px;height:18px}
+.banner .by a{text-decoration:underline;text-underline-offset:2px}
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:90;background:#efebe0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:var(--banner);transition:transform 1s cubic-bezier(.76,0,.2,1)}
+.loader.up{transform:translateY(-100%)}
+.loader .word{font-weight:300;font-size:128px;letter-spacing:-.02em;line-height:1;display:flex;overflow:hidden;padding:0 4px 14px}
+.loader .word span{display:inline-block;transform:translateY(110%);animation:rise .9s var(--ease) forwards}
+.loader .rule{width:170px;height:1px;background:#d9a58f;margin-top:40px;transform:scaleX(0);animation:grow .9s var(--ease) .75s forwards}
+.loader .sub{margin-top:22px;font-family:var(--sans);font-size:11px;letter-spacing:.3em;color:#8a8278;opacity:0;animation:fadein .8s ease .95s forwards}
+@keyframes rise{to{transform:none}}
+@keyframes grow{to{transform:scaleX(1)}}
+@keyframes fadein{to{opacity:1}}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:var(--banner);left:0;right:0;height:72px;z-index:80;display:flex;align-items:center;padding:0 68px;color:#fff;transition:transform .55s var(--ease),background .4s,color .4s,box-shadow .4s}
+.nav.solid{background:rgba(243,239,230,.97);color:var(--ink);box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.nav.hide{transform:translateY(-110%)}
+.nav ul{list-style:none;display:flex;gap:36px;font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;font-weight:500}
+.nav ul a{position:relative;padding:6px 0}
+.nav ul a:after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.nav ul a:hover:after,.nav ul a.act:after{transform:scaleX(1)}
+.nav .logo{position:absolute;left:50%;transform:translateX(-50%);text-align:center;top:12px}
+.nav .logo b{display:block;font-weight:400;font-size:30px;letter-spacing:-.01em;line-height:1}
+.nav .logo small{display:block;font-family:var(--sans);font-size:8.5px;letter-spacing:.3em;margin-top:6px;opacity:.85}
+.nav .right{margin-left:auto;display:flex;align-items:center;gap:36px}
+.nav .btn{border:1px solid currentColor;padding:13px 25px;font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;font-weight:500;transition:.3s}
+.nav.solid .btn{background:#231e1a;color:#fff;border-color:#231e1a}
+.nav .btn:hover{background:var(--cta);border-color:var(--cta);color:#fff}
+.nav.pre{opacity:0}
+.nav{opacity:1;transition:transform .55s var(--ease),background .4s,color .4s,opacity 1s}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:calc(100vh - var(--banner));min-height:640px;margin-top:var(--banner);overflow:hidden;background:#3a2a1c}
+.hero .bg{position:absolute;inset:0;background:url(img/golden.jpg) 62% 45%/cover;transform-origin:62% 55%;animation:kb 26s linear forwards}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.16)}}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,18,10,.42) 0%,rgba(30,18,10,.12) 45%,rgba(0,0,0,0) 70%),linear-gradient(0deg,rgba(20,12,6,.35) 0%,rgba(0,0,0,0) 40%),linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,0) 22%)}
+.hero-in{position:absolute;left:68px;right:68px;bottom:28px;z-index:2;color:#fff}
+.coords{font-family:var(--sans);font-size:11px;letter-spacing:.24em;display:flex;align-items:center;gap:18px;margin-bottom:18px;opacity:.92}
+.coords:before{content:none}
+.coords i{display:inline-block;width:52px;height:1px;background:rgba(255,255,255,.6);font-style:normal}
+.hero h1{font-weight:300;font-size:124px;line-height:.94;letter-spacing:-.025em;color:#fdf8f3;margin-bottom:57px}
+.hero h1 em{font-style:italic;color:var(--peach);font-weight:300}
+.bar{display:flex;height:76px;margin:0 16px 0 16px;background:rgba(237,233,224,.96);color:var(--ink)}
+.bar .f{flex:1;border-right:1px solid #d9d3c7;padding:14px 26px 0;cursor:pointer;transition:background .3s}
+.bar .f:hover{background:#f6f3ec}
+.bar .f small{display:block;font-family:var(--sans);font-size:9.5px;letter-spacing:.22em;color:#7b746a;margin-bottom:5px}
+.bar .f span{font-size:21px}
+.bar .go{width:245px;background:var(--cta);color:#fff;font-family:var(--sans);font-size:11px;letter-spacing:.2em;font-weight:600;display:flex;align-items:center;justify-content:center;gap:18px;transition:background .3s}
+.bar .go:hover{background:#8f3c24}
+.scrollcue{position:absolute;right:66px;top:104px;z-index:2;color:#fff;font-family:var(--sans);font-size:9px;letter-spacing:.35em;writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+.scrollcue:before{content:"";width:1px;height:46px;background:rgba(255,255,255,.35);position:relative;overflow:hidden}
+.scrollcue span{position:relative}
+.hero .reveal{opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.hero.go .reveal{opacity:1;transform:none}
+.hero .h1ln{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.hero .h1ln>span{display:inline-block;transform:translateY(110%);transition:transform 1.3s var(--ease)}
+.hero.go .h1ln>span{transform:none}
+.hero.go .h1ln:nth-child(2)>span{transition-delay:.1s}.hero.go .h1ln:nth-child(3)>span{transition-delay:.2s}
+.hero.go .bar{transition-delay:.45s}
+
+/* ---------- the house ---------- */
+.house{padding:250px var(--pad) 120px;display:grid;grid-template-columns:386px 1fr;background:var(--cream)}
+.house .eyebrow{margin-top:14px;align-self:start}
+.story{font-weight:300;font-size:50px;line-height:1.18;letter-spacing:-.012em;text-indent:108px}
+.story .w{opacity:.17;transition:opacity .25s linear}
+.sign{display:flex;align-items:center;gap:48px;margin-top:70px}
+.sign svg{width:162px}
+.sign b{display:block;font-style:italic;font-weight:400;font-size:21px}
+.sign small{display:block;font-family:var(--sans);font-size:13.5px;color:var(--muted);margin-top:4px}
+.figs{position:relative;height:1100px;background:var(--cream)}
+.fig-bath{position:absolute;left:204px;top:0;width:462px;height:690px;overflow:hidden}
+.fig-lemon{position:absolute;left:933px;top:520px;width:584px;height:440px;overflow:hidden}
+.figs img{width:100%;height:118%;object-fit:cover;will-change:transform}
+.figcap{position:absolute;left:811px;top:100px;width:360px}
+.figcap .eyebrow i{font-size:15px}
+.figcap p{font-size:16.5px;line-height:1.62;margin-top:22px;color:var(--ink2)}
+.stats{margin:0 var(--pad);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:150px}
+.stat{border-left:1px solid var(--line);padding:24px 28px 0}
+.stat:first-child{border-left:0;padding-left:0}
+.stat b{display:block;font-weight:300;font-size:108px;line-height:1;letter-spacing:-.03em;font-variant-numeric:lining-nums}
+.stat small{display:block;font-family:var(--sans);font-size:14px;color:var(--muted);margin-top:34px}
+.stat:nth-child(2) b{color:var(--accent)}.stat:nth-child(4) b{color:var(--teal)}
+
+/* ---------- rooms ---------- */
+.rooms{background:var(--cream2);padding:125px 0 110px}
+.rooms-head{padding:0 var(--pad);display:grid;grid-template-columns:1fr 575px;align-items:end}
+.rooms-head .h2{margin-top:52px;font-size:86px}
+.rooms-head p{max-width:520px;font-size:17px;line-height:1.62;color:var(--ink2);margin-bottom:34px}
+.ctrl{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ctrl button{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:.3s}
+.ctrl button:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ctrl button:disabled{opacity:.35;pointer-events:none}
+.ctrl .count{font-family:var(--sans);font-size:14px;letter-spacing:.08em;margin:0 30px 0 17px;color:var(--muted)}
+.ctrl .count b{color:var(--ink);font-weight:500}
+.ctrl .prog{flex:1;height:1px;background:var(--line);position:relative}
+.ctrl .prog i{position:absolute;left:0;top:-.5px;height:2px;background:var(--ink);width:20%;transition:transform .6s var(--ease),width .6s var(--ease)}
+.track-wrap{margin-top:70px;overflow:hidden;cursor:none;user-select:none;-webkit-user-select:none}
+.track{display:flex;gap:34px;padding:0 var(--pad) 0 88px;will-change:transform}
+.card{flex:0 0 467px}
+.card .ph{position:relative;height:548px;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease);pointer-events:none}
+.card:hover .ph img{transform:scale(1.04)}
+.card .tag{position:absolute;left:21px;top:21px;border:1px solid rgba(255,255,255,.55);background:rgba(40,30,20,.12);backdrop-filter:blur(2px);color:#fff;font-family:var(--sans);font-size:9.5px;letter-spacing:.22em;font-weight:600;padding:8px 12px}
+.card .view{position:absolute;right:24px;bottom:22px;color:#fff;font-style:italic;font-size:17px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:.5s var(--ease);text-shadow:0 1px 8px rgba(0,0,0,.3)}
+.card:hover .view{opacity:1;transform:none}
+.card h3{display:flex;align-items:baseline;gap:20px;font-weight:300;font-size:39px;letter-spacing:-.01em;margin-top:22px}
+.card h3 i{font-size:15px;color:var(--accent);font-weight:400}
+.card .tl{font-style:italic;font-size:16.5px;color:var(--ink2);margin:14px 0 0 34px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.card .meta{display:grid;grid-template-columns:66px 128px 1fr;margin-left:34px;padding-top:14px}
+.card .meta small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.2em;color:var(--muted)}
+.card .meta span{display:block;font-size:16px;margin-top:5px}
+.cursor{position:fixed;left:0;top:0;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;background:#f6f2ea;color:var(--ink);display:grid;place-items:center;font-style:italic;font-size:18px;pointer-events:none;z-index:70;transform:scale(0);transition:transform .35s var(--ease),background .3s,color .3s;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+.cursor.on{transform:scale(1)}
+.cursor.down{background:var(--cta);color:#fff;transform:scale(1)}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;padding-top:var(--banner);visibility:hidden;pointer-events:none}
+.modal.open{visibility:visible;pointer-events:auto}
+.modal .veil{position:absolute;inset:0;background:rgba(28,22,17,.5);backdrop-filter:blur(7px);opacity:0;transition:opacity .6s ease}
+.modal.open .veil{opacity:1}
+.mbox{position:relative;width:1245px;height:704px;display:flex;background:var(--paper);opacity:0;transform:translateY(26px) scale(.985);transition:opacity .6s var(--ease),transform .7s var(--ease);box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.modal.open .mbox{opacity:1;transform:none}
+.mimg{position:relative;width:714px;flex:none;overflow:hidden;background:#2b221b}
+.mimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mimg img.enter{clip-path:inset(0 0 0 100%);animation:wipe 1s var(--ease) forwards}
+.mimg img.enter.back{clip-path:inset(0 100% 0 0)}
+@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+.mimg img.old{animation:drift 1s var(--ease) forwards}
+@keyframes drift{to{transform:scale(1.06);filter:brightness(.8)}}
+.mimg .arr{position:absolute;bottom:24px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.6);color:#fff;display:grid;place-items:center;z-index:3;transition:.3s}
+.mimg .arr:hover{background:#fff;color:var(--ink)}
+.mimg .arr.p{left:24px;opacity:0;pointer-events:none}.mimg .arr.n{left:24px}
+.mimg .arr.p.on{opacity:1;pointer-events:auto}.mimg .arr.p.on~.arr.n{left:76px}
+.mimg .dots{position:absolute;right:22px;bottom:42px;display:flex;gap:8px;z-index:3}
+.mimg .dots i{width:42px;height:2px;background:rgba(255,255,255,.4);cursor:pointer;transition:.3s}
+.mimg .dots i.on{background:#fff}
+.mtxt{flex:1;padding:58px 56px 0 57px;overflow-y:auto;position:relative}
+.mtxt .x{position:absolute;right:16px;top:16px;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:.3s}
+.mtxt .x:hover{background:var(--ink);color:#fff}
+.mtxt .eyebrow{font-size:10px}
+.mtxt .eyebrow i{font-size:15px}
+.mtxt h3{font-weight:300;font-size:60px;letter-spacing:-.02em;margin-top:14px;line-height:1.05}
+.mtxt .sub{font-style:italic;color:var(--accent);font-size:19.5px;margin-top:22px}
+.mtxt p{font-size:15.5px;line-height:1.72;color:var(--ink2);margin-top:22px}
+.specs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);margin-top:30px}
+.specs div{border-bottom:1px solid var(--line);padding:14px 0 13px}
+.specs small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.2em;color:var(--muted)}
+.specs span{display:block;font-size:15.5px;margin-top:3px}
+.mtxt ul{list-style:none;margin-top:24px;font-family:var(--sans);font-size:14px;color:var(--ink2)}
+.mtxt li{display:flex;gap:14px;margin-bottom:11px}
+.mtxt li:before{content:"";width:10px;height:1px;background:var(--accent);margin-top:10px}
+.mfoot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:30px;padding-bottom:40px}
+.mfoot small{font-family:var(--sans);font-size:9px;letter-spacing:.2em;color:var(--muted)}
+.mfoot b{display:block;font-weight:300;font-size:44px;line-height:1}
+.mfoot em{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+.cta{background:var(--cta);color:#fff;font-family:var(--sans);font-size:11px;letter-spacing:.2em;font-weight:600;padding:16px 32px;transition:.3s}
+.cta:hover{background:#8f3c24}
+.mtxt .fx{opacity:0;transform:translateY(14px)}
+.modal.open .mtxt .fx{animation:fxin .8s var(--ease) forwards}
+@keyframes fxin{to{opacity:1;transform:none}}
+
+/* ---------- a day ---------- */
+.day{--fg:var(--ink);--lab:var(--accent);background:#e2d5cf;color:var(--fg);padding:210px 0 190px;transition:color .6s}
+.day-head{padding:0 var(--pad)}
+.day-head .eyebrow{color:var(--muted)}
+.day-head .h2{margin-top:22px;font-size:86px;line-height:1.08}
+.day-head p{font-style:italic;font-size:19px;color:#5f5650;margin-top:40px}
+.day-grid{display:grid;grid-template-columns:711px 722px;padding:0 var(--pad);margin-top:60px}
+.clockcol{position:sticky;top:104px;height:680px;align-self:start}
+.clockcol .lab{font-family:var(--sans);font-size:11px;letter-spacing:.24em;color:var(--lab);text-transform:uppercase;transition:color .6s}
+.clock{font-weight:300;font-size:200px;line-height:.86;letter-spacing:-.03em;display:flex;align-items:center;margin-top:22px;font-variant-numeric:lining-nums tabular-nums}
+.clock .c{display:flex;flex-direction:column;justify-content:space-between;height:90px;margin:0 6px 0 10px}
+.clock .c i{width:17px;height:17px;border-radius:50%;background:#9a918a;opacity:.75}
+.sky{position:relative;width:420px;height:230px;margin-top:-12px}
+.sky svg{position:absolute;left:0;top:0;overflow:visible}
+.times{list-style:none;width:415px;border-top:1px solid color-mix(in srgb,var(--fg) 14%,transparent);margin-top:52px}
+.times li{display:flex;gap:44px;align-items:baseline;border-bottom:1px solid color-mix(in srgb,var(--fg) 12%,transparent);height:35px;padding-top:10px;opacity:.45;transition:opacity .5s,transform .5s var(--ease);cursor:pointer}
+.times li small{font-family:var(--sans);font-size:11px;letter-spacing:.1em;width:38px}
+.times li span{font-size:15.5px}
+.times li.on{opacity:1;transform:translateX(12px)}
+.moments{padding-top:52px}
+.mo{margin-bottom:250px}
+.mo:last-child{margin-bottom:0}
+.mo .pic{height:542px;overflow:hidden;opacity:0;transform:translateY(40px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}
+.mo .pic img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 2s var(--ease)}
+.mo.in .pic{opacity:1;transform:none}
+.mo.in .pic img{transform:none}
+.mo .cap{display:grid;grid-template-columns:343px 1fr;margin-top:35px}
+.mo .cap small{grid-column:1/-1;font-family:var(--sans);font-size:11px;letter-spacing:.22em;color:var(--lab);margin-bottom:12px;transition:color .6s}
+.mo h4{font-weight:300;font-size:39px;line-height:1.1;letter-spacing:-.01em}
+.mo p{font-size:16px;line-height:1.62;opacity:.85;padding-top:4px}
+
+/* ---------- experiences ---------- */
+.exp{background:var(--cream);padding:90px var(--pad) 130px}
+.panels{display:flex;gap:14px;height:623px;cursor:none}
+.pn{position:relative;flex:1;overflow:hidden;transition:flex 1s var(--ease);color:#fff}
+.pn.big{flex:3.1}
+.pn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease)}
+.pn.big img{transform:scale(1.02)}
+.pn:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(24,18,12,.66) 0%,rgba(24,18,12,.28) 45%,rgba(0,0,0,.05) 70%)}
+.pn .t{position:absolute;left:41px;right:41px;bottom:38px;z-index:2}
+.pn .t i{font-size:17px;opacity:.85}
+.pn h4{font-weight:300;font-size:45px;line-height:1.05;letter-spacing:-.01em;margin-top:6px}
+.pn .more{max-height:0;opacity:0;overflow:hidden;transition:max-height .9s var(--ease),opacity .6s}
+.pn.big .more{max-height:240px;opacity:1;transition-delay:.25s}
+.pn .more p{font-size:16px;line-height:1.6;margin-top:22px;max-width:540px;opacity:.95}
+.pn .more .mt{display:flex;gap:38px;border-top:1px solid rgba(255,255,255,.25);margin-top:30px;padding-top:18px;width:max(760px,100%)}
+.pn .more small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.2em;opacity:.85}
+.pn .more span{display:block;font-size:16px;margin-top:4px}
+.pn:not(.big) h4{max-width:180px}
+.cursor.open{background:#f6f2ea}
+
+/* ---------- album ---------- */
+.album{background:var(--cream);padding:40px var(--pad) 160px}
+.album-head{display:grid;grid-template-columns:1fr 520px;align-items:end;margin-bottom:62px}
+.album-head .h2{margin-top:18px}
+.album-head p{font-style:italic;font-size:17px;line-height:1.62;color:var(--muted);margin-bottom:6px}
+.mason{display:grid;grid-template-columns:repeat(4,344px);gap:19px}
+.mcol{display:flex;flex-direction:column;gap:19px}
+.pc{position:relative;overflow:hidden;background:#e4ded1;cursor:zoom-in}
+.pc img{width:100%;height:100%;object-fit:cover;clip-path:inset(100% 0 0 0);transform:scale(1.12);transition:clip-path 1.3s var(--ease),transform 1.8s var(--ease)}
+.pc.in img{clip-path:inset(0 0 0 0);transform:none}
+.pc:hover img{transform:scale(1.035)}
+.pc b{position:absolute;left:14px;top:12px;color:#fff;font-family:var(--sans);font-size:10px;letter-spacing:.14em;font-weight:600;z-index:2;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.lb{position:fixed;inset:0;z-index:96;background:rgba(22,18,14,.92);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:.5s;padding-top:var(--banner)}
+.lb.open{opacity:1;visibility:visible}
+.lb img{max-width:78vw;max-height:78vh;object-fit:contain;transform:scale(.96);transition:transform .6s var(--ease)}
+.lb.open img{transform:none}
+.lb .cap{position:absolute;bottom:34px;left:0;right:0;text-align:center;color:#e9e2d6;font-family:var(--sans);font-size:11px;letter-spacing:.24em}
+.lb button{position:absolute;color:#fff;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.35);display:grid;place-items:center}
+.lb .lp{left:40px;top:50%}.lb .ln2{right:40px;top:50%}.lb .lx{right:40px;top:80px}
+
+/* ---------- press + quote ---------- */
+.press{border-top:1px solid var(--line);border-bottom:1px solid var(--line);height:90px;overflow:hidden;display:flex;align-items:center;background:var(--cream)}
+.press .row{display:flex;align-items:center;white-space:nowrap;animation:marq 38s linear infinite}
+.press .row span{display:flex;align-items:center;color:#5a5448;font-size:34px;padding:0 0 0 56px}
+.press .row span:before{content:"✦";color:var(--accent);font-size:14px;margin-right:56px;font-family:var(--sans)}
+.press .p1{font-weight:300}.press .p2{font-weight:600}.press .p3{font-weight:300;letter-spacing:.34em;color:#9b958a!important}.press .p4{font-weight:600;font-style:italic}.press .p5{font-style:italic;font-weight:400}
+@keyframes marq{to{transform:translateX(-50%)}}
+.quote{background:var(--cream);padding:150px var(--pad) 190px;text-align:center}
+.quote .eyebrow{justify-content:center}
+.quote .eyebrow:before{content:none}
+.qwrap{position:relative;height:420px;margin-top:40px}
+.q{position:absolute;inset:0;opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease),transform .9s var(--ease);pointer-events:none}
+.q.on{opacity:1;transform:none;pointer-events:auto}
+.q blockquote{font-weight:300;font-size:64px;line-height:1.1;letter-spacing:-.018em;max-width:1100px;margin:0 auto}
+.q cite{display:block;font-style:italic;color:var(--accent);font-size:21px;margin-top:56px}
+.q small{display:block;font-family:var(--sans);font-size:13.5px;color:var(--muted);margin-top:8px}
+.qdots{display:flex;justify-content:center;gap:10px}
+.qdots i{width:41px;height:1px;background:var(--line);position:relative;cursor:pointer}
+.qdots i b{position:absolute;left:0;top:-.5px;height:2px;background:var(--ink);width:0}
+.qdots i.on b{animation:qfill 7s linear forwards}
+@keyframes qfill{to{width:100%}}
+
+/* ---------- reserve ---------- */
+.reserve{background:var(--cream2);padding:110px var(--pad) 150px}
+.res-head{display:grid;grid-template-columns:1fr 551px;align-items:start}
+.res-head .h2{margin-top:30px;font-size:88px;line-height:1.05}
+.perks{list-style:none;border-top:1px solid var(--line);margin-top:60px}
+.perks li{border-bottom:1px solid var(--line);height:48px;display:flex;align-items:center;gap:14px;font-size:16px;color:var(--ink2)}
+.perks li:before{content:"";width:8px;height:8px;border-radius:50%;border:1px solid var(--accent);box-shadow:inset 0 0 0 2px var(--cream2),inset 0 0 0 4px var(--accent)}
+.bk{display:grid;grid-template-columns:866px 1fr;border:1px solid #ddd8ce;background:#f6f3ee;margin-top:57px}
+.cal{padding:50px 45px 44px;border-right:1px solid #e7e2d8}
+.sel{display:flex;align-items:center;gap:18px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.sel small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.2em;color:var(--muted)}
+.sel span{display:block;font-size:22px;margin-top:2px}
+.sel .ar{width:36px;height:1px;background:var(--ink2);position:relative;margin:14px 6px 0}
+.sel .ar:after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid var(--ink2);border-right:1px solid var(--ink2);transform:rotate(45deg)}
+.sel .nights{border:1px solid #d9b8aa;border-radius:20px;padding:3px 13px;font-style:italic;color:var(--accent);font-size:15.5px;margin-top:12px}
+.sel .navs{margin-left:auto;display:flex;gap:10px}
+.sel .navs button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:.3s}
+.sel .navs button:hover{background:var(--ink);color:#fff}
+.months{display:grid;grid-template-columns:1fr 1fr;gap:54px;margin-top:30px}
+.mon h5{display:flex;justify-content:space-between;align-items:baseline;font-weight:300;font-size:22px}
+.mon h5 small{font-family:var(--sans);font-size:9.5px;letter-spacing:.2em;color:var(--muted)}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+.dow{margin-top:24px;font-family:var(--sans);font-size:8.5px;letter-spacing:.14em;color:var(--muted);text-align:center}
+.days{margin-top:14px;row-gap:4px}
+.d{height:53px;text-align:center;padding-top:8px;position:relative;cursor:pointer;transition:background .25s}
+.d b{display:block;font-weight:400;font-size:16px}
+.d small{display:block;font-family:var(--sans);font-size:8px;color:var(--muted);margin-top:3px}
+.d.hi small{color:var(--accent)}
+.d.hi:after{content:"";position:absolute;right:14px;top:6px;width:3px;height:3px;border-radius:50%;background:var(--accent)}
+.d.full{cursor:not-allowed}.d.full b{color:var(--faint);text-decoration:line-through}.d.full small{font-style:italic;font-family:var(--serif);font-size:10px;color:var(--faint)}
+.d.past{opacity:.3;pointer-events:none}
+.d:hover:not(.full){background:#efe7dd}
+.d.inr{background:#f0e2d9}
+.d.a,.d.z{background:var(--ink);color:#fff}.d.a small,.d.z small{color:#d9cfc3}
+.side{padding:50px 57px 40px}
+.side .rh{display:flex;justify-content:space-between;align-items:baseline}
+.side .rh small{font-family:var(--sans);font-size:10px;letter-spacing:.22em;color:var(--muted)}
+.side .rh em{font-size:14px;color:var(--ink2)}
+.rlist{margin-top:14px;display:flex;flex-direction:column;gap:9px}
+.ro{display:flex;align-items:center;gap:19px;border:1px solid #e0dbd1;padding:7px 14px 7px 7px;height:56px;cursor:pointer;transition:.3s;background:#f8f6f1}
+.ro img{width:50px;height:40px;object-fit:cover}
+.ro b{display:block;font-weight:400;font-size:17.5px}
+.ro small{display:block;font-family:var(--sans);font-size:11.5px;color:var(--muted);margin-top:1px}
+.ro em{margin-left:auto;font-size:16.5px}
+.ro:hover{border-color:#cdbfb2}
+.ro.on{background:#f2e5de;border-color:#cf8a73}.ro.on em{color:var(--accent)}
+.guests{margin-top:34px}
+.guests small{font-family:var(--sans);font-size:10px;letter-spacing:.22em;color:var(--muted)}
+.gr{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:10px;height:56px}
+.gr span{font-size:18px}
+.gr div{display:flex;gap:8px}
+.gr button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line)}
+.total{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px}
+.total b{display:block;font-weight:300;font-size:36px}
+.total em{font-size:13px;color:var(--muted)}
+
+/* ---------- map ---------- */
+.find{background:var(--cream);padding:190px var(--pad) 170px}
+.find .h2{margin-top:28px;font-size:88px;line-height:1.08}
+.fgrid{display:grid;grid-template-columns:851px 1fr;gap:81px;margin-top:34px}
+.map{position:relative;border:1px solid #dbd4c6;background:#ece4d3;height:704px;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.map .lbl{font-family:var(--serif);font-style:italic;font-size:17px;fill:#2a241f}
+.map .sm{font-family:var(--sans);font-size:9.5px;letter-spacing:.16em;fill:#7e776c}
+.map .pin circle.o{fill:#f4efe4;stroke:#2a241f;stroke-width:1.6;transition:r .3s,fill .3s}
+.map .pin.hl circle.o{fill:var(--accent);stroke:var(--accent)}
+.flow{animation:flow 3.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-28}}
+.beam{transform-origin:646px 546px;animation:beam 9s linear infinite}
+@keyframes beam{0%{transform:rotate(-70deg)}50%{transform:rotate(40deg)}100%{transform:rotate(-70deg)}}
+.pulse{transform-origin:548px 411px;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{from{transform:scale(.6);opacity:.55}to{transform:scale(2.6);opacity:0}}
+.drift{animation:drift2 14s ease-in-out infinite alternate}
+@keyframes drift2{to{transform:translate(-14px,6px)}}
+.tip{position:absolute;background:#1f1a16;color:#fff;padding:9px 16px 10px;pointer-events:none;opacity:0;transform:translateY(6px);transition:.3s var(--ease);white-space:nowrap}
+.tip.on{opacity:1;transform:none}
+.tip b{display:block;font-style:italic;font-weight:400;font-size:17px}
+.tip small{display:block;font-family:var(--sans);font-size:14px;margin-top:2px}
+.places{list-style:none;border-top:1px solid var(--line)}
+.places li{display:grid;grid-template-columns:45px 1fr auto;border-bottom:1px solid var(--line);height:79px;padding-top:21px;cursor:default;transition:background .3s}
+.places li:hover{background:rgba(255,255,255,.35)}
+.places i{font-size:14px;color:var(--accent);padding-top:3px}
+.places b{display:block;font-weight:400;font-size:19px}
+.places small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:4px}
+.places em{font-style:normal;font-weight:300;font-size:30px;padding-top:4px}
+.addr{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
+.addr small{font-family:var(--sans);font-size:9.5px;letter-spacing:.22em;color:var(--muted)}
+.addr p{font-size:16px;line-height:1.46;margin-top:10px;color:var(--ink2)}
+</style>
+</head>
+<body>
+
+<!-- build banner -->
+<div class="banner">
+  <div class="by"><svg class="star" viewBox="0 0 24 24"><g stroke="#e8674a" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M7.5 3.2l9 17.6M3.2 7.5l17.6 9M16.5 3.2l-9 17.6M20.8 7.5l-17.6 9"/></g></svg><span>Rebuilt by <b>Claude Opus 5.5</b> from <a href="https://www.youtube.com/watch?v=mPiaap4zEVk" target="_blank" rel="noopener">Brendan Jowett's video</a></span></div>
+</div>
+
+<!-- loader -->
+<div class="loader" id="loader">
+  <div class="word" id="lw"></div>
+  <div class="rule"></div>
+  <div class="sub">VERTOLI · COSTA SALVENA · SINCE 1962</div>
+</div>
+
+<!-- nav -->
+<nav class="nav pre" id="nav">
+  <ul>
+    <li><a href="#rooms" data-sec="rooms">ROOMS</a></li>
+    <li><a href="#day" data-sec="day">THE DAY</a></li>
+    <li><a href="#mo-dusk" data-sec="table">THE KITCHEN</a></li>
+    <li><a href="#mo-dawn" data-sec="pools">SALT POOLS</a></li>
+  </ul>
+  <a class="logo" href="#top"><b>Solenne</b><small>VERTOLI · COSTA SALVENA</small></a>
+  <div class="right">
+    <ul>
+      <li><a href="#experiences" data-sec="experiences">EXPERIENCES</a></li>
+      <li><a href="#finding" data-sec="finding">GETTING HERE</a></li>
+    </ul>
+    <a class="btn" href="#reserve">RESERVE</a>
+  </div>
+</nav>
+
+<!-- hero -->
+<header class="hero" id="top">
+  <div class="bg"></div>
+  <div class="scrollcue"><span>SCROLL</span></div>
+  <div class="hero-in">
+    <div class="coords reveal">40°11′N <i></i> VERTOLI, COSTA SALVENA</div>
+    <h1><span class="h1ln"><span>Thirty-four doors</span></span><span class="h1ln"><span>above the hush of</span></span><span class="h1ln"><span><em>late afternoon</em></span></span></h1>
+    <div class="bar reveal">
+      <div class="f" data-go><small>ARRIVE</small><span id="bA">Thu 15 Oct</span></div>
+      <div class="f" data-go><small>DEPART</small><span id="bD">Mon 19 Oct</span></div>
+      <div class="f" data-go><small>GUESTS</small><span id="bG">2 adults</span></div>
+      <div class="f" data-go><small>ROOM</small><span id="bR">Loggia Room</span></div>
+      <a class="go" href="#reserve">VIEW AVAILABILITY <svg width="18" height="12" viewBox="0 0 18 12" fill="none" stroke="#fff" stroke-width="1.4"><path d="M0 6h16M11 1l5 5-5 5"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<!-- I the house -->
+<section class="house" id="house">
+  <div class="eyebrow"><i>I</i>THE ORIGIN</div>
+  <div>
+    <p class="story" id="story">In 1962 Nerea Calvesi bought a lemon terrace nobody wanted, on a cliff everyone called too steep. She built four rooms, a kitchen and a staircase down to the water. Her grandchildren run the house now: thirty-four rooms, the same hundred and twelve steps, and a kitchen that still shuts on the nights the boats come home empty.</p>
+    <div class="sign fade">
+      <svg viewBox="0 0 162 40" fill="none" stroke="#b9553a" stroke-width="1.6" stroke-linecap="round"><path d="M2 34c6-6 10-16 14-15s-1 13 3 12 8-15 12-14-2 12 3 11 9-14 13-12 0 10 5 9 9-11 13-10 2 8 7 7 8-8 13-8 5 5 11 4 14-5 24-8"/></svg>
+      <div><b>Mira &amp; Dario Calvesi</b><small>Third generation, still bickering over the marmalade</small></div>
+    </div>
+  </div>
+</section>
+<div class="figs">
+  <div class="fig-bath"><img src="img/bath.jpg" alt="Stone bath facing the sea" data-par="0.12"></div>
+  <div class="figcap fade">
+    <div class="eyebrow"><i>fig. 1</i>ROOM 7, WHEN THE MISTRAL PASSED</div>
+    <p>Nerea's rules, still followed: no televisions, wooden shutters in place of blinds, and a bath that looks out to the water instead of the wall.</p>
+  </div>
+  <div class="fig-lemon"><img src="img/lemonkey.jpg" alt="Lemon, espresso and the key to room 7" data-par="-0.1"></div>
+</div>
+<div class="stats" id="stats">
+  <div class="stat"><b data-count="34">34</b><small>keys, spread across three cliff levels</small></div>
+  <div class="stat"><b data-count="112">112</b><small>steps down from reception to the sea</small></div>
+  <div class="stat"><b data-count="2">2</b><small>sea pools, hand-cut into the rock in 1971</small></div>
+  <div class="stat"><b data-count="1962" data-from="1900">1962</b><small>the year Nerea first bought the terrace</small></div>
+</div>
+
+<!-- II rooms -->
+<section class="rooms" id="rooms">
+  <div class="rooms-head">
+    <div class="rv">
+      <div class="eyebrow"><i>II</i>STAYS &amp; SUITES</div>
+      <h2 class="h2"><span class="ln"><span>Five ways to rise</span></span><span class="ln"><span><em>with the sea in view</em></span></span></h2>
+    </div>
+    <div class="fade">
+      <p>Thirty-four keys, no two rooms the same, every one close enough to hear the water. Linen from the weavers in Vertoli, floor tiles from the San Redo kiln, and shutters in place of blinds.</p>
+      <div class="ctrl">
+        <button id="cPrev" aria-label="Previous"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M16 5H1M5 1 1 5l4 4"/></svg></button>
+        <button id="cNext" aria-label="Next"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 5h15M11 1l4 4-4 4"/></svg></button>
+        <div class="count"><b id="cNum">01</b> / 05</div>
+        <div class="prog"><i id="cBar"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="track-wrap" id="trackWrap"><div class="track" id="track"></div></div>
+</section>
+<div class="cursor" id="cursor">Drag</div>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="veil" data-close></div>
+  <div class="mbox">
+    <div class="mimg" id="mimg">
+      <button class="arr p" id="mPrev" aria-label="Previous image"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M16 5H1M5 1 1 5l4 4"/></svg></button>
+      <button class="arr n" id="mNext" aria-label="Next image"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 5h15M11 1l4 4-4 4"/></svg></button>
+      <div class="dots" id="mDots"></div>
+    </div>
+    <div class="mtxt" id="mtxt"></div>
+  </div>
+</div>
+
+<!-- III a day -->
+<section class="day" id="day">
+  <div class="day-head rv">
+    <div class="eyebrow"><i>III</i>A DAY INSIDE SOLENNE</div>
+    <h2 class="h2"><span class="ln"><span>From the dawn swim <em>to the</em></span></span><span class="ln"><span><em>final turn of the light</em></span></span></h2>
+    <p class="fade">Take your time scrolling. The house runs on its own clock, and the light does most of the work.</p>
+  </div>
+  <div class="day-grid">
+    <div class="clockcol">
+      <div class="lab" id="dLab">DAWN</div>
+      <div class="clock"><span id="hh">06</span><span class="c"><i></i><i></i></span><span id="mm">10</span></div>
+      <div class="sky">
+        <svg width="420" height="230" viewBox="0 0 420 230">
+          <g id="stars" opacity="0" fill="#e9e3d6">
+            <circle cx="95" cy="44" r="1.6"/><circle cx="180" cy="15" r="1.3"/><circle cx="160" cy="64" r="1.4"/><circle cx="315" cy="27" r="1.4"/><circle cx="240" cy="46" r="1.2"/><circle cx="96" cy="100" r="1.4"/><circle cx="345" cy="115" r="1.4"/><circle cx="60" cy="140" r="1"/><circle cx="263" cy="118" r="1.2"/>
+          </g>
+          <path d="M22 228 A186 186 0 0 1 394 228" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1.2" stroke-dasharray="1 5" stroke-linecap="round"/>
+          <line x1="0" y1="228" x2="415" y2="228" stroke="currentColor" stroke-opacity=".55" stroke-width="1"/>
+          <g stroke="currentColor" stroke-opacity=".45" stroke-width="1"><path d="M31 238h42M115 238h72M239 238h52M333 238h52M62 247h31M156 247h41M270 247h61"/></g>
+          <g id="sun"><circle r="26" fill="url(#glow)" id="sunGlow"/><circle r="11" id="sunDot" fill="#c9583f"/></g>
+          <g id="moon" opacity="0"><path d="M0-10a10 10 0 1 0 9 14 8 8 0 1 1-9-14z" fill="#efe6d3"/></g>
+          <defs><radialGradient id="glow"><stop offset="0" stop-color="#c9583f" stop-opacity=".45" id="gs"/><stop offset="1" stop-color="#c9583f" stop-opacity="0" id="ge"/></radialGradient></defs>
+        </svg>
+      </div>
+      <ul class="times" id="times"></ul>
+    </div>
+    <div class="moments" id="moments"></div>
+  </div>
+</section>
+
+<!-- experiences -->
+<section class="exp" id="experiences">
+  <div class="panels" id="panels">
+    <div class="pn big" data-i="0"><img src="img/cove.jpg" alt=""><div class="t"><i>01</i><h4>Exploring by gozzo</h4><div class="more"><p>Dario takes the boat out at ten. Cala dei Falchi, Cala Serena and a third cove he refuses to name to anyone. A swim at each, lunch eaten aboard, back on land by three.</p><div class="mt"><div><small>LENGTH</small><span>10:00 to 15:00</span></div><div><small>BOAT</small><span>Seven metres, timber-built</span></div><div><small>FROM</small><span>€190 a guest</span></div></div></div></div></div>
+    <div class="pn" data-i="1"><img src="img/lunch.jpg" alt="" style="object-position:50% 0"><div class="t"><i>02</i><h4>Midday at Vigna Calvesi</h4><div class="more"><p>Fifteen minutes inland, four hectares of vines the family has tended since 1931. One long table beneath the olive tree, four wines, and a lunch that often turns into dinner.</p><div class="mt"><div><small>LENGTH</small><span>12:30 until late</span></div><div><small>TRANSFER</small><span>Included</span></div><div><small>FROM</small><span>€140 a guest</span></div></div></div></div></div>
+    <div class="pn" data-i="2"><img src="img/lemonterr.jpg" alt="" style="object-position:50% 0"><div class="t"><i>03</i><h4>The lemon groves</h4><div class="more"><p>Pick alongside Ottavia at eight, ahead of the heat. Learn why the Salvena lemon has a skin you can eat, then make marmalade in Nerea's copper pan and take a jar home.</p><div class="mt"><div><small>LENGTH</small><span>Three hours</span></div><div><small>SEASON</small><span>March to October</span></div><div><small>FROM</small><span>€85 a guest</span></div></div></div></div></div>
+  </div>
+</section>
+
+<!-- VII album -->
+<section class="album" id="album">
+  <div class="album-head">
+    <div class="rv"><div class="eyebrow"><i>VII</i>THE PHOTO WALL</div><h2 class="h2"><span class="ln"><span>Pictures we</span></span><span class="ln"><span><em>never quite sent</em></span></span></h2></div>
+    <p class="fade">Twelve shots from a single summer. Click any to look closer; arrow keys move you between them.</p>
+  </div>
+  <div class="mason" id="mason"></div>
+</section>
+<div class="lb" id="lb"><img id="lbImg" alt=""><div class="cap" id="lbCap"></div>
+  <button class="lp" id="lbP" aria-label="Previous"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M16 5H1M5 1 1 5l4 4"/></svg></button>
+  <button class="ln2" id="lbN" aria-label="Next"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 5h15M11 1l4 4-4 4"/></svg></button>
+  <button class="lx" id="lbX" aria-label="Close">✕</button>
+</div>
+
+<!-- press + VIII quote -->
+<div class="press"><div class="row" id="pressRow"></div></div>
+<section class="quote" id="words">
+  <div class="eyebrow fade"><i>VIII</i>PRAISE FOR THE HOUSE</div>
+  <div class="qwrap" id="qwrap">
+    <div class="q on"><blockquote>“The rare hotel where the restaurant alone is worth the trip, and the rooms are why you stay a week longer than planned.”</blockquote><cite>The Tide Review</cite><small>Best New Stays, 2026</small></div>
+    <div class="q"><blockquote>“Nobody warns you that the hundred and twelve steps are the whole point. By day three you stop counting them and start timing your swim.”</blockquote><cite>Meridian Quarterly</cite><small>The Coastline Issue, 2025</small></div>
+    <div class="q"><blockquote>“Ilenia cooks only what the boats bring home, nothing else. Some nights that's four courses. Some nights it's a single perfect fish.”</blockquote><cite>The Open Table</cite><small>Fifty Tables Worth the Trip</small></div>
+    <div class="q"><blockquote>“Thirty-four rooms, no televisions, and a lighthouse standing in for a nightlight. We still haven't stopped recommending it.”</blockquote><cite>Cape &amp; Reed</cite><small>Small Hotels Worth Knowing, 2026</small></div>
+  </div>
+  <div class="qdots" id="qdots"><i class="on"><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+</section>
+
+<!-- IX reserve -->
+<section class="reserve" id="reserve">
+  <div class="res-head">
+    <div class="rv"><div class="eyebrow"><i>IX</i>RESERVE</div><h2 class="h2"><span class="ln"><span>Pick your nights.</span></span><span class="ln"><span><em>We'll keep a light burning.</em></span></span></h2></div>
+    <ul class="perks fade"><li>Our best rate, guaranteed, whenever you book directly</li><li>Breakfast on the terrace, every single morning</li><li>Free cancellation up to fourteen days ahead</li></ul>
+  </div>
+  <div class="bk fade">
+    <div class="cal">
+      <div class="sel">
+        <div><small>ARRIVE</small><span id="sA">Thu 15 Oct</span></div>
+        <div class="ar"></div>
+        <div><small>DEPART</small><span id="sD">Mon 19 Oct</span></div>
+        <div class="nights" id="sN">4 nights</div>
+        <div class="navs"><button id="mP" aria-label="Previous month"><svg width="7" height="12" viewBox="0 0 7 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 1 1 6l5 5"/></svg></button><button id="mN" aria-label="Next month"><svg width="7" height="12" viewBox="0 0 7 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m1 1 5 5-5 5"/></svg></button></div>
+      </div>
+      <div class="months" id="months"></div>
+    </div>
+    <div class="side">
+      <div class="rh"><small>ROOM</small><em id="rDesc">Sleeps 3 · Sea and village</em></div>
+      <div class="rlist" id="rlist"></div>
+      <div class="guests"><small>GUESTS</small><div class="gr"><span id="gTxt">2 adults</span><div><button id="gM" aria-label="Fewer guests">−</button><button id="gP" aria-label="More guests">+</button></div></div></div>
+      <div class="total"><div><em id="tNights">4 nights, with breakfast</em><b id="tSum">€2,464</b></div><button class="cta" id="tGo">BOOK THESE NIGHTS</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- X finding us -->
+<section class="find" id="finding">
+  <div class="rv"><div class="eyebrow"><i>X</i>GETTING HERE</div><h2 class="h2"><span class="ln"><span>At the far end of the coast road,</span></span><span class="ln"><span><em>where the road forgets its name</em></span></span></h2></div>
+  <div class="fgrid">
+    <div class="map fade" id="map">
+      <svg viewBox="0 0 1057 875" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id="waves" width="46" height="30" patternUnits="userSpaceOnUse"><path d="M6 15q6-6 12 0" fill="none" stroke="#9fb3ab" stroke-width="1"/><path d="M29 30q6-6 12 0" fill="none" stroke="#9fb3ab" stroke-width="1"/></pattern>
+          <radialGradient id="bg1" cx="0" cy=".5" r="1"><stop offset="0" stop-color="#fff3b8" stop-opacity=".95"/><stop offset="1" stop-color="#fff3b8" stop-opacity="0"/></radialGradient>
+          <path id="gz" d="M330 395 C380 420 440 450 520 490"/>
+          <clipPath id="land"><path d="M0 0H1057V875H1000C950 800 870 720 820 690S760 640 700 600 640 560 600 520 480 420 430 390 150 260 0 195Z"/></clipPath>
+        </defs>
+        <rect width="1057" height="875" fill="#ebe3d1"/>
+        <path d="M0 195C150 260 300 330 430 390S560 480 600 520 660 580 700 600 780 650 820 690 950 800 1000 875H0Z" fill="#d3e0d9"/>
+        <path d="M0 195C150 260 300 330 430 390S560 480 600 520 660 580 700 600 780 650 820 690 950 800 1000 875H0Z" fill="url(#waves)" class="drift"/>
+        <g fill="none" stroke="#b9ad97" stroke-width="1" opacity=".75" clip-path="url(#land)">
+          <path d="M110 70c40-40 170-45 250-40s140 20 120 60-120 70-220 60-190-40-150-80z"/>
+          <path d="M150 72c40-26 140-30 200-24s90 18 76 42-90 44-170 38-140-30-106-56z"/>
+          <path d="M200 76c30-14 90-16 130-10s50 12 42 24-60 24-110 20-90-18-62-34z"/>
+          <path d="M252 80c16-6 46-6 62-2s18 10 10 14-40 10-60 6-28-12-12-18z"/>
+          <path d="M550 150c20-60 140-70 200-50s50 90 20 120-140 40-190 10-40-50-30-80z"/>
+          <path d="M585 155c16-40 100-48 146-34s34 62 12 82-100 26-136 6-30-34-22-54z"/>
+          <path d="M620 162c12-24 64-28 92-18s20 38 6 50-64 16-86 2-18-20-12-34z"/>
+          <path d="M650 170c8-10 30-12 42-6s8 18 0 22-30 6-38 0-8-10-4-16z"/>
+          <path d="M740 300c10-80 180-100 250-60s40 140-20 170-200 40-230-20z"/>
+          <path d="M775 300c8-54 130-70 180-42s28 96-14 116-140 26-160-12z"/>
+          <path d="M810 302c6-30 80-40 110-24s18 56-8 68-86 14-98-8z"/>
+          <path d="M840 306c4-12 34-16 48-10s8 24-4 28-38 4-44-4z"/>
+          <path d="M1057 330c-60 20-90 90-70 160s40 150 70 170"/>
+          <path d="M1057 360c-40 20-60 80-44 130s30 110 44 130"/>
+        </g>
+        <g fill="#b7ab93" opacity=".7">
+          <circle cx="530" cy="232" r="2"/><circle cx="560" cy="245" r="2.4"/><circle cx="598" cy="250" r="1.8"/><circle cx="652" cy="232" r="1.6"/><circle cx="640" cy="305" r="2"/><circle cx="655" cy="330" r="2.4"/><circle cx="690" cy="310" r="1.6"/><circle cx="700" cy="340" r="2"/><circle cx="745" cy="360" r="2"/><circle cx="760" cy="395" r="2.2"/><circle cx="800" cy="410" r="1.8"/><circle cx="905" cy="400" r="2.4"/><circle cx="925" cy="420" r="2"/><circle cx="880" cy="385" r="1.6"/><circle cx="820" cy="285" r="1.8"/><circle cx="850" cy="255" r="2"/><circle cx="930" cy="265" r="1.6"/><circle cx="960" cy="330" r="2"/><circle cx="575" cy="290" r="1.6"/><circle cx="610" cy="360" r="1.8"/><circle cx="720" cy="265" r="1.6"/><circle cx="640" cy="400" r="1.8"/><circle cx="690" cy="382" r="1.6"/><circle cx="760" cy="440" r="1.6"/>
+        </g>
+        <path class="beam" d="M646 546 L830 470 L840 560Z" fill="url(#bg1)" opacity=".75"/>
+        <g fill="none" stroke="#8fa39c" stroke-width=".8" opacity=".6"><ellipse cx="760" cy="640" rx="70" ry="26"/><ellipse cx="760" cy="640" rx="95" ry="38"/><ellipse cx="760" cy="640" rx="120" ry="52"/></g>
+        <path d="M0 156C60 170 90 205 112 207S300 300 460 322C500 330 520 380 548 411S620 520 646 546C610 560 592 598 622 615S740 628 790 578C820 560 840 600 870 660S960 760 1040 875" fill="none" stroke="#56595a" stroke-width="1.6"/>
+        <g fill="none" stroke="#b9553a" stroke-width="1.5" stroke-dasharray="7 7" class="flow">
+          <path d="M112 207C250 250 380 290 460 310"/>
+          <path d="M460 310L548 411"/>
+          <path d="M460 310C600 280 800 250 900 200S980 150 995 143"/>
+          <path d="M665 276C690 310 715 340 730 373"/>
+        </g>
+        <g fill="none" stroke="#3b4a4b" stroke-width="1.6" stroke-dasharray="1 6" stroke-linecap="round">
+          <path d="M112 245C200 330 300 380 400 430S580 540 600 580 690 660 789 600"/>
+          <path d="M789 600C810 650 870 690 918 698"/>
+        </g>
+        <text class="sm" style="letter-spacing:.14em;fill:#5f6b69"><textPath href="#gz">THE GOZZO'S PATH</textPath></text>
+        <text x="96" y="572" transform="rotate(-25 96 572)" style="font-family:var(--serif);font-style:italic;font-size:40px;letter-spacing:.3em;fill:#7f9690">Mare Salveno</text>
+        <text x="770" y="88" class="sm" style="font-size:13px;letter-spacing:.5em;fill:#8b8377">COSTA SALVENA</text>
+        <g transform="translate(995 118)" fill="#2a241f"><path d="M-2 -14h4v10l14 7v3l-14-4v8l5 4v2l-7-2-7 2v-2l5-4v-8l-14 4v-3l14-7z"/></g>
+        <g class="pin" data-p="0"><circle class="o" cx="460" cy="310" r="6"/><text x="400" y="296" class="lbl">Vertoli</text><text x="336" y="315" class="sm">VILLAGE · 8 MIN</text></g>
+        <g class="pin" data-p="1"><circle class="o" cx="112" cy="207" r="6"/><text x="127" y="194" class="lbl">Marina Longa</text><text x="127" y="212" class="sm">HYDROFOIL · 15 MIN</text></g>
+        <g class="pin" data-p="2"><circle class="o" cx="730" cy="373" r="6"/><text x="748" y="378" class="lbl">Vigna Calvesi</text><text x="748" y="396" class="sm">VINEYARD · 15 MIN</text></g>
+        <g class="pin" data-p="3"><circle class="o" cx="789" cy="597" r="6"/><text x="662" y="620" class="lbl">Cala dei Falchi</text><text x="690" y="638" class="sm">COVE · 20 MIN</text></g>
+        <g class="pin" data-p="4"><circle class="o" cx="646" cy="546" r="6"/><text x="666" y="562" class="lbl">Punta Fara</text><text x="666" y="580" class="sm">LIGHTHOUSE · 35 MIN</text></g>
+        <g class="pin" data-p="5"><circle class="o" cx="995" cy="143" r="6"/><text x="910" y="174" class="lbl">San Redo</text><text x="827" y="192" class="sm">AIRPORT SRD · 55 MIN</text></g>
+        <g class="pin"><circle class="o" cx="918" cy="698" r="6"/><text x="937" y="710" class="lbl">Cala Serena</text><text x="936" y="728" class="sm">COVE · 30 MIN</text></g>
+        <text x="452" y="387" class="lbl" style="font-size:22px">Solenne</text><text x="454" y="408" class="sm">THE HOUSE</text>
+        <circle class="pulse" cx="548" cy="411" r="12" fill="#b04b2f"/>
+        <circle cx="548" cy="411" r="7.5" fill="#b04b2f" id="here" style="cursor:pointer"/>
+        <circle cx="548" cy="411" r="22" fill="transparent" id="hereHit" style="cursor:pointer"/>
+      </svg>
+      <div class="tip" id="tip"><b>Solenne</b><small>You are here</small></div>
+    </div>
+    <div class="fade">
+      <ul class="places" id="places">
+        <li data-p="0"><i>01</i><div><b>Vertoli village</b><small>On foot, along the old mule path</small></div><em>8 min</em></li>
+        <li data-p="1"><i>02</i><div><b>Marina Longa hydrofoil</b><small>Our launch meets every arrival</small></div><em>15 min</em></li>
+        <li data-p="2"><i>03</i><div><b>Vigna Calvesi</b><small>By car, past the olive groves</small></div><em>15 min</em></li>
+        <li data-p="3"><i>04</i><div><b>Cala dei Falchi</b><small>By gozzo, around the point</small></div><em>20 min</em></li>
+        <li data-p="4"><i>05</i><div><b>Punta Fara lighthouse</b><small>The cliff path, best at sunset</small></div><em>35 min</em></li>
+        <li data-p="5"><i>06</i><div><b>San Redo Airport · SRD</b><small>We collect you, in the old Fiat or the newer one</small></div><em>55 min</em></li>
+      </ul>
+      <div class="addr">
+        <div><small>SOLENNE</small><p>Strada del Faro 7<br>84017 Vertoli, Costa Salvena</p></div>
+        <div><small>ARRIVING</small><p>Direct flights reach San Redo from eleven European cities, April through October. The final hydrofoil from Marina Longa departs at 19:40.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), lerp=(a,b,t)=>a+(b-a)*t;
+const vh=()=>innerHeight;
+
+/* ---------- loader ---------- */
+const lw=$('#lw');
+'Solenne'.split('').forEach((c,i)=>{const s=document.createElement('span');s.textContent=c;s.style.animationDelay=(0.1+i*0.07)+'s';lw.appendChild(s)});
+history.scrollRestoration='manual';
+setTimeout(()=>{$('#loader').classList.add('up');
+  setTimeout(()=>{$('.hero').classList.add('go');$('#nav').classList.remove('pre')},350);
+  setTimeout(()=>{$('#loader').style.display='none'},1100);
+},1500);
+
+/* ---------- reveals ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+$$('.rv,.fade').forEach(el=>io.observe(el));
+
+/* ---------- story words ---------- */
+const story=$('#story');
+story.innerHTML=story.textContent.split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');
+const words=$$('#story .w');
+
+/* ---------- counters ---------- */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);
+  $$('[data-count]').forEach(b=>{const to=+b.dataset.count,fr=+(b.dataset.from||0),t0=performance.now();
+    (function tick(t){const k=clamp((t-t0)/1800),e2=1-Math.pow(1-k,3);b.textContent=Math.round(fr+(to-fr)*e2);if(k<1)requestAnimationFrame(tick)})(t0)})}),{threshold:.4});
+cio.observe($('#stats'));
+$$('[data-count]').forEach(b=>b.textContent=b.dataset.from||0);
+
+/* ---------- rooms ---------- */
+const ROOMS=[
+ {id:'cliff',n:'01',name:'Bluff Room',keys:14,sleeps:2,tl:'Whitewashed walls, crisp linen, and a window that is nearly all sea.',size:'28 m²',view:'Open sea',bed:'Queen',bath:'Walk-in shower',from:420,
+  d:'Fourteen rooms on the top level, carved into the cliff where Nerea built first. White lime walls, a linen bed set by the window, and nothing between you and the horizon but a shutter you will leave open.',
+  li:['Window seat facing the sea','Linen from the Vertoli weavers','Breakfast delivered on request'],imgs:['room-cliff','golden','lemonkey']},
+ {id:'terrace',n:'02',name:'Loggia Room',keys:10,sleeps:3,tl:'A terrace of your own, with a reed roof to read beneath.',size:'36 m²',view:'Sea and village',bed:'King',bath:'Shower and tub',from:560,
+  d:'Ten rooms on the middle levels, each with a terrace roomy enough for two loungers and a long lunch. The reed pergola casts striped shade through the afternoon, and Vertoli’s lights come on across the bay by nine.',
+  li:['Private terrace under a reed pergola','Space for a child’s bed','Aperitivo tray delivered at seven'],imgs:['room-terrace','infinity','lemonkey']},
+ {id:'garden',n:'03',name:'Grove Suite',keys:5,sleeps:3,tl:'A walled lemon garden, entirely yours for the stay.',size:'52 m²',view:'Garden and sea',bed:'King',bath:'Tub by the window',from:740,
+  d:'Five suites at the base of the old lemon terrace, each with a walled garden, a stone table and a tree you may pick from freely. Majolica floors, doors left open from May through October.',
+  li:['Your own walled garden','Table set outdoors','Marmalade made from the garden’s own trees'],imgs:['room-garden','lemonterr','lemonkey']},
+ {id:'seapool',n:'04',name:'Cove Suite',keys:4,sleeps:3,tl:'A private pool, hewn from the very same rock as ours.',size:'64 m²',view:'Open sea',bed:'King',bath:'Outdoor shower and tub',from:980,
+  d:'Four suites on the lowest level, just twelve steps above the water. Each has a plunge pool carved into the cliff and filled with seawater, plus a terrace that holds the sun until it sets behind Punta Fara.',
+  li:['Private seawater plunge pool','Direct path down to the sea pools','Nightly turndown with limoncello'],imgs:['room-seapool','seapools','infinity']},
+ {id:'faro',n:'05',name:'Villa Lanterna',keys:1,sleeps:5,tl:'The old keeper’s cottage, with the keeper’s own view.',size:'96 m²',view:'Punta Fara and the bay',bed:'King and two singles',bath:'Stone tub',from:1650,
+  d:'The keeper’s cottage at the end of the garden path, restored one room at a time. A round window over the bay, a canopy bed, a stone tub, and stairs to the roof where you can count the beam.',
+  li:['Rooftop terrace above the bay','Separate room for the children','Dinner in private, on request'],imgs:['room-faro','night','golden']}
+];
+const track=$('#track');
+track.innerHTML=ROOMS.map((r,i)=>`<article class="card" data-i="${i}"><div class="ph"><img src="img/room-${r.id}.jpg" alt="${r.name}" draggable="false"><span class="tag">${r.keys} ${r.keys>1?'KEYS':'KEY'} · SLEEPS ${r.sleeps}</span><span class="view">See the room <svg width="18" height="12" viewBox="0 0 18 12" fill="none" stroke="#fff" stroke-width="1.3"><path d="M0 6h16M11 1l5 5-5 5"/></svg></span></div><h3><i>${r.n}</i>${r.name}</h3><p class="tl">${r.tl}</p><div class="meta"><div><small>SIZE</small><span>${r.size}</span></div><div><small>VIEW</small><span>${r.view}</span></div><div><small>FROM</small><span>€${r.from.toLocaleString('en')}</span></div></div></article>`).join('');
+const wrap=$('#trackWrap'),cur=$('#cursor');
+let tx=0,ttx=0,drag=false,sx=0,st=0,moved=0,vel=0,lastX=0;
+const step=467+34;
+const maxT=()=>-(track.scrollWidth-wrap.clientWidth);
+function setIdx(){const i=Math.round(-ttx/step);const k=clamp(i,0,4);$('#cNum').textContent='0'+(k+1);
+  const f=clamp(-ttx/(-maxT()||1));$('#cBar').style.width='20%';$('#cBar').style.transform=`translateX(${f*400}%)`;
+  $('#cPrev').disabled=ttx>=-2;$('#cNext').disabled=ttx<=maxT()+2}
+function go(i){ttx=clamp(-i*step,maxT(),0);setIdx()}
+$('#cPrev').onclick=()=>go(Math.round(-ttx/step)-1);
+$('#cNext').onclick=()=>go(Math.round(-ttx/step)+1);
+wrap.addEventListener('pointerdown',e=>{drag=true;moved=0;sx=e.clientX;st=ttx;lastX=e.clientX;vel=0;cur.classList.add('down');wrap.setPointerCapture(e.pointerId)});
+wrap.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-sx;moved=Math.max(moved,Math.abs(dx));vel=e.clientX-lastX;lastX=e.clientX;
+  let t=st+dx;const m=maxT();if(t>0)t*=.35;if(t<m)t=m+(t-m)*.35;ttx=t;setIdx()});
+wrap.addEventListener('pointerup',e=>{if(!drag)return;drag=false;cur.classList.remove('down');ttx=clamp(ttx+vel*14,maxT(),0);setIdx();
+  if(moved<6){const c=document.elementFromPoint(e.clientX,e.clientY)?.closest('.card');if(c)openRoom(+c.dataset.i)}});
+wrap.addEventListener('pointercancel',()=>{drag=false;cur.classList.remove('down')});
+let mx=-200,my=-200,cx=-200,cy=-200;
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY});
+wrap.addEventListener('pointerenter',()=>{cur.textContent='Drag';cur.classList.add('on')});
+wrap.addEventListener('pointerleave',()=>cur.classList.remove('on'));
+
+/* ---------- modal ---------- */
+const modal=$('#modal'),mimg=$('#mimg');let mRoom=0,mI=0;
+function openRoom(i){mRoom=i;mI=0;const r=ROOMS[i];cur.classList.remove('on');
+  $$('#mimg img').forEach(x=>x.remove());const im=new Image();im.src='img/'+r.imgs[0]+'.jpg';mimg.prepend(im);
+  $('#mDots').innerHTML=r.imgs.map((_,k)=>`<i class="${k?'':'on'}" data-k="${k}"></i>`).join('');
+  $('#mtxt').innerHTML=`<button class="x" data-close aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.3"><path d="M1 1l10 10M11 1 1 11"/></svg></button>
+  <div class="eyebrow fx"><i>${r.n}</i>${r.keys} ${r.keys>1?'KEYS':'KEY'} AT SOLENNE</div><h3 class="fx" style="animation-delay:.08s">${r.name}</h3><div class="sub fx" style="animation-delay:.14s">${r.tl}</div><p class="fx" style="animation-delay:.2s">${r.d}</p>
+  <div class="specs fx" style="animation-delay:.26s"><div><small>SIZE</small><span>${r.size}</span></div><div><small>VIEW</small><span>${r.view}</span></div><div><small>BED</small><span>${r.bed}</span></div><div><small>BATH</small><span>${r.bath}</span></div><div><small>SLEEPS</small><span>${r.sleeps} guests</span></div><div><small>KEYS</small><span>${r.keys} across the house</span></div></div>
+  <ul class="fx" style="animation-delay:.32s">${r.li.map(l=>'<li>'+l+'</li>').join('')}</ul>
+  <div class="mfoot fx" style="animation-delay:.38s"><div><small>FROM</small><b>€${r.from.toLocaleString('en')}</b><em>a night, breakfast on us</em></div><button class="cta" data-book="${i}">BOOK THIS ROOM</button></div>`;
+  $('#mPrev').classList.remove('on');modal.classList.add('open');modal.setAttribute('aria-hidden','false')}
+function showImg(k){const r=ROOMS[mRoom];k=(k+r.imgs.length)%r.imgs.length;if(k===mI)return;const back=k<mI;mI=k;
+  const old=$$('#mimg img');old.forEach(o=>o.classList.add('old'));
+  const im=new Image();im.src='img/'+r.imgs[k]+'.jpg';im.className='enter'+(back?' back':'');
+  $('#mDots').before(im);mimg.insertBefore(im,$('#mPrev'));
+  setTimeout(()=>old.forEach(o=>o.remove()),1000);
+  $$('#mDots i').forEach((d,j)=>d.classList.toggle('on',j===k));$('#mPrev').classList.toggle('on',k>0)}
+$('#mNext').onclick=()=>showImg(mI+1);$('#mPrev').onclick=()=>showImg(mI-1);
+$('#mDots').onclick=e=>{if(e.target.dataset.k)showImg(+e.target.dataset.k)};
+function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+modal.addEventListener('click',e=>{if(e.target.closest('[data-close]'))closeModal();const b=e.target.closest('[data-book]');if(b){closeModal();selRoom(+b.dataset.book);$('#reserve').scrollIntoView({behavior:'smooth'})}});
+
+/* ---------- a day ---------- */
+const MOM=[
+ {id:'dawn',t:[6,10],lab:'DAWN',name:'Dawn',img:'seapools',h:'The sea pools,<br>before the crowds arrive',p:'The tide filled them overnight. The water is colder than expected, and just as clear. Someone left a towel folded on the rock for you. It was Dario, and he’ll deny it.',bg:'#e2d5cf',fg:'#1f1a16',lc:'#b04b2f',sun:'#c9583f'},
+ {id:'morning',t:[8,30],lab:'MORNING',name:'Morning',img:'lemonkey',h:'Breakfast lasts as<br>long as you want',p:'Figs, ricotta still warm from Teresa’s farm, bread from the village oven and the lemon marmalade Nerea first wrote down in 1964. Served on the terrace until eleven, or on your own, whenever you please.',bg:'#f1e8ce',fg:'#1f1a16',lc:'#a57a35',sun:'#c7962f'},
+ {id:'late',t:[11,0],lab:'LATE MORNING',name:'Late morning',img:'cove',h:'The gozzo sets out<br>for the coves',p:'Three coves that no road can reach. A swim at each, bread and tomatoes brought on board, and back at the jetty before the afternoon wind turns.',bg:'#ebe9dc',fg:'#1f1a16',lc:'#3b4b52',sun:'#3a5f6c'},
+ {id:'afternoon',t:[14,30],lab:'AFTERNOON',name:'Afternoon',img:'infinity',h:'La controra',p:'Vertoli calls the hottest hours <i>la controra</i>, and nobody attempts anything useful. The pool, a book borrowed from the stairwell library, a nap behind half-closed shutters.',bg:'#e9ddc5',fg:'#1f1a16',lc:'#9a3f25',sun:'#a64a33'},
+ {id:'golden',t:[18,45],lab:'GOLDEN HOUR',name:'Golden hour',img:'golden',h:'Sundowners on the<br>hundred and<br>twelve steps',p:'The whole cliff glows the colour of apricots. Drinks travel down to the lower terraces, and the spritz is poured with bitter oranges grown on the wall behind the kitchen.',bg:'#dfb487',fg:'#1f1a16',lc:'#8f2f16',sun:'#a8321a'},
+ {id:'dusk',t:[20,30],lab:'DUSK',name:'Dusk',img:'dinner',h:'Dinner at Nerea',p:'Forty-two covers under the vine. Ilenia sets the menu at four and rewrites it again at six, depending on what the boats brought home.',bg:'#48364e',fg:'#f3ebe0',lc:'#e59a82',sun:'#d06a4c'},
+ {id:'mid',t:[23,50],lab:'MIDNIGHT',name:'Midnight',img:'night',h:'The house falls<br>quiet. The<br>lighthouse won’t.',p:'One final glass out on the terrace. The beam from Punta Fara sweeps the bay every twelve seconds, and you’ll count them until sleep finds you.',bg:'#0f1626',fg:'#f1eadf',lc:'#e8cf98',sun:'#d06a4c'}
+];
+$('#moments').innerHTML=MOM.map(m=>`<article class="mo" id="mo-${m.id}"><div class="pic"><img src="img/${m.img}.jpg" alt=""></div><div class="cap"><small>${String(m.t[0]).padStart(2,'0')}:${String(m.t[1]).padStart(2,'0')} · ${m.lab}</small><h4>${m.h}</h4><p>${m.p}</p></div></article>`).join('');
+$('#times').innerHTML=MOM.map((m,i)=>`<li data-i="${i}"><small>${String(m.t[0]).padStart(2,'0')}:${String(m.t[1]).padStart(2,'0')}</small><span>${m.name}</span></li>`).join('');
+$('#times').onclick=e=>{const li=e.target.closest('li');if(li){const el=$$('.mo .pic')[+li.dataset.i];scrollTo({top:el.getBoundingClientRect().top+scrollY-60,behavior:'smooth'})}};
+const mio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');mio.unobserve(e.target)}}),{rootMargin:'0px 0px -12% 0px'});
+$$('.mo').forEach(m=>mio.observe(m));
+const hex=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));
+const mix=(a,b,t)=>{a=hex(a);b=hex(b);return 'rgb('+a.map((v,i)=>Math.round(lerp(v,b[i],t))).join(',')+')'};
+const mins=m=>m.t[0]*60+m.t[1];
+const day=$('#day'),pics=$$('.mo .pic'),lis=$$('#times li');
+const sun=$('#sun'),moon=$('#moon'),stars=$('#stars'),sunDot=$('#sunDot'),gs=$('#gs'),ge=$('#ge');
+let lastLab='';
+function dayUpdate(){
+  const line=60; const tops=pics.map(p=>p.getBoundingClientRect().top+ (p.closest('.mo').classList.contains('in')?0:-40));
+  let i=0,f=0;
+  if(tops[0]>line){i=0;f=0}
+  else{for(i=0;i<MOM.length-1;i++){if(tops[i+1]>line)break}
+    f=i<MOM.length-1?clamp((line-tops[i])/(tops[i+1]-tops[i])):0}
+  const a=MOM[i],b=MOM[Math.min(i+1,MOM.length-1)];
+  let m=lerp(mins(a),mins(b),f);const hh=Math.floor(m/60)%24,mm=Math.floor(m%60);
+  $('#hh').textContent=String(hh).padStart(2,'0');$('#mm').textContent=String(mm).padStart(2,'0');
+  // color blend: hold, then blend in last 45% of the step
+  const cf=clamp((f-.55)/.45);
+  day.style.background=mix(a.bg,b.bg,cf);day.style.setProperty('--fg',cf>.5?b.fg:a.fg);day.style.setProperty('--lab',cf>.5?b.lc:a.lc);
+  const cm=cf>.5?b:a;if(cm.lab!==lastLab){lastLab=cm.lab;$('#dLab').textContent=cm.lab}
+  lis.forEach((l,k)=>l.classList.toggle('on',k===(f>.5?Math.min(i+1,MOM.length-1):i)));
+  // sun: 06:00 -> 20:40 across the arc
+  const cxA=208,cyA=228,R=186;
+  const sp=(m-6*60)/(20.6*60-6*60);const ang=Math.PI*(1-clamp(sp,-.05,1.05));
+  sun.setAttribute('transform',`translate(${cxA+R*Math.cos(ang)} ${cyA-R*Math.sin(ang)})`);
+  sun.style.opacity=clamp((20.8*60-m)/25);
+  const sc=mix(a.sun,b.sun,cf);sunDot.setAttribute('fill',sc);gs.setAttribute('stop-color',sc);ge.setAttribute('stop-color',sc);
+  // moon: 20:00 -> 03:00
+  const mp=(m-20*60)/(7*60);const ma=Math.PI*(1-clamp(mp,0,1));
+  moon.setAttribute('transform',`translate(${cxA+R*Math.cos(ma)} ${cyA-R*Math.sin(ma)})`);
+  moon.style.opacity=clamp((m-19.9*60)/20);stars.style.opacity=clamp((m-20.5*60)/60);
+}
+
+/* ---------- experiences ---------- */
+const pns=$$('.pn');
+pns.forEach(p=>p.addEventListener('pointerenter',()=>{pns.forEach(q=>q.classList.toggle('big',q===p))}));
+const panels=$('#panels');
+panels.addEventListener('pointerenter',()=>{cur.textContent='Open';cur.classList.add('on')});
+panels.addEventListener('pointerleave',()=>cur.classList.remove('on'));
+
+/* ---------- album ---------- */
+const ALB=[['golden',192],['lemonterr',515],['room-cliff',229],['food',343],['bath',515],['cove',228],['dinner',192],['lemonkey',343],['seapools',228],['lunch',228],['room-faro',230],['night',230]];
+const COLS=[[0,1,2],[3,4],[5,6,7],[8,9,10,11]];
+$('#mason').innerHTML=COLS.map(c=>'<div class="mcol">'+c.map(k=>`<div class="pc" data-k="${k}" style="height:${ALB[k][1]}px"><img src="img/${ALB[k][0]}.jpg" alt="" loading="lazy"><b>${String(k+1).padStart(2,'0')}</b></div>`).join('')+'</div>').join('');
+const pio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),(+e.target.dataset.k%4)*90);pio.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px'});
+$$('.pc').forEach(p=>pio.observe(p));
+const lb=$('#lb');let lk=0;
+const lbShow=k=>{lk=(k+12)%12;$('#lbImg').src='img/'+ALB[lk][0]+'.jpg';$('#lbCap').textContent=String(lk+1).padStart(2,'0')+' / 12'};
+$('#mason').onclick=e=>{const p=e.target.closest('.pc');if(p){lbShow(+p.dataset.k);lb.classList.add('open')}};
+$('#lbP').onclick=()=>lbShow(lk-1);$('#lbN').onclick=()=>lbShow(lk+1);$('#lbX').onclick=()=>lb.classList.remove('open');
+lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open')});
+addEventListener('keydown',e=>{if(lb.classList.contains('open')){if(e.key==='ArrowRight')lbShow(lk+1);if(e.key==='ArrowLeft')lbShow(lk-1);if(e.key==='Escape')lb.classList.remove('open')}
+  else if(modal.classList.contains('open')){if(e.key==='Escape')closeModal();if(e.key==='ArrowRight')showImg(mI+1);if(e.key==='ArrowLeft')showImg(mI-1)}});
+
+/* ---------- press + quotes ---------- */
+const P='<span class="p1">Meridian Quarterly</span><span class="p2">The Open Table</span><span class="p3">LANTERN</span><span class="p4">Cape &amp; Reed</span><span class="p5">The Tide Review</span>';
+$('#pressRow').innerHTML=P+P+P+P;
+const qs=$$('.q'),qd=$$('#qdots i');let qi=0,qT;
+function q(k){qi=(k+qs.length)%qs.length;qs.forEach((x,j)=>x.classList.toggle('on',j===qi));qd.forEach((d,j)=>{d.classList.remove('on');void d.offsetWidth;d.classList.toggle('on',j===qi)});clearTimeout(qT);qT=setTimeout(()=>q(qi+1),7000)}
+qd.forEach((d,j)=>d.onclick=()=>q(j));qT=setTimeout(()=>q(1),7000);
+
+/* ---------- reserve ---------- */
+const MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const FULL=new Set(['2026-10-3','2026-10-10','2026-11-15','2026-11-20','2026-10-31','2026-11-28','2026-12-24','2026-12-31','2026-9-26']);
+let S={a:new Date(2026,9,15),d:new Date(2026,9,19),room:1,g:2,view:new Date(2026,9,1)};
+const key=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+const fmt=d=>DW[d.getDay()]+' '+d.getDate()+' '+MS[d.getMonth()];
+function price(d,r){const base=ROOMS[r].from;const mf=[.8,.8,.8,.85,.95,1.1,1.25,1.3,1.1,1,.85,.85][d.getMonth()];const wk=(d.getDay()===5||d.getDay()===6)?1.2:1;return Math.round(base*mf/5*wk)*5*1}
+function priceShow(d,r){const base=ROOMS[r].from;const mf=d.getMonth()===9?1:d.getMonth()===10?475/560:[.8,.8,.8,.85,.95,1.1,1.25,1.3,1.1,1,.85,.85][d.getMonth()];const wk=(d.getDay()===5||d.getDay()===6)?1.2:1;return Math.round(base*mf*wk)}
+function renderCal(){let h='';for(let k=0;k<2;k++){const m=new Date(S.view.getFullYear(),S.view.getMonth()+k,1);const n=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();const off=(m.getDay()+6)%7;
+  h+=`<div class="mon"><h5>${MON[m.getMonth()]}<small>${m.getFullYear()}</small></h5><div class="dow"><span>MO</span><span>TU</span><span>WE</span><span>TH</span><span>FR</span><span>SA</span><span>SU</span></div><div class="days">`+'<div></div>'.repeat(off);
+  for(let d=1;d<=n;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d);const full=FULL.has(key(dt));const past=dt<new Date(2026,8,24);const wk=dt.getDay()===5||dt.getDay()===6;
+   let c='d';if(full)c+=' full';if(past)c+=' past';if(wk&&!full)c+=' hi';
+   if(S.a&&+dt===+S.a)c+=' a';if(S.d&&+dt===+S.d)c+=' z';if(S.a&&S.d&&dt>S.a&&dt<S.d)c+=' inr';
+   h+=`<div class="${c}" data-t="${+dt}"><b>${d}</b><small>${full?'full':'€'+priceShow(dt,S.room).toLocaleString('en')}</small></div>`}
+  h+='</div></div>'}
+  $('#months').innerHTML=h;summary()}
+function nights(){return S.a&&S.d?Math.round((S.d-S.a)/864e5):0}
+function summary(){const n=nights();$('#sA').textContent=S.a?fmt(S.a):'—';$('#sD').textContent=S.d?fmt(S.d):'Choose';$('#sN').textContent=n?n+(n>1?' nights':' night'):'pick a date';
+  let sum=0;if(n)for(let t=new Date(S.a);t<S.d;t.setDate(t.getDate()+1))sum+=priceShow(t,S.room);
+  $('#tSum').textContent=n?'€'+sum.toLocaleString('en'):'—';$('#tNights').textContent=n?n+(n>1?' nights':' night')+', with breakfast':'Choose your stay';
+  const r=ROOMS[S.room];$('#rDesc').textContent=`Sleeps ${r.sleeps} · ${r.view}`;
+  $('#bA').textContent=S.a?fmt(S.a):'—';$('#bD').textContent=S.d?fmt(S.d):'—';$('#bR').textContent=r.name;$('#bG').textContent=$('#gTxt').textContent=S.g+(S.g>1?' adults':' adult')}
+$('#months').onclick=e=>{const c=e.target.closest('.d');if(!c||c.classList.contains('full'))return;const dt=new Date(+c.dataset.t);
+  if(!S.a||S.d||dt<=S.a){S.a=dt;S.d=null}else{let ok=true;for(let t=new Date(S.a);t<dt;t.setDate(t.getDate()+1))if(FULL.has(key(t)))ok=false;if(ok)S.d=dt;else{S.a=dt;S.d=null}}renderCal()};
+$('#mP').onclick=()=>{if(S.view>new Date(2026,8,1)){S.view=new Date(S.view.getFullYear(),S.view.getMonth()-1,1);renderCal()}};
+$('#mN').onclick=()=>{S.view=new Date(S.view.getFullYear(),S.view.getMonth()+1,1);renderCal()};
+$('#rlist').innerHTML=ROOMS.map((r,i)=>`<div class="ro${i===1?' on':''}" data-i="${i}"><img src="img/room-${r.id}.jpg" alt=""><div><b>${r.name}</b><small>Sleeps ${r.sleeps} · ${r.size.replace('²','<sup style="font-size:7px">2</sup>')} · ${r.keys} ${r.keys>1?'keys':'key'}</small></div><em>from €${r.from.toLocaleString('en')}</em></div>`).join('');
+function selRoom(i){S.room=i;S.g=Math.min(S.g,ROOMS[i].sleeps);$$('.ro').forEach((x,j)=>x.classList.toggle('on',j===i));renderCal()}
+$('#rlist').onclick=e=>{const r=e.target.closest('.ro');if(r)selRoom(+r.dataset.i)};
+$('#gM').onclick=()=>{S.g=Math.max(1,S.g-1);summary()};$('#gP').onclick=()=>{S.g=Math.min(ROOMS[S.room].sleeps,S.g+1);summary()};
+$('#tGo').onclick=function(){if(nights()){this.textContent='BOOKING SENT ✓';setTimeout(()=>this.textContent='BOOK THESE NIGHTS',2600)}};
+$$('[data-go]').forEach(f=>f.onclick=()=>$('#reserve').scrollIntoView({behavior:'smooth'}));
+renderCal();
+
+/* ---------- map ---------- */
+const tip=$('#tip'),map=$('#map');
+function showTip(on){if(!on){tip.classList.remove('on');return}const r=$('#here').getBoundingClientRect(),m=map.getBoundingClientRect();tip.style.left=(r.left-m.left-50)+'px';tip.style.top=(r.top-m.top-74)+'px';tip.classList.add('on')}
+['#here','#hereHit'].forEach(s=>{$(s).addEventListener('pointerenter',()=>showTip(1));$(s).addEventListener('pointerleave',()=>showTip(0))});
+$$('#places li').forEach(li=>{li.addEventListener('pointerenter',()=>$$('.pin').forEach(p=>p.classList.toggle('hl',p.dataset.p===li.dataset.p)));li.addEventListener('pointerleave',()=>$$('.pin').forEach(p=>p.classList.remove('hl')))});
+
+/* ---------- nav ---------- */
+const nav=$('#nav');let lastY=scrollY;
+const secs=[['rooms','#rooms'],['day','#day'],['experiences','#experiences'],['experiences','#album'],['finding','#finding']];
+function navUpdate(){const y=scrollY,hero=$('.hero').offsetHeight;
+  nav.classList.toggle('solid',y>hero-120);
+  if(y>hero&&y>lastY+2)nav.classList.add('hide');else if(y<lastY-2||y<hero)nav.classList.remove('hide');lastY=y;
+  let act='';secs.forEach(([k,s])=>{const r=$(s).getBoundingClientRect();if(r.top<vh()*.4&&r.bottom>vh()*.4)act=k});
+  $$('.nav ul a').forEach(a=>a.classList.toggle('act',a.dataset.sec===act))}
+
+/* ---------- main loop ---------- */
+const pars=$$('[data-par]');
+function frame(){
+  // carousel easing
+  if(!drag){ttx=clamp(ttx,maxT(),0)}tx+=(ttx-tx)*.12;track.style.transform=`translate3d(${tx}px,0,0)`;
+  cx+=(mx-cx)*.2;cy+=(my-cy)*.2;cur.style.left=cx+'px';cur.style.top=cy+'px';
+  // story words
+  const r=story.getBoundingClientRect();const p=(vh()*.72-r.top)/(vh()*.5);const N=words.length;
+  words.forEach((w,k)=>{w.style.opacity=(.17+.83*clamp((p-k/N)/.1)).toFixed(3)});
+  // parallax
+  pars.forEach(im=>{const b=im.parentElement.getBoundingClientRect();const c=(b.top+b.height/2-vh()/2);const lim=.09*b.height;im.style.transform=`translate3d(0,${(-lim+clamp(c*+im.dataset.par,-lim,lim)).toFixed(1)}px,0)`});
+  dayUpdate();navUpdate();
+  requestAnimationFrame(frame)}
+pars.forEach(im=>im.style.transform='translate3d(0,-8%,0)');
+requestAnimationFrame(frame);
+addEventListener('resize',setIdx);setIdx();
+})();
+</script>
+</body>
+</html>
