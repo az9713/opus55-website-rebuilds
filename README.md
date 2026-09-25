@@ -59,4 +59,4 @@ The pages load Google Fonts and scripts from cdnjs / jsDelivr.
   video frame against rebuild, with and without the photos.
 - `scripts/cmp.py` and `scripts/sheets.py` need video frames, which are not in this repository.
 
-No license is set.
+MIT License. See [LICENSE](LICENSE).

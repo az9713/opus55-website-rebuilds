@@ -149,7 +149,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:-.022em;color:v
 .hs.on::after{border-color:rgba(233,176,130,.8)}
 .hs:not(.on)::after{animation:pulse 2.4s infinite}
 @keyframes pulse{0%{border-color:rgba(233,176,130,.6);transform:scale(.6)}100%{border-color:rgba(233,176,130,0);transform:scale(1.6)}}
-.hs span{position:absolute;left:34px;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:#f3eee6;font-weight:700}
+.hs span{position:absolute;left:34px;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:#f3eee6;font-weight:700;text-shadow:0 0 2px #000,0 0 6px rgba(0,0,0,.9)}
 .card{position:absolute;width:387px;background:rgba(24,24,26,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(217,163,122,.6);padding:30px 29px 26px;transition:left .6s cubic-bezier(.2,.7,.2,1),top .6s cubic-bezier(.2,.7,.2,1),opacity .35s}
 .card .k{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#9a948a}
 .card h3{font-size:30px;line-height:1.12;margin:16px 0 14px;letter-spacing:-.015em}
@@ -581,7 +581,7 @@ const HS=[
  {x:49.7,y:53.7,k:'04 · PARACHUTE BAY',n:'Parachute bay',h:'Four canopies. One would do.',p:'Two drogues and four mains, packed behind a single panel. Splashdown lands at 24 km/h, a short distance off the coast pad.',l:'MAINS',v:'4 × 35 m'},
  {x:70.0,y:66.0,k:'05 · HEAT SHIELD',n:'Heat shield',h:'The oldest piece of the design.',p:'An ablative base that takes re-entry at 2,700 °C and gets swapped after every flight, carrying 41% margin over our hottest re-entry.',l:'PEAK TEMP',v:'2,700 °C'}];
 let vi=1;
-$('#hsl').innerHTML=HS.map((h,i)=>`<button class="hs" data-i="${i}" style="left:${h.x}%;top:${h.y}%" aria-label="Hotspot 0${i+1}"></button>`).join('');
+$('#hsl').innerHTML=HS.map((h,i)=>`<button class="hs" data-i="${i}" style="left:${h.x}%;top:${h.y}%" aria-label="Hotspot 0${i+1}"><span>0${i+1}</span></button>`).join('');
 $('#vtabs').innerHTML=HS.map((h,i)=>`<button class="vtab" data-i="${i}"><div class="k">0${i+1}</div><div class="n">${h.n}</div></button>`).join('');
 function setV(i){vi=i;const h=HS[i],c=$('#vcard');c.style.opacity=0;
   setTimeout(()=>{c.innerHTML=`<div class="k">${h.k}</div><h3>${h.h}</h3><p>${h.p}</p><div class="m"><span class="l">${h.l}</span><span class="v">${h.v}</span></div>`;

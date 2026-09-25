@@ -811,7 +811,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <tr><td>6 HALDEN</td><td>Haze, soft reflections, colour</td><td><span class="tag">3D</span></td><td>Less haze; reflection sharper and more rippled; scene more pink and less contrasty.</td></tr>
 <tr><td>7 K&Aacute;RM&Aacute;N</td><td>Halo and Selene mission panels, hotspot cards 01, 04, 05, training days 02&ndash;06, quotes 02&ndash;04, questions section, footer</td><td><span class="tag o">filler</span> <span class="tag o">not in video</span></td><td>"Content I invented because the video does not show it".</td></tr>
 <tr><td>7 K&Aacute;RM&Aacute;N</td><td>Earth and Moon surfaces, sunrise glow, scroll timing</td><td><span class="tag">3D</span></td><td>Noise textures give "blobby" continents; weaker sunrise glow; scene timing against scroll "only approximate". Rocket slightly left of the video's position.</td></tr>
-<tr><td>3, 5, 7</td><td>Page UI inside old photos ("QUICK VIEW", badges "01"&ndash;"04", capsule markers "01"&ndash;"05")</td><td><span class="tag t">removed</span></td><td>Gone with the new images. In phase 1 the site 7 agent removed the visible numbers from the capsule hotspot buttons, because the old photo showed them. The new photo has no numbers. This reconstruction read the current source: line 584 of <code>sites/7-space/index.html</code> draws each button with only <code>aria-label="Hotspot 0${i+1}"</code>. So the five dots on the capsule now carry no visible number (open item, section 14).</td></tr>
+<tr><td>3, 5, 7</td><td>Page UI inside old photos ("QUICK VIEW", badges "01"&ndash;"04", capsule markers "01"&ndash;"05")</td><td><span class="tag t">removed</span></td><td>Gone with the new images. In phase 1 the site 7 agent removed the visible numbers from the capsule hotspot buttons, because the old photo showed them. The new photo has no numbers. This reconstruction read the current source: line 584 of <code>sites/7-space/index.html</code> draws each button with only <code>aria-label="Hotspot 0${i+1}"</code>. So the five dots on the capsule carried no visible number. Fixed in session 5: each button again shows its number, "01" to "05", with a dark text shadow for contrast on the light hull.</td></tr>
 </table></div>
 <div class="rule">Invented text is not a failure if it is labelled. Every agent report listed what it had made up, and that list is the only way a reader can tell.</div>
 </section>
@@ -1150,7 +1150,7 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <div class="uu"><h4>16. A public repository with no licence is not free to reuse.</h4>
 <p><span class="lbl">What:</span> Without a LICENSE file, other people get no right to copy the code.</p>
 <p><span class="lbl">Why it matters:</span> Readers may assume the opposite.</p>
-<p><span class="lbl">Here:</span> The README says "No license is set." Adding one is an open item.</p></div>
+<p><span class="lbl">Here:</span> Fixed in session 5: the repository has an MIT <code>LICENSE</code> file.</p></div>
 
 <div class="uu"><h4>17. Old names can remain in places you do not see.</h4>
 <p><span class="lbl">What:</span> File names, code keys and git history keep text that the page no longer shows.</p>
@@ -1266,11 +1266,9 @@ footer{margin:64px 0 40px;padding-top:16px;border-top:1px solid var(--line);colo
 <p>None of these blocks the live sites. Each is an option for the owner, not a promise.</p>
 <ol>
 <li><strong>This page is not committed yet.</strong> The README links to <code>DEVELOPMENT-JOURNEY.html</code> on Pages; that link returns 404 until the file is committed and pushed.</li>
-<li><strong>No licence.</strong> Add a LICENSE file to set reuse terms.</li>
 <li><strong><code>BRIEF.md</code> is public and describes phase 1</strong> ("copy text ... verbatim", "crop photos directly from the frames") and shows a local Windows path. The README explains that photos and text were replaced later. Options: leave it as a historical record, or add a note at its top.</li>
 <li><strong>Old names in file names and code keys</strong> (<code>anders.jpg</code>, <code>amara.jpg</code>, <code>p-fathom.jpg</code>, <code>gull-king.jpg</code>, <code>salthowl-picks</code>). A rename needs matching code edits.</li>
 <li><strong>A few near-verbatim strings</strong> remain (for example the high-rise hero opening "Thirty-eight storeys of").</li>
-<li><strong>Capsule hotspots have no visible numbers</strong> since the new photo (section 7). Adding a number to each button in <code>sites/7-space/index.html</code> line 584 would restore them.</li>
 <li><strong>The evidence Artifact is private and shows the pre-rewrite pages.</strong> Rerun <code>scripts/evidence.py</code> and republish if it should show the current text; share it from its Share menu if wanted. It contains 7 video frames with the webcam blurred.</li>
 <li><strong>Images were compressed twice.</strong> A clean re-encode from the kept 4K PNGs is possible.</li>
 <li><strong>No phone test.</strong> The 3D sites on a phone are untested.</li>
