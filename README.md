@@ -27,6 +27,22 @@ All seven sites run on GitHub Pages. Click a picture to open the live page.
 
 The 3D sites (5, 6, 7) need WebGL. Use a desktop browser for the full effect.
 
+## Stage 2: seven new sites in the same styles
+
+Each new site keeps the layout, fonts, animations and tone of one rebuilt site. The subject,
+place, copy, palette and all images are new. The seven subjects were chosen to differ from the
+originals and from each other: seven climates, six regions. Sources are in `sites-v2/`.
+
+| Site | Page | Style of | Notes |
+|---|---|---|---|
+| [![Kaedeyu, mountain ryokan in autumn](journey-img/v2-1-hotel.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/1-hotel/) | [Kaedeyu, mountain ryokan in autumn](https://az9713.github.io/opus55-website-rebuilds/sites-v2/1-hotel/) | Solenne | same booking, day clock and map; river instead of sea |
+| [![SINKGLOW Nº9, jungle cenote festival](journey-img/v2-2-festival.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/2-festival/) | [SINKGLOW Nº9, jungle cenote festival](https://az9713.github.io/opus55-website-rebuilds/sites-v2/2-festival/) | SALTHOWL | timetable, picks, map with cenotes |
+| [![SOUREL, desert sun-wear](journey-img/v2-3-ecommerce.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/3-ecommerce/) | [SOUREL, desert sun-wear](https://az9713.github.io/opus55-website-rebuilds/sites-v2/3-ecommerce/) | KALDER | lookbook hotspots, filters, store map re-projected |
+| [![Wardlight, overnight hospital pharmacy](journey-img/v2-4-saas.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/4-saas/) | [Wardlight, overnight hospital pharmacy](https://az9713.github.io/opus55-website-rebuilds/sites-v2/4-saas/) | Kestrel | shortage forecast, night-run checklist, ROI |
+| [![MAHLAVA, birch-sap sauna drink](journey-img/v2-5-drink.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/5-drink/) | [MAHLAVA, birch-sap sauna drink](https://az9713.github.io/opus55-website-rebuilds/sites-v2/5-drink/) | HYPERLYTE | 3D can with new code-drawn label, sauna calculator |
+| [![ARVORA, garden tower in a dense city](journey-img/v2-6-highrise.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/6-highrise/) | [ARVORA, garden tower in a dense city](https://az9713.github.io/opus55-website-rebuilds/sites-v2/6-highrise/) | HALDEN | 3D concrete tower with 112 planted balconies, city instead of water |
+| [![APHOTIC, deep-sea trench dives](journey-img/v2-7-space.jpg)](https://az9713.github.io/opus55-website-rebuilds/sites-v2/7-space/) | [APHOTIC, deep-sea trench dives](https://az9713.github.io/opus55-website-rebuilds/sites-v2/7-space/) | KÁRMÁN | 3D submersible built in code, dive to 9,412 m |
+
 ## How the rebuild was done
 
 [Development journey](https://az9713.github.io/opus55-website-rebuilds/DEVELOPMENT-JOURNEY.html)
@@ -35,7 +51,7 @@ frames, animations, images, what was not rebuilt, and what went wrong.
 
 ## Run locally
 
-Open any `sites/<N-name>/index.html` in a browser. There is no build step.
+Open any `sites/<N-name>/index.html` or `sites-v2/<N-name>/index.html` in a browser. There is no build step.
 The pages load Google Fonts and scripts from cdnjs / jsDelivr.
 
 ## How it was made

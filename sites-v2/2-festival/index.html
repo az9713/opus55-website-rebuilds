@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sinkglow Nº9 — Ixkanil Sinks, Selva Verdeluz</title>
+<meta name="description" content="Sinkglow Nº9: three days of cenote swims by day and lantern-lit jungle stages by night at Ixkanil Sinks, Selva Verdeluz. 15–17 January 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:ital,opsz,wght@1,9..144,900&family=Space+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0e2419; --cream:#f1eee2; --pink:#ff4d1f; --yellow:#2ed3c6; --blue:#127a45;
+  --lav:#bfeee8; --pinkl:#ffc0a8; --lampb:#cdd9c8; --rockb:#c8f0a0; --pool:#3fae5c;
+  --pad:51px;
+  --disp:'Archivo',sans-serif; --body:'Bricolage Grotesque',sans-serif;
+  --mono:'Space Mono',monospace; --serif:'Fraunces',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{display:block;max-width:100%}
+
+/* ---------- grain ---------- */
+#grain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:.055;mix-blend-mode:multiply}
+
+/* ---------- banner ---------- */
+#banner{position:fixed;top:0;left:0;right:0;height:46px;background:#1b1a16;color:#e8e2d4;z-index:200;display:flex;align-items:center;padding:0 0 0 18px;font-family:'Inter',sans-serif}
+#banner .star{color:#e8755a;font-size:18px;margin-right:10px;display:inline-block;animation:spin 8s linear infinite}
+#banner .by{font-size:14.5px;color:#bdb6a6}#banner .by b{color:#fff;font-weight:700}
+#banner .by a{text-decoration:underline}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- nav ---------- */
+#nav{position:fixed;top:46px;left:0;right:0;height:58px;background:var(--cream);border-bottom:3px solid var(--ink);z-index:190;display:flex;align-items:center;padding:0 var(--pad)}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-variation-settings:'wdth' 125;font-weight:900;font-size:23px;letter-spacing:.01em}
+.logo .mark{width:34px;height:34px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 50% 42%,var(--yellow) 0 36%,transparent 37%),linear-gradient(var(--pink) 0 55%,var(--blue) 55%);}
+.logo sup{font-family:var(--mono);color:var(--pink);font-size:10px;font-weight:400;align-self:flex-start;margin:-4px 0 0 -6px}
+#nav .links{display:flex;gap:29px;margin-left:223px;font-family:var(--disp);font-weight:700;font-size:13px;font-variation-settings:'wdth' 100;letter-spacing:.02em}
+#nav .links a{position:relative}
+#nav .links a:after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:3px;background:var(--pink);transition:right .25s}
+#nav .links a:hover:after{right:0}
+#nav .right{margin-left:auto;display:flex;align-items:center;gap:13px}
+.cd-box{border:1.5px dashed var(--ink);padding:7px 11px;font-family:var(--mono);font-size:12px;display:flex;align-items:center;gap:8px}
+.cd-box .dot{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.mysets{font-family:var(--disp);font-weight:800;font-size:13px;display:flex;align-items:center;gap:8px}
+.mysets b{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:var(--mono);font-size:12px;border:2px solid var(--ink);transition:transform .3s}
+.mysets b.bump{transform:scale(1.35)}
+.btn-tix{background:var(--pink);color:var(--ink);font-family:var(--disp);font-weight:900;font-size:13px;padding:11px 18px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);margin-left:8px;transition:transform .15s,box-shadow .15s}
+.btn-tix:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+
+main{padding-top:104px}
+
+/* ---------- shared ---------- */
+.eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:13.5px;letter-spacing:.14em}
+.eyebrow .n{width:35px;height:35px;border-radius:50%;background:var(--pink);border:2px solid var(--ink);display:grid;place-items:center;font-size:12px;letter-spacing:0;color:var(--ink)}
+.dark .eyebrow .n{border-color:var(--pink);color:var(--cream)}
+.h-big{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 84;text-transform:uppercase;line-height:.92;letter-spacing:-.01em;font-size:104px;text-shadow:6px 6px 0 var(--pink)}
+.h-big.sh-blue{text-shadow:6px 6px 0 var(--blue)}.h-big.sh-yel{text-shadow:6px 6px 0 var(--yellow)}
+.lede{font-size:18.5px;line-height:1.45;font-weight:500}
+.sticker{display:inline-block;font-family:var(--serif);font-style:italic;font-weight:900;font-size:17px;padding:7px 18px 9px;border:2.5px solid var(--ink);border-radius:40px;box-shadow:3px 4px 0 var(--ink);transform:rotate(-4deg);white-space:nowrap}
+.st-y{background:var(--yellow)}.st-p{background:var(--pink)}.st-b{background:var(--blue);color:var(--cream)}.st-c{background:var(--cream)}
+.zig{height:14px;background:var(--c);-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/22px 100%;mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/22px 100%;margin-bottom:-1px;position:relative;z-index:2}
+.dots{background-image:radial-gradient(rgba(0,0,0,.09) 1.2px,transparent 1.4px);background-size:9px 9px}
+.dots-l{background-image:radial-gradient(rgba(255,255,255,.07) 1.2px,transparent 1.4px);background-size:9px 9px}
+.rv{opacity:0;transform:translateY(50px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.words .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-right:.02em}
+.words .w>span{display:inline-block;transform:translateY(105%);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.words.in .w>span{transform:none}
+.mag{display:inline-block;transition:transform .35s cubic-bezier(.2,.7,.3,1);will-change:transform}
+</style>
+<style>
+/* ---------- hero ---------- */
+#hero{position:relative;height:620px;background:var(--yellow);overflow:hidden;padding:0 var(--pad)}
+#hero .rays{position:absolute;left:1152px;top:305px;width:3400px;height:3400px;margin:-1700px 0 0 -1700px;background:repeating-conic-gradient(from 0deg,#2ed3c6 0 9deg,#4fdcd0 9deg 18deg);animation:spin 120s linear infinite;opacity:.9}
+#hero .halo{position:absolute;left:1152px;top:305px;width:720px;height:720px;margin:-360px 0 0 -360px;border-radius:50%;
+  background:radial-gradient(circle,var(--yellow) 2.6px,transparent 3px) 0 0/9px 9px, radial-gradient(circle,#ffb13d 0 30%,rgba(255,77,31,.8) 55%,transparent 72%);
+  -webkit-mask:radial-gradient(circle,#000 45%,rgba(0,0,0,.6) 60%,transparent 71%);mask:radial-gradient(circle,#000 45%,rgba(0,0,0,.6) 60%,transparent 71%)}
+#hero .bluedots{position:absolute;left:760px;top:420px;width:1000px;height:320px;background:radial-gradient(circle,var(--blue) 2.4px,transparent 2.8px) 0 0/10px 10px;-webkit-mask:radial-gradient(ellipse at 50% 100%,#000 20%,transparent 65%);mask:radial-gradient(ellipse at 50% 100%,#000 20%,transparent 65%);opacity:.75}
+#hero .ring{position:absolute;left:1152px;top:305px;width:640px;height:640px;margin:-320px 0 0 -320px;border:2px solid var(--blue);border-radius:50%}
+#hero .hline{position:absolute;left:0;right:0;top:420px;height:2px;background:var(--ink);opacity:.9}
+#hero .meta{position:relative;z-index:3;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;padding-top:19px;padding-bottom:8px;border-bottom:2px solid var(--ink);color:var(--ink)}
+#hero h1{position:absolute;left:52px;top:52px;z-index:2;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 106;font-size:256px;line-height:.86;letter-spacing:-.01em;color:var(--ink);pointer-events:none}
+#hero h1 .row{display:block;white-space:nowrap}#hero h1 .row2{padding-left:136px}
+#hero h1 .l{display:inline-block;text-shadow:9px 7px 0 var(--blue);transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+#hero .intro{position:absolute;left:var(--pad);top:519px;width:540px;font-size:20.5px;line-height:1.3;font-weight:500;z-index:3}
+#hero .st-hero{position:absolute;left:725px;top:540px;z-index:4;font-size:20px;text-align:center;line-height:.95;padding:10px 22px 12px;transform:rotate(-7deg);box-shadow:4px 5px 0 var(--ink)}
+#hero .ctas{position:absolute;right:var(--pad);top:545px;display:flex;gap:18px;z-index:4}
+.cta{font-family:var(--disp);font-weight:900;font-size:15px;padding:14px 26px;border:2.5px solid var(--ink);box-shadow:5px 5px 0 var(--ink);display:flex;gap:10px;align-items:center;transition:transform .15s,box-shadow .15s}
+.cta:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--ink)}
+.cta.dk{background:var(--ink);color:var(--yellow);box-shadow:5px 5px 0 rgba(0,0,0,.35)}.cta.lt{background:var(--cream)}
+#hero .badge{position:absolute;left:960px;top:150px;width:164px;height:164px;z-index:5;border-radius:50%;background:var(--yellow);border:3px solid var(--ink);box-shadow:3px 4px 0 var(--ink)}
+#hero .badge svg{position:absolute;inset:0;animation:spin 18s linear infinite}
+#hero .badge .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--disp);font-weight:900;font-size:50px;line-height:.8}
+#hero .badge .c i{font-family:var(--serif);font-size:18px;margin-top:6px}
+#hero .ticket{position:absolute;left:1148px;top:77px;width:392px;z-index:4;transform:rotate(2deg);background:var(--cream);border:2.5px solid var(--ink);box-shadow:7px 7px 0 var(--ink)}
+.ticket .th{background:var(--yellow);border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:8px 14px}
+.ticket .tn{display:flex;padding:10px 6px 6px}
+.ticket .tn div{flex:1;text-align:center;border-right:1.5px solid var(--ink);font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 90;font-size:46px;line-height:1}
+.ticket .tn div:last-child{border:0}
+.ticket .tn small{display:block;font-family:var(--mono);font-weight:400;font-size:9px;margin-top:6px;letter-spacing:.06em}
+.ticket .tf{border-top:1.5px dashed var(--ink);margin:0 12px;padding:7px 0 9px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.06em}
+.barcode{height:18px;width:84px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 3px,var(--ink) 3px 4px,transparent 4px 6px)}
+.ticket:before,.ticket:after{content:"";position:absolute;top:70px;width:12px;height:18px;background:var(--pink);border:2px solid var(--ink);border-radius:10px}
+.ticket:before{left:-8px}.ticket:after{right:-8px}
+#hero .stamp{position:absolute;left:1092px;top:238px;z-index:6;transform:rotate(-9deg);font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 80;font-size:24px;border:3px solid var(--ink);outline:1.5px solid var(--ink);outline-offset:3px;padding:3px 10px;color:var(--ink);background:rgba(237,212,23,.35)}
+/* marquee band */
+.band{background:var(--ink);color:var(--cream);height:68px;overflow:hidden;display:flex;align-items:center;position:relative}
+.band .track{display:flex;gap:28px;white-space:nowrap;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 72;font-size:36px;align-items:center;animation:mq 38s linear infinite;padding-left:74px}
+.band .track small{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--yellow);letter-spacing:.12em;margin-right:-12px}
+.band .track .sx{color:var(--pink);font-size:26px}
+.band .track em{font-family:var(--serif);color:var(--yellow);font-size:32px}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* tapes */
+#tapes{height:250px;position:relative;overflow:hidden}
+.tape{position:absolute;left:-60px;right:-60px;height:58px;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);display:flex;align-items:center;overflow:hidden;box-shadow:0 6px 0 rgba(0,0,0,.12)}
+.tape .tt{display:flex;gap:30px;white-space:nowrap;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 88;font-size:30px;will-change:transform}
+.tape.y{background:var(--yellow);top:30px;transform:rotate(-2.4deg);z-index:2}.tape.y .sx{color:var(--pink)}
+.tape.b{background:var(--blue);color:var(--cream);top:88px;transform:rotate(1.5deg)}.tape.b .sx{color:var(--yellow)}
+/* manifesto */
+#sinks{padding:60px 0 0 228px}
+#sinks .eyebrow{margin-bottom:22px}
+#manifesto{font-family:var(--body);font-variation-settings:'opsz' 12;font-weight:700;font-size:69px;line-height:1.0;letter-spacing:-.025em;width:1150px}
+#manifesto .mw{opacity:.12;transition:opacity .3s}
+#manifesto .mw.on{opacity:1}
+#manifesto .hl{position:relative;display:inline-block}
+#manifesto .hl:before{content:"";position:absolute;left:-4px;right:-4px;bottom:2px;height:.34em;background:var(--c);z-index:-1;transform:scaleX(0);transform-origin:left;transition:transform .8s .1s cubic-bezier(.2,.7,.2,1)}
+#manifesto .hl.on:before{transform:scaleX(1)}
+#manifesto .pill{display:inline-block;width:140px;height:58px;border-radius:40px;border:3px solid var(--ink);overflow:hidden;vertical-align:-6px;box-shadow:3px 3px 0 var(--ink);transform:scale(0);transition:transform .6s cubic-bezier(.3,1.6,.5,1)}
+#manifesto .pill.on{transform:scale(1)}
+#manifesto .pill img{width:100%;height:100%;object-fit:cover}
+#statcards{display:flex;gap:24px;padding:110px 0 120px 0;width:1136px}
+.scard{flex:1;height:212px;border:2.5px solid var(--ink);padding:26px 24px;display:flex;flex-direction:column;justify-content:space-between}
+.scard b{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 80;font-size:104px;line-height:.85}
+.scard span{font-size:17px;font-weight:600;line-height:1.3}
+/* lineup */
+#lineup{background:var(--ink);color:var(--cream);padding:40px 0 130px 228px;position:relative}
+#lineup .h-big{margin:22px 0 40px;color:var(--cream)}
+#lineup .lede{width:420px;color:#dde3d2;font-size:18px}
+.filters{display:flex;align-items:center;gap:24px;margin:74px 0 50px}
+.seg{display:flex;border:2.5px solid var(--cream)}
+.seg button{font-family:var(--disp);font-weight:900;font-size:18px;padding:17px 18px;border-right:2.5px solid var(--cream);color:var(--cream);transition:background .2s}
+.seg button:last-child{border:0}
+.seg button small{font-family:var(--mono);font-weight:400;font-size:11px;margin-left:6px}
+.seg button.on{background:var(--yellow);color:var(--ink)}
+.pills{display:flex;gap:12px}
+.pills button{font-family:var(--mono);font-size:13px;letter-spacing:.06em;padding:11px 16px;border:2.5px solid var(--cream);border-radius:30px;color:var(--cream);transition:background .2s,color .2s}
+.pills button.on,.pills button:hover{background:var(--pink);border-color:var(--pink)}
+#poster{position:relative;width:1146px;margin-left:-10px;background:var(--cream);color:var(--ink);padding:70px 58px 60px;transform:rotate(-.5deg);box-shadow:18px 10px 0 var(--blue);text-align:center}
+#poster .tapec{position:absolute;width:130px;height:40px;background:rgba(210,205,190,.75);top:-2px}
+#poster .tapec.l{left:-34px;transform:rotate(-38deg)}#poster .tapec.r{right:-34px;transform:rotate(38deg)}
+#poster .ph{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid var(--ink);padding-bottom:26px;margin-bottom:26px;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em}
+#poster .ph .logo{font-size:30px}
+#poster .ph .logo em{font-family:var(--serif);color:var(--pink);font-size:26px;margin-left:12px}
+.dayp{display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;border:2px solid var(--ink);border-radius:20px;padding:2px 9px;margin:10px 0 4px}
+.act{cursor:pointer;display:inline-block;transition:opacity .35s,color .2s,transform .2s}
+.act:hover{color:var(--pink);transform:skewX(-6deg)}
+.act.dim{opacity:.12}
+.head .act{display:block;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 66;font-size:94px;line-height:1;letter-spacing:-.01em}
+.head .act:hover{color:var(--blue)}
+.t2{margin-top:26px;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 68;font-size:50px;line-height:1.02;color:var(--pink)}
+.t3{margin-top:26px;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 78;font-size:35px;line-height:1.08;color:var(--blue)}
+.t4{margin-top:26px;font-family:var(--disp);font-weight:800;font-variation-settings:'wdth' 90;font-size:24px;line-height:1.2;padding-bottom:28px;border-bottom:2.5px solid var(--ink)}
+.t2 .sx,.t3 .sx,.t4 .sx{color:var(--pink);font-size:.55em;margin:0 .35em;vertical-align:.25em}
+.t2 .act:hover{color:var(--ink)}
+#poster .pf{margin-top:18px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+/* modal */
+#modal{position:fixed;inset:0;z-index:500;background:rgba(14,36,25,.72);display:none;align-items:center;justify-content:center}
+#modal.open{display:flex}
+#modal .box{width:760px;background:var(--cream);border:3px solid var(--ink);box-shadow:14px 14px 0 var(--pink);display:flex;transform:rotate(-1deg);animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+#modal .box img{width:320px;height:360px;object-fit:cover;border-right:3px solid var(--ink)}
+#modal .mb{padding:30px;flex:1;position:relative}
+#modal .mb h3{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 70;font-size:54px;line-height:.95;margin:14px 0}
+#modal .mb p{font-size:17px;line-height:1.45}
+#modal .x{position:absolute;right:14px;top:12px;width:38px;height:38px;border-radius:50%;background:var(--pink);border:2.5px solid var(--ink);font-size:18px;font-weight:900}
+#modal .when{margin-top:18px;font-family:var(--mono);font-size:13px;background:var(--ink);color:var(--yellow);display:inline-block;padding:8px 12px}
+</style>
+<style>
+/* ---------- experience (horizontal) ---------- */
+#exp{position:relative;background:#f2c6a4}
+#exp .pin{position:sticky;top:104px;height:688px;overflow:hidden}
+#exp .trk{position:absolute;left:0;top:0;height:100%;display:flex;align-items:flex-start;will-change:transform}
+#exp .intro{flex:none;width:720px;padding:83px 0 0 46px}
+#exp .intro .h-big{font-size:100px;margin-top:22px;line-height:.9}
+#exp .intro .h-big em{display:block;font-family:var(--serif);font-style:italic;text-transform:none;color:var(--blue);font-size:108px;text-shadow:none;transform:rotate(-4deg);margin:14px 0 0 -4px;letter-spacing:0}
+#exp .intro p{font-size:19px;line-height:1.45;width:360px;margin-top:26px;font-weight:500}
+.moment{flex:none;display:flex;gap:46px;padding-top:44px;margin-right:130px}
+.moment .ph{width:676px;height:548px;position:relative;flex:none}
+.moment .ph .sh{position:absolute;inset:12px -12px -14px 12px;background:var(--ink);clip-path:polygon(1% 2%,99% 0,98% 50%,100% 99%,2% 100%,0 60%)}
+.moment .ph .im{position:absolute;inset:0;overflow:hidden;clip-path:polygon(0 1.5%,62% 0,99% 2%,97.5% 38%,100% 98%,40% 99%,1% 100%,0.5% 30%)}
+.moment .ph img{width:112%;height:112%;object-fit:cover;margin:-6% 0 0 -6%;will-change:transform}
+.moment .ph .im:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1.3px);background-size:6px 6px;-webkit-mask:linear-gradient(#000,transparent 30%);mask:linear-gradient(#000,transparent 30%)}
+.moment .tx{width:480px;padding-top:120px}
+.moment .tm{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 70;font-size:122px;line-height:.85;text-shadow:5px 6px 0 var(--pink);letter-spacing:-.02em}
+.moment h3{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 80;font-size:34px;margin:30px 0 14px;text-transform:uppercase;line-height:1}
+.moment p{font-size:18px;line-height:1.45;font-weight:500}
+.moment .sticker{margin-top:28px}
+#exp.darkbg .intro,#exp.darkbg .moment{color:var(--cream)}
+#exp .moment.lh .tm{color:var(--yellow)}
+#exp .bar{position:absolute;left:var(--pad);right:250px;bottom:56px;height:6px;background:rgba(14,36,25,.15);border-radius:3px;z-index:3}
+#exp .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink);border-radius:3px;width:0}
+#exp.darkbg .bar{background:rgba(255,255,255,.2)}#exp.darkbg .bar i{background:var(--yellow)}
+#exp .clk{position:absolute;right:var(--pad);bottom:28px;display:flex;align-items:center;gap:18px;z-index:3}
+#exp .clk svg{width:58px;height:58px}
+#exp .clk .dg{background:var(--ink);color:var(--yellow);font-family:var(--mono);font-weight:700;font-size:24px;padding:9px 12px;letter-spacing:.04em}
+/* ---------- timetable ---------- */
+#timetable{background:var(--yellow);padding:76px var(--pad) 90px}
+#timetable .top{display:flex;justify-content:space-between;align-items:flex-end}
+#timetable .top .lede{width:396px;margin-bottom:34px;font-size:17.5px}
+#timetable .h-big{margin-top:22px;font-size:106px}
+.ttbar{display:flex;justify-content:space-between;align-items:center;margin:72px 0 22px}
+.dtabs{display:flex;border:2.5px solid var(--ink);background:var(--cream)}
+.dtabs button{font-family:var(--disp);font-weight:900;font-size:19px;padding:17px 26px 15px;border-right:2.5px solid var(--ink);transition:background .2s,color .2s}
+.dtabs button:last-child{border:0}
+.dtabs button small{font-family:var(--mono);font-weight:400;font-size:11px;margin-left:8px;letter-spacing:.06em}
+.dtabs button.on{background:var(--ink);color:var(--yellow)}
+.ttstats{display:flex;gap:12px}
+.ttstats span{border:2.5px solid var(--ink);background:transparent;font-family:var(--mono);font-size:14px;letter-spacing:.06em;padding:10px 14px;text-transform:uppercase}
+.ttstats span.cl{background:var(--pink);display:none}.ttstats span.cl.on{display:block}
+#grid{position:relative;border:3px solid var(--ink);background:var(--cream);box-shadow:12px 12px 0 var(--ink)}
+#grid .ghead{display:flex;height:44px;border-bottom:3px solid var(--ink)}
+#grid .ghead .dl{width:179px;background:var(--ink);color:var(--yellow);font-family:var(--mono);font-size:12px;letter-spacing:.06em;display:flex;align-items:center;padding-left:18px}
+#grid .ghead .hrs{position:relative;flex:1}
+#grid .ghead .hrs span{position:absolute;top:13px;font-family:var(--mono);font-size:13px;transform:translateX(8px)}
+#grid .ghead .hrs span.late{color:var(--pink)}
+.grow{display:flex;height:110px;border-bottom:2px solid var(--ink)}
+.grow:last-child{border:0}
+.grow .sl{width:179px;border-right:3px solid var(--ink);padding:24px 16px 0;flex:none}
+.grow .sl b{display:flex;align-items:flex-start;gap:10px;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 92;font-size:20px;line-height:1}
+.grow .sl b i{width:15px;height:15px;border-radius:50%;border:2px solid var(--ink);flex:none;margin-top:3px}
+.grow .sl small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;margin:8px 0 0 0;color:#34503f}
+.grow .lane{position:relative;flex:1;background-image:linear-gradient(90deg,rgba(14,36,25,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(14,36,25,.12) 1px,transparent 1px);background-size:var(--hw) 100%,calc(var(--hw)/2) 100%}
+.set{position:absolute;top:13px;height:85px;border:2.5px solid var(--ink);padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .18s,box-shadow .18s,background .2s;animation:setin .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes setin{from{transform:scaleX(.2);opacity:0}}
+.set b{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 64;font-size:15.5px;line-height:1;text-transform:uppercase}
+.set span{font-family:var(--mono);font-size:10.5px}
+.set .add{position:absolute;right:8px;bottom:7px;width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--cream);font-size:14px;line-height:16px;text-align:center;font-weight:700;transition:transform .25s}
+.set:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--ink)}
+.set:hover .add{transform:rotate(90deg)}
+.set.G{background:var(--pinkl)}.set.W{background:var(--lav)}.set.L{background:var(--lampb)}.set.R{background:var(--rockb)}
+.set.sel{box-shadow:5px 5px 0 var(--ink)}
+.set.sel.G{background:var(--pink)}.set.sel.W{background:var(--blue);color:var(--cream)}.set.sel.L{background:var(--ink);color:var(--cream)}.set.sel.R{background:var(--yellow)}
+.set.sel .add{display:none}
+.set .ok{display:none;position:absolute;right:-12px;top:-12px;width:26px;height:26px;border-radius:50%;background:var(--yellow);border:2.5px solid var(--ink);color:var(--ink);font-size:14px;line-height:20px;text-align:center;font-weight:900}
+.set.sel .ok{display:block;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.set.clash{border:5px solid transparent;border-image:repeating-linear-gradient(45deg,var(--ink) 0 7px,var(--yellow) 7px 14px) 5;box-shadow:5px 5px 0 var(--pink);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-4px) rotate(-1deg)}75%{transform:translateX(4px) rotate(1deg)}}
+.set .ctag{display:none;position:absolute;left:6px;top:-20px;background:var(--pink);color:var(--ink);font-family:var(--disp);font-weight:900;font-size:12px;padding:2px 8px;border:2px solid var(--ink);transform:rotate(-4deg)}
+.set.clash .ctag{display:block}
+.legend{display:flex;gap:26px;margin-top:30px;font-family:var(--mono);font-size:14px;letter-spacing:.06em}
+.legend span{display:flex;align-items:center;gap:10px}
+.legend i{width:28px;height:18px;border:2px solid var(--ink)}
+.lg1{background:var(--pinkl)}.lg2{background:var(--pink);box-shadow:3px 3px 0 var(--ink)}.lg3{background:repeating-linear-gradient(45deg,var(--ink) 0 4px,var(--yellow) 4px 8px)}
+.ttlow{display:flex;gap:50px;margin-top:62px;align-items:flex-start}
+#order{flex:1;background:var(--cream);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--pink);padding:30px 28px 26px}
+#order .oh{display:flex;justify-content:space-between;align-items:baseline}
+#order h3{font-family:var(--disp);font-weight:900;font-size:34px}
+#order .clr{font-family:var(--mono);font-size:13.5px;letter-spacing:.1em;border-bottom:2px solid var(--ink)}
+#order .dayh{display:flex;align-items:baseline;gap:12px;margin:26px 0 12px;padding-bottom:10px;border-bottom:2.5px solid var(--ink);font-family:var(--disp);font-weight:900;font-size:22px}
+#order .dayh small{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.06em}
+.orow{display:flex;align-items:center;border:2.5px solid var(--ink);padding:0 12px;height:54px;gap:14px;animation:setin .4s both}
+.orow .t{font-family:var(--mono);font-size:13px;width:124px}
+.orow .n{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 85;font-size:21px;flex:1;text-transform:uppercase}
+.orow .tag{font-family:var(--mono);font-size:10.5px;padding:5px 8px;border:2px solid var(--ink);text-transform:uppercase}
+.orow .rm{width:28px;height:28px;border:2px solid var(--ink);font-weight:900;background:var(--cream)}
+.orow.cl{border-color:var(--pink);background:repeating-linear-gradient(-45deg,rgba(255,77,31,.12) 0 8px,transparent 8px 16px)}
+.gap{margin:0 0 0 52px;border-left:2px dashed var(--ink);padding:8px 0 8px 14px;font-family:var(--mono);font-size:12px}
+.gap.bad span{background:var(--pinkl);border:1.5px solid var(--pink);padding:3px 8px;color:#b52e0c}
+.empty{font-family:var(--mono);font-size:13px;color:#557263;padding:26px 0;line-height:1.6}
+#share{width:575px;background:var(--ink);color:var(--cream);box-shadow:8px 8px 0 var(--blue);padding:30px 26px 26px}
+#share .k{font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;color:var(--yellow)}
+#share h3{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 80;font-size:36px;margin:14px 0 22px;text-transform:uppercase;line-height:1}
+#share .nums{display:flex;border-bottom:2.5px dashed var(--cream);padding-bottom:26px;margin:0 -26px;padding-left:26px}
+#share .nums div{flex:1;border-right:1.5px solid #34503f;padding-right:10px;margin-right:12px}
+#share .nums div:last-child{border:0}
+#share .nums b{display:block;font-family:var(--disp);font-weight:900;font-size:44px;color:var(--pink);line-height:1}
+#share .nums small{font-family:var(--mono);font-size:11px;letter-spacing:.06em;display:block;margin-top:14px}
+#share .lk{display:flex;gap:10px;margin-top:14px}
+#share input{flex:1;background:transparent;border:2px solid var(--cream);color:var(--cream);font-family:var(--mono);font-size:11.5px;padding:0 12px;height:42px;min-width:0}
+#share .cp{background:var(--yellow);color:var(--ink);font-family:var(--disp);font-weight:900;font-size:14px;padding:0 16px;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--pink);height:42px}
+#share p{font-size:14.5px;line-height:1.45;margin-top:18px;color:#dde3d2}
+</style>
+<style>
+/* ---------- map ---------- */
+#map{padding:150px var(--pad) 110px;position:relative}
+#map .top{display:flex;justify-content:space-between;align-items:flex-end}
+#map .top .lede{width:420px;margin-bottom:6px;font-size:17.5px}
+#map .h-big{margin-top:22px;font-size:104px}
+.mapwrap{display:flex;gap:42px;margin-top:70px;align-items:flex-start}
+.mside{width:309px;flex:none;position:sticky;top:124px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cats button{display:flex;align-items:center;gap:10px;border:2.5px solid var(--ink);background:var(--cream);padding:0 12px;height:39px;font-family:var(--disp);font-weight:800;font-size:12px;font-variation-settings:'wdth' 80;white-space:nowrap;text-transform:uppercase;transition:transform .15s,background .2s}
+.cats button:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+.cats button small{margin-left:auto;font-family:var(--mono);font-weight:400;font-size:11px}
+.cats button i{width:18px;height:18px;border-radius:50%;border:2px solid var(--ink);flex:none}
+.cats .all{grid-column:1/-1;background:var(--ink);color:var(--cream);box-shadow:4px 4px 0 var(--pink)}
+.cats button.on:not(.all){background:var(--ink);color:var(--cream)}
+.cats .all.off{background:var(--cream);color:var(--ink);box-shadow:none}
+.clock{margin-top:28px;background:var(--ink);color:var(--cream);padding:22px 20px 18px;box-shadow:6px 6px 0 var(--blue)}
+.clock .k{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--yellow)}
+.clock .pp{width:32px;height:32px;border:2px solid var(--cream);color:var(--cream);font-size:10px}
+.clock .now{display:flex;align-items:baseline;gap:12px;margin:12px 0 16px}
+.clock .now small{font-family:var(--disp);font-weight:900;font-size:28px;color:var(--pink)}
+.clock .now b{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 85;font-size:60px;line-height:1}
+.clock .days{display:flex;border:2px solid var(--cream)}
+.clock .days button{flex:1;font-family:var(--mono);font-size:12px;padding:8px 0;border-right:2px solid var(--cream);color:var(--cream)}
+.clock .days button:last-child{border:0}
+.clock .days button.on{background:var(--yellow);color:var(--ink)}
+.clock input[type=range]{width:100%;margin:22px 0 10px;-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;background:linear-gradient(90deg,var(--pink) var(--p,50%),#34503f var(--p,50%));outline:none}
+.clock input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--pink);border:2px solid var(--pink);cursor:grab}
+.clock .ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:#c3d1c2;padding-bottom:14px;border-bottom:1.5px dashed #557263}
+.clock ul{list-style:none;margin-top:14px}
+.clock li{display:flex;gap:10px;padding:6px 0}
+.clock li i{width:12px;height:12px;border-radius:50%;border:2px solid var(--cream);margin-top:3px;flex:none}
+.clock li b{display:block;font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 85;font-size:14.5px;text-transform:uppercase}
+.clock li span{font-family:var(--mono);font-size:11px;color:#c3d1c2}
+.clock li.off b{color:#7f9786}
+.mapbox{flex:1;position:relative;border:3px solid var(--ink);box-shadow:14px 12px 0 var(--ink);background:var(--pool)}
+.mapbox svg{display:block;width:100%;height:auto}
+.mp{cursor:pointer;transition:opacity .3s}
+.mp .pin{transition:transform .25s cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:center}
+.mp:hover .pin{transform:scale(1.25)}
+.mp.dim{opacity:.18}
+.stage .burst{transform-box:fill-box;transform-origin:center;animation:spin 30s linear infinite}
+.stage .live{opacity:0}.stage.on .live{opacity:1;animation:blink 1s steps(2) infinite}
+.stage.on .burst{animation-duration:6s}
+.beam{transform-origin:1275px 438px;animation:beam 6s ease-in-out infinite}
+@keyframes beam{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(18deg)}}
+#mtip{position:absolute;z-index:20;width:330px;background:var(--cream);border:3px solid var(--ink);box-shadow:7px 7px 0 var(--ink);padding:16px 18px;pointer-events:none;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+#mtip.on{opacity:1;transform:none}
+#mtip .tg{display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;padding:3px 9px;border:2px solid var(--ink)}
+#mtip h4{font-family:var(--disp);font-weight:900;font-size:24px;margin:8px 0 6px;text-transform:uppercase}
+#mtip p{font-size:15px;line-height:1.35}
+#mtip .nw{margin-top:12px;background:var(--ink);color:var(--cream);padding:9px 12px}
+#mtip .nw small{font-family:var(--mono);font-size:10.5px;color:var(--yellow);letter-spacing:.08em}
+#mtip .nw b{display:block;font-family:var(--disp);font-weight:900;font-size:19px;text-transform:uppercase}
+#mtip .nw span{font-family:var(--mono);font-size:11px}
+/* ---------- tickets ---------- */
+#tickets{background:var(--pink);padding:0 var(--pad) 170px}
+#tickets .top{display:flex;justify-content:space-between;align-items:flex-end;padding-top:90px}
+#tickets .top .lede{width:420px;font-size:19px}
+#tickets .h-big{margin-top:22px;font-size:112px}
+.tierh{display:flex;justify-content:space-between;align-items:flex-end;margin-top:84px}
+.tierh h3{font-family:var(--disp);font-weight:900;font-size:46px;text-transform:uppercase}
+.tierh span{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em}
+.tierbar{position:relative;height:56px;border:3px solid var(--ink);background:var(--cream);margin-top:14px;box-shadow:8px 8px 0 var(--ink)}
+.tierbar .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:repeating-linear-gradient(-55deg,var(--ink) 0 14px,var(--yellow) 14px 30px);transition:width 1.8s cubic-bezier(.2,.7,.2,1);background-size:200% 100%;animation:hz 2s linear infinite}
+@keyframes hz{to{background-position:-70px 0}}
+.tierbar .t1{position:absolute;left:14px;top:13px;background:var(--cream);border:2px solid var(--ink);font-family:var(--mono);font-size:11px;padding:4px 10px;z-index:2}
+.tierbar .pc{position:absolute;top:-24px;left:0;background:var(--blue);color:var(--cream);font-family:var(--disp);font-weight:900;font-size:22px;padding:6px 12px;border:2.5px solid var(--ink);transform:rotate(-6deg) translateX(-50%);transition:left 1.8s cubic-bezier(.2,.7,.2,1)}
+.tix{display:flex;gap:46px;margin-top:48px;align-items:flex-start}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:26px;flex:none;width:1010px}
+.tk{position:relative;display:flex;background:var(--cream);border:2.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink);transition:transform .25s}
+.tk:hover{transform:rotate(-.6deg) translateY(-4px)}
+.tk .main{flex:1;border-right:2px dashed var(--ink)}
+.tk .hd{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:2.5px solid var(--ink)}
+.tk .hd h4{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 85;font-size:32px}
+.tk .hd .sticker{color:var(--ink);font-size:14px;padding:5px 14px;box-shadow:2px 2px 0 var(--ink);transform:rotate(4deg);background:var(--cream)}
+.tk .bd{padding:18px 22px 22px}
+.tk .pr{display:flex;align-items:baseline;gap:10px}
+.tk .pr b{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 85;font-size:52px}
+.tk .pr small{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.tk p{font-size:15.5px;line-height:1.4;margin:10px 0}
+.tk ul{list-style:none;font-size:14.5px;line-height:1.75}
+.tk li:before{content:"✶";color:var(--pink);margin-right:10px;font-size:11px}
+.qty{display:inline-flex;border:2.5px solid var(--ink);margin-top:16px}
+.qty button{width:46px;height:44px;font-size:22px;font-weight:700}
+.qty .m{background:#dde3d2;color:#6f8a78}.qty .p{background:var(--yellow)}
+.qty span{width:50px;display:grid;place-items:center;border-left:2.5px solid var(--ink);border-right:2.5px solid var(--ink);font-family:var(--disp);font-weight:900;font-size:22px}
+.tk .stub{width:78px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:20px 0}
+.tk .stub b{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--disp);font-weight:900;font-size:20px;letter-spacing:.02em}
+.tk .stub .barcode{width:30px;height:86px;background:repeating-linear-gradient(0deg,var(--ink) 0 2px,transparent 2px 3px,var(--ink) 3px 4px,transparent 4px 6px)}
+.tk:before,.tk:after{content:"";position:absolute;right:70px;width:16px;height:16px;border-radius:50%;background:var(--pink);border:2.5px solid var(--ink)}
+.tk:before{top:-10px}.tk:after{bottom:-10px}
+.h-ga{background:var(--yellow)}.h-gc{background:var(--blue);color:var(--cream)}.h-vip{background:var(--ink);color:var(--yellow)}.h-gl{background:var(--pink)}
+#yourorder{flex:1;position:sticky;top:130px;background:var(--ink);color:var(--cream);padding:30px 26px 26px;box-shadow:10px 10px 0 var(--yellow)}
+#yourorder .oh{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:20px;border-bottom:1.5px dashed #557263}
+#yourorder h3{font-family:var(--disp);font-weight:900;font-size:26px;white-space:nowrap}
+#yourorder .oh span{font-family:var(--mono);font-size:11.5px;color:var(--yellow);letter-spacing:.08em}
+#yourorder .lines{padding:20px 0;border-bottom:1.5px dashed #557263;font-family:var(--mono);font-size:12.5px;color:#c3d1c2;min-height:64px}
+#yourorder .lines div{display:flex;justify-content:space-between;padding:4px 0;color:var(--cream)}
+#yourorder .ak{font-family:var(--mono);font-size:12px;color:var(--yellow);letter-spacing:.08em;margin:22px 0 8px}
+.addon{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.addon b{font-family:var(--disp);font-weight:900;font-size:17px;display:block}
+.addon small{font-family:var(--mono);font-size:10.5px;color:#c3d1c2}
+.addon .qty{margin:0;border:0;background:var(--cream)}
+.addon .qty button{width:34px;height:36px;font-size:18px}.addon .qty span{width:36px;color:var(--ink);font-size:17px;border:0}
+.addon .qty .m{background:var(--cream);color:#aaa}
+#yourorder .tot{display:flex;justify-content:space-between;align-items:flex-end;border-top:3px solid var(--cream);margin-top:14px;padding-top:18px}
+#yourorder .tot span{font-family:var(--disp);font-weight:900;font-size:22px}
+#yourorder .tot b{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 80;font-size:56px;color:var(--yellow);line-height:1}
+#yourorder .fee{font-family:var(--mono);font-size:11px;letter-spacing:.06em;margin:10px 0 20px;color:#c3d1c2}
+#yourorder .co{width:100%;height:54px;border:2.5px solid #557263;background:#1f3a2c;color:#7f9786;font-family:var(--disp);font-weight:900;font-size:17px}
+#yourorder .co.go{background:var(--yellow);color:var(--ink);border-color:var(--ink);box-shadow:4px 4px 0 var(--pink)}
+</style>
+<style>
+/* ---------- eat & art ---------- */
+#eat{padding:170px var(--pad) 150px}
+#eat .h-big{margin-top:22px;font-size:112px}
+.eatgrid{display:flex;gap:64px;margin-top:70px}
+.eatl{width:760px;flex:none;position:relative}
+.eatl .photo{position:relative;height:560px;margin-left:10px}
+.eatl .photo .sh{position:absolute;inset:14px -14px -4px 20px;background:var(--blue);clip-path:polygon(2% 0,100% 1%,98% 100%,0 98%)}
+.eatl .photo .im{position:absolute;inset:0;overflow:hidden;clip-path:polygon(2% 2%,45% 1%,99% 0,100% 55%,98% 100%,3% 99%,0 40%)}
+.eatl .photo img{width:100%;height:115%;object-fit:cover;will-change:transform}
+.menu{position:relative;margin:-150px 0 0 45px;width:720px;background:var(--yellow);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:34px 30px 30px;transform:rotate(-.8deg);z-index:2}
+.menu .mh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2.5px solid var(--ink);padding-bottom:12px}
+.menu h3{font-family:var(--disp);font-weight:900;font-size:32px}
+.menu .mh span{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em}
+.mi{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1.5px dotted var(--ink);transition:padding .2s}
+.mi:hover{padding-left:10px}
+.mi b{font-family:var(--disp);font-weight:900;font-size:17.5px;text-transform:uppercase;white-space:nowrap}
+.mi span{font-size:14.5px;flex:1}
+.mi em{font-style:normal;background:var(--ink);color:var(--yellow);font-family:var(--disp);font-weight:900;font-size:21px;padding:4px 9px;transform:rotate(-2deg)}
+.menu .sticker{position:absolute;right:-12px;bottom:-26px;font-size:17px;transform:rotate(5deg)}
+.eatr{flex:1}
+.trailh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--ink);padding-bottom:18px}
+.trailh h3{font-family:var(--disp);font-weight:900;font-size:44px}
+.trailh span{font-family:var(--mono);font-size:12px;letter-spacing:.06em}
+.work{display:flex;gap:26px;padding:18px 0;border-bottom:3px solid var(--ink);align-items:flex-start;transition:background .2s,padding .2s}
+.work:hover{background:rgba(255,77,31,.08);padding-left:10px}
+.work .no{font-family:var(--disp);font-weight:900;font-size:46px;line-height:1;color:var(--cream);-webkit-text-stroke:2px var(--ink);width:58px;font-variation-settings:'wdth' 110}
+.work:hover .no{color:var(--pink)}
+.work .wb{flex:1}
+.work .wb b{font-family:var(--disp);font-weight:900;font-size:22px;text-transform:uppercase;display:block;margin-top:2px}
+.work .wb span{font-size:14.5px;display:block;margin-top:6px}
+.work small{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-align:right;width:110px;margin-top:10px}
+.toucanpic{position:relative;height:300px;margin-top:40px}
+.toucanpic .sh{position:absolute;inset:14px -12px -12px 14px;background:var(--blue);clip-path:polygon(0 3%,100% 0,98% 100%,2% 97%)}
+.toucanpic .im{position:absolute;inset:0;overflow:hidden;clip-path:polygon(0 4%,40% 1%,97% 0,100% 40%,98% 97%,4% 100%)}
+.toucanpic img{width:100%;height:100%;object-fit:cover}
+/* ---------- sustainability ---------- */
+#sust{background:var(--blue);color:var(--cream);padding:70px var(--pad) 140px;position:relative}
+#sust .eyebrow .n{background:var(--yellow);border-color:var(--ink);color:var(--yellow)}
+.sgrid{display:flex;gap:90px}
+.sgl{width:620px;flex:none}
+#sust .h-big{font-size:104px;margin-top:26px;color:var(--cream)}
+#sust .lede{font-size:18.5px;margin-top:36px;width:430px}
+.bottle{margin:50px 0 0 14px;width:110px;height:270px;transform:rotate(-6deg)}
+.sgr{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-top:6px}
+.sgr .scard{color:var(--ink)}.sgr{align-content:start}.sgr .scard b span{font:inherit;color:inherit}
+.sgr .scard{height:168px;padding:24px 24px 20px;box-shadow:6px 6px 0 var(--ink);transition:transform .25s}
+.sgr .scard:hover{transform:rotate(0) scale(1.03)!important}
+.sgr .scard b{font-size:74px;font-variation-settings:'wdth' 82}
+.sgr .scard span{font-size:15.5px;font-weight:500;color:var(--ink)}
+/* ---------- getting there ---------- */
+#there{padding:130px var(--pad) 130px;position:relative}
+#there .top{display:flex;justify-content:space-between;align-items:flex-end}
+#there .h-big{margin-top:22px;font-size:104px}
+#there .top .lede{width:420px;margin-bottom:30px;font-size:17.5px}
+.route{position:relative;height:250px;margin:40px -51px 0}
+.route svg{width:100%;height:100%;overflow:visible}
+.route .lab{position:absolute;white-space:nowrap;font-family:var(--disp);font-weight:900;font-size:24px;text-transform:uppercase}
+.ways{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}
+.way{position:relative;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:30px 22px 22px;min-height:258px;display:flex;flex-direction:column}
+.way .ltr{position:absolute;right:24px;top:-22px;width:40px;height:40px;border-radius:50%;background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);display:grid;place-items:center;font-family:var(--mono);font-size:14px}
+.way h4{font-family:var(--disp);font-weight:900;font-size:30px;text-transform:uppercase;font-variation-settings:'wdth' 66;white-space:nowrap}
+.way p{font-size:15px;line-height:1.45;margin-top:12px;flex:1}
+.way .ft{display:flex;justify-content:space-between;align-items:baseline;border-top:2.5px solid currentColor;margin-top:18px;padding-top:12px}
+.way .ft b{font-family:var(--disp);font-weight:900;font-size:22px;white-space:nowrap}
+.way .ft span{font-family:var(--mono);font-size:10px;letter-spacing:.06em}
+/* ---------- faq ---------- */
+#faq{background:var(--ink);color:var(--cream);padding:150px 228px 150px}
+#faq .h-big{margin-top:22px;color:var(--cream);font-size:104px}
+.qs{margin-top:74px;border-top:2.5px solid var(--cream)}
+.q{border-bottom:2.5px solid var(--cream)}
+.q button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:22px 4px;text-align:left}
+.q button b{font-family:var(--disp);font-weight:900;font-size:34px;text-transform:uppercase;transition:color .2s}
+.q button i{width:42px;height:42px;border-radius:50%;border:2.5px solid var(--cream);display:grid;place-items:center;font-style:normal;font-size:26px;transition:transform .3s,background .2s}
+.q.open button b{color:var(--pink)}
+.q.open button i{background:var(--pink);border-color:var(--pink);transform:rotate(45deg);color:var(--ink)}
+.q .a{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.2,.7,.2,1)}
+.q .a p{font-size:19px;line-height:1.45;padding:0 4px 26px;width:760px}
+.q:hover button b{color:var(--yellow)}
+/* ---------- newsletter / footer ---------- */
+#news{background:var(--yellow);padding:150px 228px 130px}
+.ncard{background:var(--pink);border:3px solid var(--ink);box-shadow:14px 14px 0 var(--ink);padding:66px 62px 60px;display:flex;gap:60px;align-items:flex-end}
+.ncard .sticker{font-size:17px}
+.ncard h3{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 85;font-size:76px;line-height:.92;margin-top:26px;text-transform:uppercase}
+.ncard form{flex:1;display:flex;flex-direction:column;gap:14px}
+.ncard input{height:58px;border:3px solid var(--ink);background:var(--cream);font-family:var(--mono);font-size:15px;padding:0 16px}
+.ncard form button{height:58px;background:var(--ink);color:var(--yellow);font-family:var(--disp);font-weight:900;font-size:18px;box-shadow:5px 5px 0 var(--blue)}
+.ncard .ok{font-family:var(--mono);font-size:13px}
+footer{background:var(--ink);color:var(--cream);padding:70px var(--pad) 40px;position:relative;overflow:hidden}
+footer .big{font-family:var(--disp);font-weight:900;font-variation-settings:'wdth' 110;font-size:178px;line-height:.85;color:var(--cream);text-shadow:8px 8px 0 var(--pink);white-space:nowrap}
+footer .fr{display:flex;justify-content:space-between;margin-top:46px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:#c3d1c2;border-top:2px solid #34503f;padding-top:20px}
+footer .fr a:hover{color:var(--yellow)}
+</style>
+</head>
+<body>
+<canvas id="grain"></canvas>
+<div id="banner">
+  <span class="star">✷</span><span class="by">Built by <b>Claude Opus 5.5</b> in the style of a site from <a href="https://www.youtube.com/watch?v=mPiaap4zEVk" target="_blank" rel="noopener">Brendan Jowett's video</a></span>
+</div>
+<nav id="nav">
+  <a class="logo" href="#hero"><span class="mark"></span>SINKGLOW<sup>Nº9</sup></a>
+  <div class="links"><a href="#lineup">LINEUP</a><a href="#timetable">TIMETABLE</a><a href="#map">MAP</a><a href="#eat">EAT &amp; ART</a><a href="#there">GETTING THERE</a><a href="#faq">FAQ</a></div>
+  <div class="right">
+    <span class="cd-box"><i class="dot"></i><span id="navcd">113d 00h 00m 00s</span></span>
+    <a class="mysets" href="#timetable">MY SETS <b id="mycount">0</b></a>
+    <a class="btn-tix" href="#tickets">TICKETS</a>
+  </div>
+</nav>
+<main>
+<section id="hero">
+  <div class="rays"></div><div class="halo"></div><div class="bluedots"></div><div class="ring"></div><div class="hline"></div>
+  <div class="meta"><span>Nº09 / THE NINTH RUN</span><span>IXKANIL SINKS, SELVA VERDELUZ</span><span>15 · 16 · 17 JANUARY 2027</span><span>LEAVE NO TRACE, RINSE BEFORE YOU SWIM</span></div>
+  <h1 aria-label="Sink Glow"><span class="row"><span class="l">S</span><span class="l">I</span><span class="l">N</span><span class="l">K</span></span><span class="row row2"><span class="l">G</span><span class="l">L</span><span class="l">O</span><span class="l">W</span></span></h1>
+  <div class="badge mag" data-m="18"><svg viewBox="0 0 164 164"><defs><path id="bc" d="M82,82 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/></defs><text font-family="Space Mono" font-size="11" font-weight="700" letter-spacing="1.2"><textPath href="#bc">THREE DAYS ✶ ONE WILD SELVA ✶ FOUR STAGES ✶</textPath></text></svg><div class="c">57<i>acts</i></div></div>
+  <div class="ticket mag" data-m="14">
+    <div class="th"><span>GATES OPEN</span><span>FRI 15 JAN · 11:00</span></div>
+    <div class="tn"><div id="cdd">113<small>DAYS</small></div><div id="cdh">00<small>HRS</small></div><div id="cdm">00<small>MIN</small></div><div id="cds">00<small>SEC</small></div></div>
+    <div class="tf"><span>ADMIT ONE WILD SOUL</span><span class="barcode"></span></div>
+  </div>
+  <div class="stamp mag" data-m="22">83% GONE</div>
+  <p class="intro mag" data-m="6">Three days, four stages, fifty-seven acts, one limestone jungle full of sinkholes in the Selva Verdeluz. Pack a swimsuit. Leave your composure in the car.</p>
+  <span class="sticker st-b st-hero mag" data-m="20">No sunscreen<br>in the wells</span>
+  <div class="ctas"><a class="cta dk mag" data-m="10" href="#tickets">GRAB TICKETS <span>→</span></a><a class="cta lt mag" data-m="10" href="#lineup">VIEW THE LINEUP</a></div>
+</section>
+<div class="zig" style="--c:var(--ink);background:var(--ink);transform:scaleY(-1);margin-top:-14px"></div>
+<div class="band"><div class="track" id="bandtrack"></div></div>
+<section id="tapes">
+  <div class="tape y"><div class="tt" id="tapeY"></div></div>
+  <div class="tape b"><div class="tt" id="tapeB"></div></div>
+</section>
+<section id="sinks">
+  <div class="eyebrow rv"><span class="n">01</span>THE SINKS</div>
+  <p id="manifesto">Every January we haul fifty-seven acts <span class="pill"><img src="img/confetti.jpg" alt=""></span> and eighteen thousand of you into a jungle full of sinkholes in the Selva Verdeluz, hand you a <span class="hl" style="--c:var(--yellow)">refill flask</span> and let the <span class="hl" style="--c:var(--lav)">water</span> take over. <span class="pill"><img src="img/plunge.jpg" alt=""></span> Nine years running, the howler monkeys still haven't <span class="hl" style="--c:var(--pink)">objected.</span></p>
+  <div id="statcards">
+    <div class="scard rv" style="background:var(--pink);transform:rotate(-1deg)"><b class="count" data-to="57">0</b><span>acts, not one of them dull</span></div>
+    <div class="scard rv" style="background:var(--yellow);transform:rotate(1deg);margin-top:16px"><b class="count" data-to="4">0</b><span>stages, one of them in a cave</span></div>
+    <div class="scard rv" style="background:var(--blue);color:var(--cream);transform:rotate(-.6deg)"><b class="count" data-to="72">0</b><span>hours of music, more or less a sunrise</span></div>
+    <div class="scard rv" style="background:var(--ink);color:var(--yellow);transform:rotate(.8deg);margin-top:16px"><b>0</b><span>throwaway cups since 2021</span></div>
+  </div>
+</section>
+<div class="zig" style="--c:var(--ink)"></div>
+<section id="lineup" class="dark dots-l">
+  <div class="eyebrow rv"><span class="n">02</span>THE LINEUP</div>
+  <h2 class="h-big sh-blue words">FIFTY-SEVEN REASONS<br>TO<br>SKIP THE BEACH</h2>
+  <p class="lede rv">Sort by day or by the sound you're after. Click a name for the photo, the rumour and the set time.</p>
+  <div class="filters rv">
+    <div class="seg" id="lday"><button class="on" data-d="all">ALL DAYS</button><button data-d="F">FRI<small>15</small></button><button data-d="S">SAT<small>16</small></button><button data-d="U">SUN<small>17</small></button></div>
+    <div class="pills" id="lgen"><button class="on" data-g="all">EVERYTHING</button><button data-g="gtr">GUITARS</button><button data-g="elec">ELECTRONIC</button><button data-g="hip">HIP-HOP</button><button data-g="soul">SOUL &amp; FUNK</button><button data-g="folk">FOLK &amp; WEIRD</button></div>
+  </div>
+  <div id="poster" class="rv dots">
+    <span class="tapec l"></span><span class="tapec r"></span>
+    <div class="ph"><span>IXKANIL SINKS · SELVA VERDELUZ</span><span class="logo">SINKGLOW<em>Nº9</em></span><span>15–17 JANUARY 2027</span></div>
+    <div class="head" id="heads"></div>
+    <div class="t2" id="t2"></div><div class="t3" id="t3"></div><div class="t4" id="t4"></div>
+    <div class="pf"><span>GATES OPEN 11:00 DAILY</span><span>ALL AGES · UNDER 16s NEED AN ADULT</span><span>NO GLASS · NO GLITTER · RINSE BEFORE YOU SWIM</span></div>
+  </div>
+</section>
+<section id="exp">
+  <div class="pin"><div class="trk" id="exptrk">
+    <div class="intro">
+      <div class="eyebrow"><span class="n">03</span>THE EXPERIENCE</div>
+      <h2 class="h-big">24 HOURS<br>IN THE<em>jungle</em></h2>
+      <p>A loose timeline of a Sinkglow Saturday. Times are approximate. Sunburn not included, but probable.</p>
+    </div>
+    <div class="moment" data-bg="#f2c6a4"><div class="ph"><div class="sh"></div><div class="im"><img src="img/campsite.jpg" alt="Dawn at a jungle campsite: a man pours coffee while a woman in a hammock offers him sweet bread"></div></div><div class="tx"><div class="tm">06:40</div><h3>The campsite stirs</h3><p>Mist between the hammocks, someone's coffee pot hissing on a gas burner, a stranger offering you half a sweet roll. Camp Ceiba at dawn is the quietest eighteen thousand people ever get.</p><span class="sticker st-y">Coffee brewing 6am</span></div></div>
+    <div class="moment" data-bg="#7fded4"><div class="ph"><div class="sh"></div><div class="im"><img src="img/plunge.jpg" alt="A swimmer jumps from a limestone ledge into a turquoise cenote"></div></div><div class="tx"><div class="tm">10:15</div><h3>The cenote dip</h3><p>The Blue Eye below the Bluewell stage turns into the world's clearest hangover cure. Lifeguards on duty from 9am. Screaming allowed, expected, basically required.</p><span class="sticker st-b">On duty 9–5</span></div></div>
+    <div class="moment" data-bg="#ffb27a"><div class="ph"><div class="sh"></div><div class="im"><img src="img/confetti.jpg" alt="Confetti over the crowd at the jungle main stage at golden hour"></div></div><div class="tx"><div class="tm">19:52</div><h3>Golden hour at the Big Ceiba</h3><p>The sun sinks behind the main stage, the confetti cannons fire, and you hug a stranger from the refill queue. This becomes your profile picture for the next eleven months.</p><span class="sticker st-p">Confetti is paper. Naturally.</span></div></div>
+    <div class="moment" data-bg="#5fae8a"><div class="ph"><div class="sh"></div><div class="im"><img src="img/gull-king.jpg" alt="The Jade Toucan, a giant woven sculpture with a glowing lantern beak"></div></div><div class="tx"><div class="tm">21:10</div><h3>The art wander</h3><p>The Jade Toucan glows in the clearing: ten metres of woven rattan and glass lantern, built by a dozen people over nine weeks. Walk beneath it, lose your friends, find new ones.</p><span class="sticker st-y">14 art works</span></div></div>
+    <div class="moment lh" data-bg="#0c2a22"><div class="ph"><div class="sh" style="background:#05140e"></div><div class="im"><img src="img/lasers.jpg" alt="Turquoise and pink lasers over the crowd at a stage on the rim of a sinkhole"></div></div><div class="tx"><div class="tm">01:10</div><h3>Lanternfall after dark</h3><p>Lasers cutting through jungle mist, a kick drum you feel in your molars, and the howler monkeys answering every drop from the trees. Bedtime is a rumour.</p><span class="sticker st-p">Free earplugs at the bar</span></div></div>
+  </div>
+  <div class="bar"><i id="expbar"></i></div>
+  <div class="clk"><svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="26" fill="#f1eee2" stroke="#0e2419" stroke-width="3"/><g stroke="#0e2419" stroke-width="2"><line x1="29" y1="6" x2="29" y2="10"/><line x1="52" y1="29" x2="48" y2="29"/><line x1="29" y1="52" x2="29" y2="48"/><line x1="6" y1="29" x2="10" y2="29"/></g><line id="hh" x1="29" y1="29" x2="29" y2="16" stroke="#0e2419" stroke-width="3.5" stroke-linecap="round"/><line id="mh" x1="29" y1="29" x2="29" y2="9" stroke="#ff4d1f" stroke-width="2.5" stroke-linecap="round"/><circle cx="29" cy="29" r="2.5" fill="#0e2419"/></svg><span class="dg" id="expdg">06:00</span></div>
+  </div>
+</section>
+<section id="timetable" class="dots">
+  <div class="top">
+    <div><div class="eyebrow rv"><span class="n">04</span>TIMETABLE</div>
+    <h2 class="h-big words">THE OVERLAP-O-TRON</h2></div>
+    <p class="lede rv">Tap sets to plan your weekend. We'll flag the overlaps, time the walk between stages and hand you a link for the group chat.</p>
+  </div>
+  <div class="ttbar">
+    <div class="dtabs" id="ttdays"><button class="on" data-d="F">FRIDAY<small>15 JAN</small></button><button data-d="S">SATURDAY<small>16 JAN</small></button><button data-d="U">SUNDAY<small>17 JAN</small></button></div>
+    <div class="ttstats"><span id="sPicked">0 SETS PICKED</span><span class="cl" id="sClash">1 CLASH</span><span id="sMusic">0H OF MUSIC</span></div>
+  </div>
+  <div id="grid">
+    <div class="ghead"><div class="dl" id="gday">FRIDAY →</div><div class="hrs" id="ghrs"></div></div>
+    <div id="grows"></div>
+  </div>
+  <div class="legend"><span><i class="lg1"></i>TAP TO ADD</span><span><i class="lg2"></i>ON YOUR SCHEDULE</span><span><i class="lg3"></i>CLASH, PICK ONE</span></div>
+  <div class="ttlow">
+    <div id="order"><div class="oh"><h3>MY RUNNING ORDER</h3><button class="clr" id="clearall">CLEAR ALL</button></div><div id="olist"></div></div>
+    <div id="share">
+      <div class="k">SINKGLOW Nº9 · MY WEEKEND</div>
+      <h3 id="shTitle">NO PICKS YET</h3>
+      <div class="nums"><div><b id="shSets">0</b><small>SETS</small></div><div><b id="shWalk">0</b><small>WALK MINS</small></div><div><b id="shKm">0.0</b><small>KM (ROUGHLY)</small></div></div>
+      <div class="k" style="margin-top:26px">SHARE LINK</div>
+      <div class="lk"><input id="shLink" readonly><button class="cp" id="copy">⛓ COPY</button></div>
+      <p>Your picks stay in this browser. The link carries them anywhere, so the group chat can argue about Saturday in peace.</p>
+    </div>
+  </div>
+</section>
+<div class="zig" style="--c:var(--cream);background:var(--yellow)"></div>
+<section id="map">
+  <div class="top">
+    <div><div class="eyebrow rv"><span class="n">05</span>SITE MAP</div>
+    <h2 class="h-big words">WHERE THE<br>RACKET HIDES</h2></div>
+    <p class="lede rv">Choose a category to light it up. Hover a stage to see who's playing at festival time, then drag the clock or let it run.</p>
+  </div>
+  <div class="mapwrap">
+    <div class="mside">
+      <div class="cats" id="cats">
+        <button class="all" data-c="all"><i style="background:conic-gradient(var(--pink) 0 25%,var(--yellow) 0 50%,var(--blue) 0 75%,var(--cream) 0)"></i>EVERYTHING</button>
+        <button data-c="stage"><i style="background:var(--pink);border-radius:3px;transform:rotate(45deg)"></i>STAGES<small>4</small></button>
+        <button data-c="bar"><i style="background:var(--pink)"></i>BARS<small>5</small></button>
+        <button data-c="food"><i style="background:var(--yellow)"></i>FOOD<small>4</small></button>
+        <button data-c="water"><i style="background:var(--blue)"></i>WATER REFILL<small>6</small></button>
+        <button data-c="med"><i style="background:radial-gradient(var(--pink) 35%,var(--cream) 38%)"></i>MEDICAL<small>2</small></button>
+        <button data-c="chill"><i style="background:var(--pinkl)"></i>CHILL ZONES<small>3</small></button>
+        <button data-c="camp"><i style="background:repeating-linear-gradient(45deg,var(--ink) 0 3px,var(--yellow) 3px 6px)"></i>CAMPING<small>3</small></button>
+      </div>
+      <div class="clock">
+        <div class="k">FESTIVAL TIME<button class="pp" id="pp">❚❚</button></div>
+        <div class="now"><small id="ckDay">SAT</small><b id="ckTime">14:00</b></div>
+        <div class="days" id="ckDays"><button data-d="F">FRI</button><button data-d="S" class="on">SAT</button><button data-d="U">SUN</button></div>
+        <input type="range" id="ckRange" min="0" max="660" value="0">
+        <div class="ticks"><span>14:00</span><span>19:30</span><span>01:00</span></div>
+        <ul id="ckList"></ul>
+      </div>
+    </div>
+    <div class="mapbox rv" id="mapbox">
+      <svg viewBox="0 0 1420 1000" id="msvg"></svg>
+      <div id="mtip"></div>
+    </div>
+  </div>
+</section>
+<div class="zig" style="--c:var(--pink);background:var(--cream)"></div>
+<section id="tickets">
+  <div class="top">
+    <div><div class="eyebrow rv"><span class="n" style="background:var(--yellow)">06</span>TICKETS</div>
+    <h2 class="h-big sh-yel words">LOCK IN BEFORE<br>TIER THREE</h2></div>
+    <p class="lede rv">Prices cover every stage, every day and a free refill flask. Booking fee: zero dollars. We swallowed it, like a sponge.</p>
+  </div>
+  <div class="tierh rv"><h3>TIER 2 IS 83% SOLD</h3><span>TIER 3 PRICING STARTS AT 100%. DON'T BECOME A TIER THREE PERSON.</span></div>
+  <div class="tierbar rv" id="tierbar"><span class="t1">TIER 1 · GONE</span><div class="fill"></div><span class="pc">83%</span></div>
+  <div class="tix">
+    <div class="tgrid" id="tgrid"></div>
+    <aside id="yourorder">
+      <div class="oh"><h3>YOUR ORDER</h3><span>TIER 2 PRICES</span></div>
+      <div class="lines" id="olines">No tickets yet. Pick a tier, wild one.</div>
+      <div class="ak">ADD-ONS</div>
+      <div id="addons"></div>
+      <div class="tot"><span>TOTAL</span><b id="total">$0</b></div>
+      <div class="fee">BOOKING FEE $0 · REFILL FLASK INCLUDED</div>
+      <button class="co" id="checkout">CHECKOUT →</button>
+    </aside>
+  </div>
+</section>
+<section id="eat">
+  <div class="eyebrow rv"><span class="n">07</span>FOOD &amp; ART PROGRAMME</div>
+  <h2 class="h-big words">EAT WELL.<br>STARE AT WEIRD THINGS.</h2>
+  <div class="eatgrid">
+    <div class="eatl">
+      <div class="photo rv"><div class="sh"></div><div class="im"><img src="img/night-market.jpg" alt="The lantern-lit night market under the jungle canopy" class="par"></div></div>
+      <div class="menu rv">
+        <div class="mh"><h3>THE FIREFLY MARKET</h3><span>31 STALLS · 11AM UNTIL THE COMAL GOES COLD</span></div>
+        <div class="mi"><b>Abuela's Grudge</b><span>Slow-pit pork tacos, smoky and cross</span><em>$16</em></div>
+        <div class="mi"><b>The Comal Star</b><span>Blue-corn quesadillas off the griddle</span><em>$14</em></div>
+        <div class="mi"><b>Lime &amp; Salt Co.</b><span>Ceviche from Punta Carey, chilli, no fuss</span><em>$19</em></div>
+        <div class="mi"><b>Big Tamal Vibes</b><span>Banana-leaf tamales, black beans on request</span><em>$11</em></div>
+        <div class="mi"><b>Holy Habanero</b><span>Three elotes, one seriously hot sauce</span><em>$12</em></div>
+        <div class="mi"><b>Mango Cartel</b><span>Mango on a stick, chilli, moral support</span><em>$7</em></div>
+        <div class="mi"><b>Early Canopy</b><span>Cold brew from 6am, served with sympathy</span><em>$5.5</em></div>
+        <span class="sticker st-p">Every stall is plastic-free</span>
+      </div>
+    </div>
+    <div class="eatr">
+      <div class="trailh rv"><h3>THE ART TRAIL</h3><span>14 WORKS · ALL WEEKEND</span></div>
+      <div class="work rv"><span class="no">01</span><div class="wb"><b>The Jade Toucan</b><span>Ten metres of woven rattan and glass lantern. Lights up at dusk.</span></div><small>CENOTE RIM</small></div>
+      <div class="work rv"><span class="no">02</span><div class="wb"><b>Lost Sandal Cathedral</b><span>Four thousand unmatched sandals, one tiny choir.</span></div><small>HAMMOCK HOLLOW</small></div>
+      <div class="work rv"><span class="no">03</span><div class="wb"><b>Drip Clock</b><span>A stalactite that marks the hour, one drop at a time. Cave only.</span></div><small>THE GROTTO</small></div>
+      <div class="work rv"><span class="no">04</span><div class="wb"><b>The Grumble Choir</b><span>Thirty locals singing real grievances about the festival. Harmonised.</span></div><small>SAT 16:00 · THE GROTTO</small></div>
+      <div class="work rv"><span class="no">05</span><div class="wb"><b>Night Fireflies</b><span>Two hundred LED fireflies over the canopy, rain permitting.</span></div><small>SAT 23:00 · SKY</small></div>
+      <div class="work rv"><span class="no">06</span><div class="wb"><b>Paint the Taco Truck</b><span>Grab a brush. Leave a masterpiece, or at least a smiley face.</span></div><small>SUN · TACO TRUCK ALLEY</small></div>
+      <div class="toucanpic rv"><div class="sh"></div><div class="im"><img src="img/gull-sculpture.jpg" alt="The Jade Toucan lit up at dusk beside a turquoise cenote"></div></div>
+    </div>
+  </div>
+</section>
+<div class="zig" style="--c:var(--blue);background:var(--cream)"></div>
+<section id="sust" class="dots-l">
+  <div class="sgrid">
+    <div class="sgl">
+      <div class="eyebrow rv"><span class="n">08</span>SUSTAINABILITY</div>
+      <h2 class="h-big words">THE<br>JUNGLE<br>WAS HERE<br>FIRST</h2>
+      <p class="lede rv">We borrow Ixkanil Sinks for one weekend a year and hand it back cleaner. No single-use plastic, no sunscreen in the water, twenty-two refill taps, and shuttles running more often than your group chat.</p>
+      <svg class="bottle" viewBox="0 0 110 270" id="bottle"><defs><clipPath id="bcl"><path d="M36 4h26v30l18 34c6 12 8 20 8 34v150c0 8-6 13-14 13H34c-8 0-14-5-14-13V100c0-12 2-20 8-32l8-34z"/></clipPath></defs><rect id="bfill" x="0" y="270" width="110" height="270" fill="#19b8ad" clip-path="url(#bcl)"/><path d="M36 4h26v30l18 34c6 12 8 20 8 34v150c0 8-6 13-14 13H34c-8 0-14-5-14-13V100c0-12 2-20 8-32l8-34z" fill="none" stroke="#f1eee2" stroke-width="5" stroke-linejoin="round"/><text x="58" y="200" text-anchor="middle" transform="rotate(-8 58 200)" font-family="Fraunces" font-style="italic" font-weight="900" font-size="26" fill="#2ed3c6">refill</text></svg>
+    </div>
+    <div class="sgr">
+      <div class="scard rv" style="background:var(--yellow);transform:rotate(-1deg)"><b><span class="count" data-to="48300" data-sep="1">0</span> L</b><span>of water refilled at 22 taps in 2026 — about 96,000 bottles we never had to make.</span></div>
+      <div class="scard rv" style="background:var(--pink);transform:rotate(1deg)"><b><span class="count" data-to="71">0</span>%</b><span>of you arrived by shuttle, bike or train. The rest carpooled, mostly.</span></div>
+      <div class="scard rv" style="background:var(--lav);transform:rotate(.4deg)"><b><span class="count" data-to="36">0</span> t</b><span>kept out of landfill: composted, recycled or reborn as next year's art.</span></div>
+      <div class="scard rv" style="background:var(--cream);transform:rotate(-1.2deg)"><b>0</b><span>throwaway cups, straws, cutlery or glitter. Biodegradable glitter only. We check.</span></div>
+      <div class="scard rv" style="background:var(--yellow);transform:rotate(1deg)"><b><span class="count" data-to="100">0</span>%</b><span>of Lanternfall runs on solar and battery. The lasers are, technically, sunshine.</span></div>
+      <div class="scard rv" style="background:var(--pink);transform:rotate(-.5deg)"><b><span class="count" data-to="11">0</span>/hr</b><span>shuttles from Puerto Almendra at peak. Sit left for the jungle views.</span></div>
+    </div>
+  </div>
+</section>
+<div class="zig" style="--c:var(--cream);background:var(--blue)"></div>
+<section id="there">
+  <div class="top">
+    <div><div class="eyebrow rv"><span class="n">09</span>GETTING THERE</div>
+    <h2 class="h-big words">ALMENDRA TO THE<br>EDGE OF THE MAP</h2></div>
+    <p class="lede rv">Ixkanil Sinks sits 2 hours 10 from Puerto Almendra and about 40 years from the nearest decent phone signal. Plan accordingly.</p>
+  </div>
+  <div class="route" id="route">
+    <svg viewBox="0 0 1600 250" preserveAspectRatio="none" id="rsvg">
+      <path id="rpath" d="M180 110 C 300 60, 430 70, 560 90 S 800 115, 1010 80 S 1340 20, 1450 110 S 1680 170, 1690 150" fill="none" stroke="none"/>
+      <path id="rdots" fill="none" stroke="#0e2419" stroke-width="5" stroke-dasharray="0 16" stroke-linecap="round"/>
+      <path id="rsolid" fill="none" stroke="#ff4d1f" stroke-width="5" stroke-linecap="round"/>
+      <circle id="st0" r="17" fill="#127a45" stroke="#0e2419" stroke-width="4"/><circle id="st1" r="14" fill="#f1eee2" stroke="#0e2419" stroke-width="4"/><circle id="st2" r="14" fill="#f1eee2" stroke="#0e2419" stroke-width="4"/><circle id="st3" r="20" fill="#2ed3c6" stroke="#0e2419" stroke-width="4"/>
+      <g id="bus"><circle r="26" fill="#2ed3c6" stroke="#0e2419" stroke-width="4"/><rect x="-12" y="-10" width="24" height="18" rx="4" fill="#0e2419"/><rect x="-8" y="-6" width="7" height="6" fill="#2ed3c6"/><rect x="1" y="-6" width="7" height="6" fill="#2ed3c6"/><circle cx="-6" cy="10" r="2.5" fill="#0e2419"/><circle cx="6" cy="10" r="2.5" fill="#0e2419"/></g>
+    </svg>
+    <span class="lab" id="lb0">PUERTO ALMENDRA</span><span class="lab" id="lb1">CRUCE CHACÁ</span><span class="lab" id="lb2">PUNTA CAREY</span><span class="lab" id="lb3">IXKANIL SINKS</span>
+  </div>
+  <div class="ways">
+    <div class="way rv" style="background:var(--yellow)"><span class="ltr">A</span><h4>The Sinkglow Shuttle</h4><p>Every 20 minutes from Puerto Almendra, Friday 9am to Monday 2pm. Two hours ten with a stop at Punta Carey for tamales.</p><div class="ft"><b>$59 RETURN</b><span>ADDED AT CHECKOUT</span></div></div>
+    <div class="way rv" style="background:var(--pink)"><span class="ltr">B</span><h4>Drive</h4><p>Verdeluz Highway the whole way. Three or more in the car and you park in Lot A by the gate. One or two and you walk from Lot D. Them's the rules.</p><div class="ft"><b>$45 CAR PASS</b><span>PER CAR, NOT PER HEAD</span></div></div>
+    <div class="way rv" style="background:var(--blue);color:var(--cream)"><span class="ltr">C</span><h4>Ride</h4><p>84 km from Almendra, flat as a tortilla except the climb at Cruce Chacá. Free bike valet at Gate B, and a cold coconut on us if you arrive sweaty.</p><div class="ft"><b>FREE VALET</b><span>HEROES ONLY</span></div></div>
+    <div class="way rv" style="background:var(--ink);color:var(--cream)"><span class="ltr">D</span><h4>Rail</h4><p>The Selva Line train runs Friday morning and Monday noon. 180 seats, one marimba player, no promises about the air con.</p><div class="ft"><b>$25 EACH WAY</b><span>GOES FIRST</span></div></div>
+  </div>
+</section>
+<div class="zig" style="--c:var(--ink);background:var(--cream)"></div>
+<section id="faq" class="dark">
+  <div class="eyebrow rv"><span class="n">10</span>FAQ</div>
+  <h2 class="h-big sh-blue words">QUESTIONS WE<br>GET AT 2AM</h2>
+  <div class="qs" id="qs"></div>
+</section>
+<div class="zig" style="--c:var(--yellow);background:var(--ink)"></div>
+<section id="news">
+  <div class="ncard rv">
+    <div style="flex:none;width:620px"><span class="sticker st-y">Landing 14 November</span><h3>SET TIMES, SURPRISE SETS AND THE SUNDAY SPECIAL.</h3></div>
+    <form id="nform"><span class="ok" id="nok">One email the moment set times drop. That's all. Promise.</span><input type="email" placeholder="you@somewhere.jungle" required><button type="submit">KEEP ME POSTED →</button></form>
+  </div>
+</section>
+<footer>
+  <div class="big">SINKGLOW Nº9</div>
+  <div class="fr"><span>IXKANIL SINKS, SELVA VERDELUZ · 15–17 JAN 2027</span><span><a href="#lineup">LINEUP</a> · <a href="#tickets">TICKETS</a> · <a href="#faq">FAQ</a></span><span>LEAVE NO TRACE, TAKE NO CHEEK</span></div>
+</footer>
+</main>
+<div id="modal"><div class="box"><img id="mImg" src="img/lasers.jpg" alt=""><div class="mb"><button class="x" id="mX">✕</button><span class="dayp" id="mDay">FRI</span><h3 id="mName"></h3><p id="mGossip"></p><div class="when" id="mWhen"></div></div></div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const DAYN={F:'FRIDAY',S:'SATURDAY',U:'SUNDAY'},DAYS={F:'FRI',S:'SAT',U:'SUN'},DATE={F:'15 JAN',S:'16 JAN',U:'17 JAN'};
+const STAGES={G:{n:'The Big Ceiba',s:'Big Ceiba',sub:'MAIN STAGE · IN THE CLEARING',c:'#ff4d1f'},W:{n:'The Grotto',s:'Grotto',sub:'INSIDE A LIMESTONE CAVE',c:'#127a45'},L:{n:'Lanternfall',s:'Lanternfall',sub:'ON THE SINKHOLE RIM',c:'#0e2419'},R:{n:'Bluewell',s:'Bluewell',sub:'ON THE LEDGE ABOVE THE WATER',c:'#2ed3c6'}};
+const SLOTS={G:[['14:00','14:50'],['15:40','16:40'],['17:30','18:40'],['19:30','20:50'],['21:45','23:30']],W:[['14:15','15:05'],['15:50','16:50'],['17:45','18:55'],['19:50','21:05'],['21:15','22:30']],L:[['15:30','16:30'],['17:15','18:30'],['19:15','20:30'],['21:30','22:50'],['23:30','01:00']],R:[['14:30','15:30'],['16:15','17:15'],['18:00','19:10'],['20:00','21:15']]};
+const ACTS={
+F:{G:['Limestone Boys','Señora Humidity','Diesel Pump Serenade','Rosa Lanterna','Canopy Basilica'],W:['Lil Iguana','Tinfoil Tapir','Nova Stalactite','Knuckle Mosquito','Kid Quetzal'],L:['Pylon Papaya','Fifty Tree Frogs','Nadia Voltaje','Nightjar Protocol','Halogen Howlers'],R:['Pip Ceibawood','The Vine Whisperers','Theremin Rainmaker','Auntie Downpour']},
+S:{G:['Fresh Mango Wedding','Honest Tortilla','The Honeycomb Wildfire','The Soggy Sandals','Sister Jaguar'],W:['MC Coati','Fern Motel','Lime Prawn Brigade','The Rotten Guavas','Dolores Sinkhole'],L:['Kilowatt Cacao','Echo Carnaval','Cenote Vicar','Jade Riches','DJ Axolotl Thursday'],R:['Ghost Orchid Parade','Humble Marimba Revenge','Static Rain','Tomás & the Termites']},
+U:{G:['The Folded Hammocks','Melvin Kettlebottom','Mangrove Surgeons','The Sunday Scorchers','Marisol & the Dawn Chorus'],W:['Old Man Rainfall','Lantern Undertow','Big Umbrella Tuesday','Kitty Mahogany','Sweetwater Scripture'],L:['Delma & the Velvet Ants','Fatherjungle','Firefly Council','Chalk Prophets','Parallax Parish'],R:['Tape Loop Chapel','The Lost Flip-Flop Office','Howler Choir Nine','Unlicensed Cicada Orchestra']}};
+const GEN=['gtr','elec','hip','soul','folk'];
+const toMin=t=>{let[h,m]=t.split(':').map(Number);if(h<6)h+=24;return h*60+m};
+const fmt=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const SETS=[];
+for(const d in ACTS)for(const s in ACTS[d])ACTS[d][s].forEach((n,i)=>{const[a,b]=SLOTS[s][i];SETS.push({id:d+s+(i+1),d,s,i,n,a:toMin(a),b:toMin(b),ta:a,tb:b,g:GEN[(n.length+i*3+s.charCodeAt(0))%5]})});
+const byId=Object.fromEntries(SETS.map(x=>[x.id,x]));
+const trunc=(n)=>n.toUpperCase();
+
+/* ---------- grain ---------- */
+(()=>{const c=$('#grain'),x=c.getContext('2d');const W=220,H=220;c.width=W;c.height=H;c.style.imageRendering='pixelated';
+ const frames=[];for(let k=0;k<6;k++){const im=x.createImageData(W,H);for(let i=0;i<im.data.length;i+=4){const v=Math.random()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}frames.push(im)}
+ let f=0;c.style.width='100%';c.style.height='100%';
+ const pat=document.createElement('canvas');pat.width=W;pat.height=H;const px=pat.getContext('2d');
+ c.width=Math.ceil(innerWidth/1.3);c.height=Math.ceil(innerHeight/1.3);
+ setInterval(()=>{px.putImageData(frames[f++%6],0,0);const p=x.createPattern(pat,'repeat');x.save();x.translate(-Math.random()*W,-Math.random()*H);x.fillStyle=p;x.fillRect(0,0,c.width+W,c.height+H);x.restore()},70);
+})();
+
+/* ---------- countdown ---------- */
+const GATES=new Date(2027,0,15,11,0,0);
+function tick(){let s=Math.max(0,Math.floor((GATES-new Date())/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;const p=v=>String(v).padStart(2,'0');
+ $('#navcd').textContent=`${d}d ${p(h)}h ${p(m)}m ${p(s)}s`;
+ $('#cdd').firstChild.nodeValue=d;$('#cdh').firstChild.nodeValue=p(h);$('#cdm').firstChild.nodeValue=p(m);$('#cds').firstChild.nodeValue=p(s)}
+tick();setInterval(tick,1000);
+
+/* ---------- marquees ---------- */
+(()=>{const seg=`<small>FRI</small><span>CANOPY BASILICA</span><span class="sx">★</span><small>SAT</small><span>SISTER JAGUAR</span><span class="sx">★</span><small>SUN</small><span>MARISOL &amp; THE DAWN CHORUS</span><span class="sx">★</span><em>+ 54 more troublemakers</em><span class="sx">★</span>`;
+ $('#bandtrack').innerHTML=seg+seg+seg+seg;
+ const y=['TIER 2 · 83% GONE','CANOPY BASILICA','SISTER JAGUAR','MARISOL & THE DAWN CHORUS','PACK A SWIMSUIT','57 ACTS · 4 STAGES · 1 JUNGLE','ZERO SINGLE-USE ANYTHING'];
+ const b=['LEAVE NO TRACE','A TAMAL IS A LIFESTYLE','A SHUTTLE EVERY 20 MINUTES','LANTERNFALL TILL 1AM','DIP AT THE BLUE EYE','THE JADE TOUCAN WATCHES'];
+ const mk=a=>a.map(t=>`<span>${t}</span><span class="sx">★</span>`).join('');
+ $('#tapeY').innerHTML=mk(y).repeat(4);$('#tapeB').innerHTML=mk(b).repeat(4);
+})();
+
+/* ---------- mouse: magnetic / parallax ---------- */
+let mx=innerWidth/2,my=innerHeight/2;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;
+ const hr=$('#hero').getBoundingClientRect();if(hr.bottom>0){
+  $$('#hero h1 .l').forEach((l,i)=>{const r=l.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=mx-cx,dy=my-cy,d=Math.hypot(dx,dy),f=Math.max(0,1-d/520);
+   l.style.transform=`translate(${(dx/innerWidth)*-26+dx*f*.07}px,${(dy/innerHeight)*-18+dy*f*.07}px) rotate(${dx*f*.012}deg)`});
+  const nx=mx/innerWidth-.5,ny=my/innerHeight-.5;
+  $('#hero .halo').style.transform=`translate(${nx*30}px,${ny*24}px)`;$('#hero .ring').style.transform=`translate(${nx*-22}px,${ny*-16}px)`;
+ }
+ $$('.mag').forEach(el=>{const r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const k=+el.dataset.m||8,cx=r.left+r.width/2,cy=r.top+r.height/2,dx=mx-cx,dy=my-cy,d=Math.hypot(dx,dy),f=Math.max(0,1-d/600);
+  el.style.translate=`${dx*f*k/100}px ${dy*f*k/100}px`});
+ $$('.h-big').forEach(el=>{const r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const nx=(mx-r.left-r.width/2)/innerWidth,ny=(my-r.top-r.height/2)/innerHeight;el.style.translate=`${nx*14}px ${ny*10}px`;
+  const sc=getComputedStyle(el).textShadow.match(/rgb[^)]*\)/);if(sc)el.style.textShadow=`${6-nx*8}px ${6-ny*8}px 0 ${sc[0]}`});
+});
+
+/* ---------- words split ---------- */
+$$('.words').forEach(el=>{el.innerHTML=el.innerHTML.split(/(<br>)/).map(p=>p==='<br>'?p:p.split(' ').filter(Boolean).map((w,i)=>`<span class="w"><span style="transition-delay:${i*60}ms">${w}</span></span>`).join(' ')).join('')});
+
+/* ---------- manifesto words ---------- */
+(()=>{const m=$('#manifesto');const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t))f.append(t);else{const s=document.createElement('span');s.className='mw';s.textContent=t;f.append(s)}});c.replaceWith(f)}else if(c.classList&&c.classList.contains('hl'))walk(c)})};walk(m)})();
+
+/* ---------- reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);
+ if(e.target.id==='tierbar'){e.target.querySelector('.fill').style.width='83%';e.target.querySelector('.pc').style.left='83%'}
+ e.target.querySelectorAll?.('.count').forEach(countUp);if(e.target.classList.contains('count'))countUp(e.target)}}),{threshold:.15});
+$$('.rv,.words,#tierbar').forEach(el=>io.observe(el));
+function countUp(el){if(el.dataset.done)return;el.dataset.done=1;const to=+el.dataset.to,t0=performance.now(),dur=1400;
+ const st=t=>{const p=Math.min(1,(t-t0)/dur),v=Math.round(to*(1-Math.pow(1-p,3)));el.textContent=el.dataset.sep?v.toLocaleString('en-US'):v;if(p<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
+
+/* ---------- lineup poster ---------- */
+(()=>{const heads=[['F','Canopy Basilica'],['S','Sister Jaguar'],['U','Marisol & the Dawn Chorus']];
+ const find=n=>SETS.find(s=>s.n===n);
+ $('#heads').innerHTML=heads.map(([d,n])=>`<span class="dayp">${DAYS[d]}</span><span class="act" data-id="${find(n).id}">${n.toUpperCase()}</span>`).join('');
+ const t2=['Rosa Lanterna','Kid Quetzal','Halogen Howlers','The Soggy Sandals','Dolores Sinkhole','DJ Axolotl Thursday','Sweetwater Scripture','Chalk Prophets','Parallax Parish'];
+ const t3=['Diesel Pump Serenade','Nova Stalactite','Knuckle Mosquito','Nadia Voltaje','Nightjar Protocol','Auntie Downpour','The Honeycomb Wildfire','Lime Prawn Brigade','Cenote Vicar','Static Rain','Jade Riches','Tomás & the Termites','Mangrove Surgeons','The Sunday Scorchers','Big Umbrella Tuesday','Kitty Mahogany','Firefly Council','The Rotten Guavas'];
+ const used=new Set([...heads.map(h=>h[1]),...t2,...t3]);const t4=SETS.filter(s=>!used.has(s.n)).map(s=>s.n);
+ const brk2=[2,4,5,6,8],brk3=[3,6,8,11,13,15,18];
+ const row=(arr,brks)=>{let o='',st=0;brks.forEach(b=>{o+='<div>'+arr.slice(st,b).map(n=>`<span class="act" data-id="${find(n).id}">${n.toUpperCase()}</span>`).join('<span class="sx">✶</span>')+(b<arr.length?'<span class="sx">✶</span>':'')+'</div>';st=b});return o};
+ $('#t2').innerHTML=row(t2,brk2);$('#t3').innerHTML=row(t3,brk3);
+ $('#t4').innerHTML=t4.map(n=>`<span class="act" data-id="${find(n).id}">${n.toUpperCase()}</span>`).join('<span class="sx">✶</span>');
+ let fd='all',fg='all';const apply=()=>$$('#poster .act').forEach(a=>{const s=byId[a.dataset.id];a.classList.toggle('dim',!((fd==='all'||s.d===fd)&&(fg==='all'||s.g===fg)))});
+ $$('#lday button').forEach(b=>b.onclick=()=>{$$('#lday button').forEach(x=>x.classList.remove('on'));b.classList.add('on');fd=b.dataset.d;apply()});
+ $$('#lgen button').forEach(b=>b.onclick=()=>{$$('#lgen button').forEach(x=>x.classList.remove('on'));b.classList.add('on');fg=b.dataset.g;apply()});
+ const imgs=['lasers','confetti','campsite','plunge','gull-king','night-market','gull-sculpture'];
+ const gossip=['Formed above a taco stand, still smell faintly of it. Their drummer once played a full set in flippers.','Recorded the new record inside a flooded cave. The reverb is real. So are the bats.','Last year they crowd-surfed an inflatable crocodile across the Big Ceiba pit. Security has been briefed.','Known for opening every set with a marimba lullaby and finishing somewhere much louder.','Their merch stand sells exactly one item: a genuinely excellent quick-dry towel.','Played Sinkglow Nº4 to eleven people and a toucan. Came back as headliners. The toucan is still bitter.'];
+ const G={gtr:'GUITARS',elec:'ELECTRONIC',hip:'HIP-HOP',soul:'SOUL & FUNK',folk:'FOLK & WEIRD'};
+ $('#poster').addEventListener('click',e=>{const a=e.target.closest('.act');if(!a)return;const s=byId[a.dataset.id];
+  $('#mImg').src='img/'+imgs[s.n.length%imgs.length]+'.jpg';$('#mDay').textContent=DAYS[s.d]+' · '+G[s.g];$('#mName').textContent=s.n.toUpperCase();$('#mGossip').textContent=gossip[(s.n.length+s.i)%gossip.length];
+  $('#mWhen').textContent=`${DAYN[s.d]} ${s.ta}–${s.tb} · ${STAGES[s.s].n.toUpperCase()}`;$('#modal').classList.add('open')});
+ $('#mX').onclick=()=>$('#modal').classList.remove('open');$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('open')};
+})();
+</script>
+<script>
+/* ---------- experience horizontal scroll ---------- */
+const exp=$('#exp'),trk=$('#exptrk');let expLen=0;
+function sizeExp(){expLen=trk.scrollWidth-innerWidth+60;exp.style.height=(688+expLen)+'px'}
+const lerpC=(a,b,t)=>{const p=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));const A=p(a),B=p(b);return'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')+')'};
+function expScroll(){const r=exp.getBoundingClientRect();const p=Math.min(1,Math.max(0,(104-r.top)/expLen));trk.style.transform=`translateX(${-p*expLen}px)`;
+ const ms=$$('.moment');const cols=['#f2c6a4',...ms.map(m=>m.dataset.bg)];
+ const cen=innerWidth*.45;let idx=0,t=0;const pos=ms.map(m=>m.getBoundingClientRect().left);
+ for(let i=0;i<ms.length;i++){if(pos[i]<cen)idx=i+1}
+ if(idx<ms.length){const prev=idx===0?cen-900:pos[idx-1],nx=pos[idx];t=Math.min(1,Math.max(0,(cen-prev)/(nx-prev)));}
+ const a=cols[Math.max(0,idx)],b=cols[Math.min(cols.length-1,idx+1)];
+ const bg=idx>=ms.length?cols[cols.length-1]:lerpC(cols[idx],cols[idx+1]||cols[idx],Math.pow(t,3));
+ exp.style.background=bg;exp.classList.toggle('darkbg',idx>=ms.length-1&&t>.5||idx>=ms.length);
+ ms.forEach(m=>{const im=m.querySelector('img'),rr=m.getBoundingClientRect(),q=(rr.left-innerWidth/2)/innerWidth;im.style.transform=`translateX(${q*-60}px) scale(${1+Math.abs(q)*.08})`;
+  m.querySelector('.ph').style.transform=`rotate(${q*3}deg) translateY(${Math.abs(q)*30}px)`});
+ $('#expbar').style.width=(p*100)+'%';
+ const mins=360+p*(25*60+30-360);$('#expdg').textContent=fmt(Math.round(mins));
+ const hh=(mins/60%12)*30,mm=(mins%60)*6;$('#hh').setAttribute('transform',`rotate(${hh} 29 29)`);$('#mh').setAttribute('transform',`rotate(${mm} 29 29)`);
+}
+
+/* ---------- timetable app ---------- */
+let ttDay='F';let picks=[];
+try{const u=new URLSearchParams(location.search).get('my');if(u)picks=u.split('.').filter(id=>byId[id]);else picks=JSON.parse(localStorage.getItem('sinkglow-picks')||'[]').filter(id=>byId[id])}catch(e){}
+let HW=118.9;const T0=14*60;
+function hdr(){HW=($('#grid').clientWidth-182)/11.25;let h='';for(let i=0;i<=11;i++){const hr=(14+i)%24;h+=`<span class="${hr<6?'late':''}" style="left:${i*HW}px">${String(hr).padStart(2,'0')}:00</span>`}$('#ghrs').innerHTML=h}hdr();
+const clashesOf=list=>{const c=new Set();const pairs=[];for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){const a=byId[list[i]],b=byId[list[j]];if(a.d===b.d&&a.a<b.b&&b.a<a.b){c.add(a.id);c.add(b.id);pairs.push([a,b])}}return{c,pairs}};
+function renderGrid(){$('#gday').textContent=DAYN[ttDay]+' →';const {c}=clashesOf(picks);
+ $('#grows').innerHTML=Object.keys(STAGES).map(s=>`<div class="grow"><div class="sl"><b><i style="background:${STAGES[s].c}"></i>${STAGES[s].n.toUpperCase()}</b><small>${STAGES[s].sub}</small></div><div class="lane" style="--hw:${HW}px">`+
+  SETS.filter(x=>x.d===ttDay&&x.s===s).map((x,k)=>{const sel=picks.includes(x.id);const short=x.b-x.a<=60;
+   return `<div class="set ${s} ${sel?'sel':''} ${c.has(x.id)?'clash':''}" data-id="${x.id}" style="left:${(x.a-T0)/60*HW+2}px;width:${(x.b-x.a)/60*HW-4}px;animation-delay:${k*50}ms"><span class="ctag">CLASH!</span><span class="ok">✓</span><b>${x.n.toUpperCase()}</b><span>${short?x.ta:x.ta+'–'+x.tb}</span><i class="add">+</i></div>`}).join('')+`</div></div>`).join('')}
+$('#grows').addEventListener('click',e=>{const el=e.target.closest('.set');if(!el)return;const id=el.dataset.id;picks=picks.includes(id)?picks.filter(x=>x!==id):[...picks,id];update()});
+$$('#ttdays button').forEach(b=>b.onclick=()=>{$$('#ttdays button').forEach(x=>x.classList.remove('on'));b.classList.add('on');ttDay=b.dataset.d;renderGrid()});
+$('#clearall').onclick=()=>{picks=[];update()};
+const SPOS={G:[664,479],W:[892,244],L:[1142,424],R:[919,704]};
+const walkKm=(a,b)=>Math.hypot(SPOS[a][0]-SPOS[b][0],SPOS[a][1]-SPOS[b][1])*0.00122;
+const walkMin=(a,b)=>a===b?0:Math.max(2,Math.round(walkKm(a,b)/4*60));
+function update(){try{localStorage.setItem('sinkglow-picks',JSON.stringify(picks))}catch(e){}
+ renderGrid();const {c,pairs}=clashesOf(picks);
+ const mins=picks.reduce((t,id)=>t+byId[id].b-byId[id].a,0);
+ $('#sPicked').textContent=picks.length+' SETS PICKED';$('#sMusic').textContent=mins?`${Math.floor(mins/60)}H ${mins%60?(mins%60)+'M ':''}OF MUSIC`:'0H OF MUSIC';
+ $('#sClash').textContent=pairs.length+(pairs.length>1?' CLASHES':' CLASH');$('#sClash').classList.toggle('on',pairs.length>0);
+ const mc=$('#mycount');mc.textContent=picks.length;mc.classList.add('bump');setTimeout(()=>mc.classList.remove('bump'),250);
+ // running order
+ let html='',km=0,walk=0;
+ if(!picks.length)html='<div class="empty">Nothing here yet. Tap a set above and it drops into your running order, with walk times between stages and a gentle nudge when you double-book yourself.</div>';
+ ['F','S','U'].forEach(d=>{const L=picks.map(id=>byId[id]).filter(x=>x.d===d).sort((a,b)=>a.a-b.a);if(!L.length)return;
+  html+=`<div class="dayh">${DAYN[d]}<small>${DATE[d]} · ${L.length} SET${L.length>1?'S':''}</small></div>`;
+  L.forEach((x,i)=>{if(i){const p=L[i-1];if(x.a<p.b){html+=`<div class="gap bad">↓ <span>Clashes by ${p.b-x.a} min. Pick one, or duck out of ${p.n} early.</span></div>`}else{const w=walkMin(p.s,x.s),sp=x.a-p.b-w;km+=p.s===x.s?0:walkKm(p.s,x.s);walk+=w;
+    html+=`<div class="gap">↓ ${w?`${w} min walk to ${STAGES[x.s].s}`:'Same stage, no rush'} · ${sp>=0?sp+' min spare, '+(sp>25?'time for a tamal.':sp>10?'time for a refill.':'move quick.'):'you\'ll miss the start.'}</div>`}}
+   html+=`<div class="orow ${c.has(x.id)?'cl':''}"><span class="t">${x.ta}–${x.tb}</span><span class="n">${x.n}</span><span class="tag" style="background:${STAGES[x.s].c};color:${x.s==='R'?'#0e2419':'#fff'}">${STAGES[x.s].s}</span><button class="rm" data-id="${x.id}">✕</button></div>`})});
+ $('#olist').innerHTML=html;
+ $('#shSets').textContent=picks.length;$('#shWalk').textContent=walk;$('#shKm').textContent=km.toFixed(1);
+ const last=picks[picks.length-1];$('#shTitle').textContent=last?byId[last].n.toUpperCase()+(picks.length>1?` + ${picks.length-1} MORE`:''):'NO PICKS YET';
+ $('#shLink').value=location.href.split(/[?#]/)[0]+(picks.length?'?my='+picks.map(id=>id.replace(/^U/,'U')).join('.'):'')+'#timetable';
+}
+$('#olist').addEventListener('click',e=>{const b=e.target.closest('.rm');if(b){picks=picks.filter(x=>x!==b.dataset.id);update()}});
+$('#copy').onclick=()=>{const i=$('#shLink');i.select();try{navigator.clipboard.writeText(i.value)}catch(e){document.execCommand('copy')}$('#copy').textContent='✓ COPIED';setTimeout(()=>$('#copy').textContent='⛓ COPY',1600)};
+update();
+</script>
+<script>
+/* ---------- site map ---------- */
+const MAPI=[
+ {c:'stage',s:'G',x:664,y:479,t:'The Big Ceiba',d:'The main stage in the clearing under a 40-metre ceiba. Big sound, bigger canopy, leaves in everything by Sunday.'},
+ {c:'stage',s:'W',x:892,y:244,t:'The Grotto',d:'A stage built inside a dry limestone cave. Low ceilings, loud bass, stalactites overhead.'},
+ {c:'stage',s:'L',x:1142,y:424,t:'Lanternfall',d:'On the sinkhole rim till 1am. Lasers, jungle mist and a kick drum you feel in your jaw.'},
+ {c:'stage',s:'R',x:919,y:704,t:'Bluewell',d:'A tiny stage on the ledge above the Blue Eye. Pack a towel, lose your mind.'},
+ {c:'bar',x:1024,y:277,t:'The Thirsty Tapir',d:'Grotto-side bar. Local lager, cans and agua fresca, no glass.'},
+ {c:'bar',x:766,y:382,t:'Last Call',d:'Open till 1am. Pours hibiscus tea after midnight.'},
+ {c:'bar',x:554,y:594,t:'Ceiba Bar',d:'Front-of-house bar for the main stage. Card only, cups need a deposit.'},
+ {c:'bar',x:613,y:687,t:'The Palapa Bar',d:'Micheladas, soft drinks and a bartender who tracks the rain radar.'},
+ {c:'bar',x:1067,y:526,t:'Lantern Room',d:'Mezcal spritzes and conversation you have to shout.'},
+ {c:'food',x:316,y:354,t:'Camp Kitchen',d:'Huevos, sweet rolls and the first coffee of the morning.'},
+ {c:'food',x:452,y:469,t:'Taco Truck Alley',d:'Five taco trucks in a row. Paint one on Sunday.'},
+ {c:'food',x:840,y:614,t:'The Firefly Market',d:'31 stalls, 11am until the comal goes cold.'},
+ {c:'food',x:1009,y:622,t:'Early Canopy',d:'Cold brew from 6am, served with sympathy.'},
+ {c:'water',x:610,y:380,t:'Refill 1',d:'Beside the Big Ceiba sound desk.'},
+ {c:'water',x:214,y:467,t:'Refill 2',d:'Just past the main gate. Fill up ahead of the queue.'},
+ {c:'water',x:993,y:410,t:'Refill 3',d:'Halfway between the Grotto and Lanternfall.'},
+ {c:'water',x:865,y:492,t:'Refill 4',d:'Behind the Ceiba Bar, no queue at 9pm.'},
+ {c:'water',x:398,y:664,t:'Refill 5',d:'Next to the medical tent and Camp Ramón.'},
+ {c:'water',x:814,y:739,t:'Refill 6',d:'Just above the Blue Eye steps.'},
+ {c:'med',x:279,y:577,t:'Medical Tent',d:'Plasters, paramedics and no judgement. Open around the clock.'},
+ {c:'med',x:732,y:707,t:'First Aid Post',d:'Near Bluewell, for cliff-jump heroes.'},
+ {c:'chill',x:505,y:277,t:'Hammock Hollow',d:'140 hammocks strung through the chicozapote trees. First come, first snore.'},
+ {c:'chill',x:667,y:764,t:'The Hushed Ferns',d:'No speakers, no phones, just the jungle putting on a show.'},
+ {c:'chill',x:1199,y:554,t:'Rim Green',d:'Beanbags on the sinkhole rim. Best seat for the Night Fireflies.'},
+ {c:'camp',x:355,y:254,t:'Camp Ceiba',d:'The big one. Showers, lockers and a constant chorus of cicadas.'},
+ {c:'camp',x:373,y:776,t:'Camp Ramón',d:'Quieter camping down by Lot D.'},
+ {c:'camp',x:554,y:847,t:'Glamping Glade',d:'Bell tents, real beds, neighbours who whisper.'}];
+const TAG={stage:['STAGE','#2ed3c6'],bar:['BAR','#ff4d1f'],food:['FOOD','#2ed3c6'],water:['WATER REFILL','#127a45'],med:['MEDICAL','#f1eee2'],chill:['CHILL ZONE','#ffc0a8'],camp:['CAMPING','#2ed3c6']};
+function starPts(r1,r2,n){let p=[];for(let i=0;i<n*2;i++){const a=Math.PI*i/n,r=i%2?r2:r1;p.push((Math.cos(a)*r).toFixed(1)+','+(Math.sin(a)*r).toFixed(1))}return p.join(' ')}
+const ICON={food:'<path d="M-6-9v7a3 3 0 0 0 3 3v8M-3-9v6M0-9v7a3 3 0 0 1-3 3M5-9c-3 2-3 8 0 10v8" stroke="#0e2419" stroke-width="2.4" fill="none" stroke-linecap="round"/>',
+ bar:'<path d="M-9-8h18L0 2z M0 2v7 M-5 9h10" stroke="#0e2419" stroke-width="2.2" fill="#0e2419" stroke-linejoin="round"/>',
+ water:'<path d="M0-11C5-4 8 0 8 4a8 8 0 0 1-16 0c0-4 3-8 8-15z" fill="#f1eee2"/>',
+ med:'<path d="M-3-10h6v7h7v6h-7v7h-6v-7h-7v-6h7z" fill="#ff4d1f"/>',
+ chill:'<path d="M3-10a10 10 0 1 0 7 15a8 8 0 1 1-7-15z" fill="#0e2419"/>',
+ camp:'<path d="M0-10L10 8H-10z" fill="#0e2419"/><path d="M0-1L4 8h-8z" fill="#2ed3c6"/>'};
+const PC={food:'#2ed3c6',bar:'#ff4d1f',water:'#127a45',med:'#fff',chill:'#ffc0a8',camp:'#2ed3c6'};
+(()=>{let s=`<defs><pattern id="seadots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.6" fill="#1f7a3c" opacity=".75"/><circle cx="12" cy="12" r="2.6" fill="#1f7a3c" opacity=".75"/></pattern>
+ <pattern id="ydots" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#c9f3ee"/><circle cx="3" cy="3" r="2.3" fill="#2ed3c6"/><circle cx="9" cy="9" r="2.3" fill="#2ed3c6"/></pattern>
+ <pattern id="bdots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="2.4" fill="#2ed3c6" opacity=".7"/></pattern></defs>
+ <rect width="1420" height="1000" fill="#3fae5c"/><rect width="1420" height="1000" fill="url(#seadots)"/>`;
+ [[100,40],[270,35],[600,40],[1060,52],[1330,215],[1290,880],[980,905],[1340,960],[40,300]].forEach(([x,y])=>s+=`<path d="M${x} ${y}q10-12 20 0t20 0t20 0" stroke="#127a45" stroke-width="4" fill="none" stroke-linecap="round"/>`);
+ s+='';
+ const land='M0 150C150 160 300 115 430 112C560 108 650 85 740 95C800 100 830 130 880 150C1000 210 1150 300 1260 380C1320 420 1362 462 1352 512C1340 562 1250 640 1180 690C1080 760 990 830 860 880C720 935 560 985 420 1000L0 1000Z';
+ s+=`<path d="${land}" fill="#f1eee2" stroke="#0e2419" stroke-width="4"/><path d="M1352 470C1365 520 1300 600 1180 690C1080 760 990 830 860 880C720 935 560 985 420 1004" fill="none" stroke="#0e2419" stroke-width="15" stroke-linecap="round"/>`;
+ s+=`<path d="M840 150q60 22 120 6" stroke="#2ed3c6" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+ const lbl=(x,y,t,a='start',sz=17)=>`<text x="${x}" y="${y}" font-family="Space Mono" font-size="${sz}" letter-spacing="3" fill="#0e2419" text-anchor="${a}">${t}</text>`;
+ s+=lbl(882,132,'HOWLER RIDGE','middle')+lbl(1250,340,'SAC-HA CENOTE','middle')+lbl(15,506,'← VERDELUZ HWY · ALMENDRA 2H')+lbl(45,565,'MAIN GATE')+lbl(59,890,'LOTS A–D →')+lbl(1160,985,'DEEP SELVA (UNMAPPED)','middle',15);
+ // zones
+ s+=`<g class="zone" data-c="camp"><ellipse cx="352" cy="246" rx="142" ry="76" fill="url(#ydots)" stroke="#0e2419" stroke-width="3" stroke-dasharray="9 7"/><ellipse cx="355" cy="764" rx="136" ry="70" fill="url(#ydots)" stroke="#0e2419" stroke-width="3" stroke-dasharray="9 7"/><ellipse cx="555" cy="829" rx="78" ry="38" fill="#2ed3c6" stroke="#0e2419" stroke-width="3"/></g>`;
+ s+=`<g class="zone" data-c="chill"><ellipse cx="507" cy="259" rx="88" ry="52" fill="#ff9e7e" stroke="#0e2419" stroke-width="3" stroke-dasharray="9 7"/>${[[455,256],[500,226],[556,238],[475,288],[530,288],[578,270]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="8" fill="#127a45"/>`).join('')}</g>`;
+ s+=`<g class="zone" data-c="stage"><ellipse cx="664" cy="452" rx="135" ry="88" fill="#ffc0a8" stroke="#0e2419" stroke-width="3"/></g>`;
+ s+=`<g class="zone" data-c="camp">${[[285,215],[300,255],[330,210],[420,232],[372,205],[298,810],[340,790],[395,735],[440,792],[350,840]].map(([x,y])=>`<path d="M${x} ${y-13}l13 22h-26z" fill="#0e2419"/>`).join('')}</g>`;
+ s+=[[172,622],[146,653],[195,665]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="10" fill="#2ed3c6"/>`).join('');
+ const dot=d=>`<path d="${d}" fill="none" stroke="#0e2419" stroke-width="4.5" stroke-dasharray="0.1 13" stroke-linecap="round"/>`;
+ s+=dot('M0 528C200 522 420 505 664 479S1000 438 1142 424S1250 432 1275 440')+dot('M352 246C330 300 300 420 279 577S340 720 373 776')+dot('M664 479C720 420 800 330 892 244')+dot('M664 479C740 560 830 640 919 704');
+ s+=`<g class="mp" data-i="11"><rect x="780" y="574" width="120" height="80" fill="#2ed3c6" stroke="#0e2419" stroke-width="3" transform="rotate(-4 840 614)"/></g>`;
+ // cenotes + compass
+ const cen=(x,y,rx,ry)=>`<g transform="translate(${x} ${y})"><ellipse rx="${rx}" ry="${ry}" fill="#0c8f86" stroke="#0e2419" stroke-width="4"/><ellipse rx="${rx*.78}" ry="${ry*.72}" cy="3" fill="#2fd3c6"/><path d="M${-rx*.4} -2q${rx*.2}-6 ${rx*.4} 0t${rx*.4} 0" stroke="#f1eee2" stroke-width="3" fill="none" stroke-linecap="round"/></g>`;
+ s+=cen(1262,430,64,44)+cen(1020,775,46,30);
+ s+=`<g transform="translate(1332 88)"><circle r="36" fill="#f1eee2" stroke="#0e2419" stroke-width="4"/><path d="M0-28l7 28h-14z" fill="#ff4d1f"/><path d="M0 28l7-28h-14z" fill="#0e2419"/><text y="-46" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="20" fill="#0e2419">N</text></g>`;
+ MAPI.forEach((m,i)=>{if(m.c==='stage'){const st=STAGES[m.s];s+=`<g class="mp stage" data-i="${i}" data-s="${m.s}" transform="translate(${m.x} ${m.y})"><g class="pin"><polygon class="burst" points="${starPts(52,38,16)}" fill="${st.c}" stroke="#0e2419" stroke-width="4" stroke-linejoin="round"/><text y="12" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="34" fill="${m.s==='R'?'#0e2419':m.s==='L'?'#2ed3c6':'#fff'}">${m.s}</text><circle class="live" cx="36" cy="-36" r="9" fill="#ff4d1f" stroke="#0e2419" stroke-width="3"/></g><text y="84" text-anchor="middle" font-family="Archivo" font-weight="900" font-size="29" fill="#0e2419" stroke="#f1eee2" stroke-width="6" paint-order="stroke">${st.n.toUpperCase()}</text></g>`}
+  else s+=`<g class="mp" data-i="${i}" transform="translate(${m.x} ${m.y})"><g class="pin"><circle r="22" fill="${PC[m.c]}" stroke="#0e2419" stroke-width="4"/>${ICON[m.c]}</g></g>`});
+ $('#msvg').innerHTML=s;
+})();
+let ckDay='S',ckMin=30,playing=true;
+function nowFor(s,d,t){const L=SETS.filter(x=>x.d===d&&x.s===s).sort((a,b)=>a.a-b.a);const cur=L.find(x=>t>=x.a&&t<x.b);const nx=L.find(x=>x.a>t);return{cur,nx}}
+function renderClock(){const t=T0+ckMin;$('#ckTime').textContent=fmt(t);$('#ckDay').textContent=DAYS[ckDay];const r=$('#ckRange');r.value=ckMin;r.style.setProperty('--p',(ckMin/660*100)+'%');
+ let h='';Object.keys(STAGES).forEach(s=>{const {cur,nx}=nowFor(s,ckDay,t),st=STAGES[s];const g=$(`.stage[data-s="${s}"]`);g&&g.classList.toggle('on',!!cur);
+  if(cur)h+=`<li><i style="background:${st.c}"></i><div><b>${cur.n}</b><span>${st.s} · till ${cur.tb}</span></div></li>`;
+  else if(nx)h+=`<li class="off"><i style="background:${st.c}"></i><div><b>${st.s}: set change</b><span>next ${nx.n} ${nx.ta}</span></div></li>`;
+  else h+=`<li class="off"><i style="background:${st.c}"></i><div><b>${st.s}: dark</b><span>nothing till tomorrow</span></div></li>`});
+ $('#ckList').innerHTML=h;if(tipI!=null)showTip(tipI)}
+$$('#ckDays button').forEach(b=>b.onclick=()=>{$$('#ckDays button').forEach(x=>x.classList.remove('on'));b.classList.add('on');ckDay=b.dataset.d;renderClock()});
+$('#ckRange').oninput=e=>{ckMin=+e.target.value;renderClock()};
+$('#pp').onclick=()=>{playing=!playing;$('#pp').textContent=playing?'❚❚':'▶'};
+setInterval(()=>{if(!playing)return;const r=$('#mapbox').getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;ckMin=(ckMin+1)%661;renderClock()},110);
+let tipI=null;const tip=$('#mtip');
+function showTip(i){const m=MAPI[i],[tg,tc]=TAG[m.c];let h=`<span class="tg" style="background:${tc};color:${m.c==='water'?'#f1eee2':'#0e2419'}">${tg}</span><h4>${m.t}</h4><p>${m.d}</p>`;
+ if(m.c==='stage'){const t=T0+ckMin,{cur,nx}=nowFor(m.s,ckDay,t);h+=`<div class="nw"><small>${DAYS[ckDay]} ${fmt(t)}</small>`+(cur?`<b>${cur.n}</b><span>on now · till ${cur.tb}</span>`:nx?`<b>Set change</b><span>next up ${nx.n} at ${nx.ta}</span>`:`<b>All dark</b><span>back again tomorrow, legend</span>`)+`</div>`}
+ tip.innerHTML=h;const box=$('#mapbox').getBoundingClientRect(),sc=box.width/1420;let x=m.x*sc+34,y=m.y*sc-40;if(x+340>box.width)x=m.x*sc-370;if(y+220>box.height)y=box.height-230;tip.style.left=x+'px';tip.style.top=Math.max(10,y)+'px';tip.classList.add('on')}
+$('#msvg').addEventListener('mouseover',e=>{const g=e.target.closest('.mp');if(!g)return;tipI=+g.dataset.i;showTip(tipI)});
+$('#msvg').addEventListener('mouseout',e=>{const g=e.target.closest('.mp');if(g&&!g.contains(e.relatedTarget)){tipI=null;tip.classList.remove('on')}});
+$$('#cats button').forEach(b=>b.onclick=()=>{const c=b.dataset.c;$$('#cats button').forEach(x=>x.classList.remove('on'));const all=c==='all';$('#cats .all').classList.toggle('off',!all);if(!all)b.classList.add('on');
+ $$('#msvg .mp').forEach(g=>g.classList.toggle('dim',!all&&MAPI[g.dataset.i].c!==c));$$('#msvg .zone').forEach(z=>z.style.opacity=all||z.dataset.c===c?1:.2)});
+renderClock();
+
+/* ---------- tickets ---------- */
+const TK=[{k:'ga',h:'h-ga',t:'GA',st:'No tent needed',p:389,ps:'$389',pl:'GENERAL ADMISSION',d:'All four stages, all three days. No bed, and that\'s on you.',l:['Fri to Sun arena entry','Free refill flask','20% off shuttle fares'],stub:'ENTRY ONLY'},
+ {k:'gc',h:'h-gc',t:'GA + CAMPING',st:'Fan favourite',p:469,ps:'$469',pl:'MOST POPULAR',d:'Everything in GA plus a pitch in Camp Ceiba or Camp Ramón. Hot showers, usually.',l:['Thu 4pm early access','Your own tent pitch','Hot showers, lockers, cicadas'],stub:'ENTRY + TENT'},
+ {k:'vip',h:'h-vip',t:'VIP',st:'Real glassware',p:749,ps:'$749',pl:'FANCY YET FRIENDLY',d:'Viewing deck, VIP bars pouring into real glasses, and toilets that flush with pride.',l:['Big Ceiba viewing deck','VIP bars & fast entry','Tent space in the VIP grove'],stub:'VIP · FAST LANE'},
+ {k:'gl',h:'h-gl',t:'GLAMPING',st:'12 tents left',p:1390,ps:'$1,390',pl:'PER HEAD, TWIN SHARE',d:'A ready-pitched bell tent with a real bed, lanterns, coffee delivered at 8am and neighbours who whisper.',l:['Bell tent with bed & linen','Coffee delivered each morning','Private showers, VIP access'],stub:'BELL TENT STAY'}];
+const AD=[{k:'car',t:'CAR PASS · $45',p:45,s:'Per car · Lot A for 3+'},{k:'lock',t:'LOCKER · $30',p:30,s:'3 days · charging inside'},{k:'shut',t:'CITY SHUTTLE · $59',p:59,s:'Return · Puerto Almendra'}];
+const Q={};
+$('#tgrid').innerHTML=TK.map(t=>`<div class="tk rv"><div class="main"><div class="hd ${t.h}"><h4>${t.t.replace('+','<span style="font-size:.6em;vertical-align:.2em">+</span>')}</h4><span class="sticker">${t.st}</span></div><div class="bd"><div class="pr"><b>${t.ps}</b><small>${t.pl}</small></div><p>${t.d}</p><ul>${t.l.map(x=>`<li>${x}</li>`).join('')}</ul><div class="qty"><button class="m" data-k="${t.k}" data-v="-1">−</button><span id="q-${t.k}">0</span><button class="p" data-k="${t.k}" data-v="1">+</button></div></div></div><div class="stub"><b>${t.stub}</b><span class="barcode"></span></div></div>`).join('');
+$('#addons').innerHTML=AD.map(a=>`<div class="addon"><div><b>${a.t}</b><small>${a.s}</small></div><div class="qty"><button class="m" data-k="${a.k}" data-v="-1">−</button><span id="q-${a.k}">0</span><button class="p" data-k="${a.k}" data-v="1">+</button></div></div>`).join('');
+$$('#tgrid .tk').forEach(el=>io.observe(el));
+document.addEventListener('click',e=>{const b=e.target.closest('.qty button');if(!b)return;const k=b.dataset.k;Q[k]=Math.max(0,Math.min(10,(Q[k]||0)+ +b.dataset.v));$('#q-'+k).textContent=Q[k];
+ const all=[...TK.map(t=>({k:t.k,t:t.t,p:t.p})),...AD.map(a=>({k:a.k,t:a.t.split(' ·')[0],p:a.p}))].filter(x=>Q[x.k]);
+ const tot=all.reduce((s,x)=>s+x.p*Q[x.k],0);$('#total').textContent='$'+tot.toLocaleString('en-US');
+ $('#olines').innerHTML=all.length?all.map(x=>`<div><span>${Q[x.k]} × ${x.t}</span><span>$${(x.p*Q[x.k]).toLocaleString('en-US')}</span></div>`).join(''):'No tickets yet. Pick a tier, wild one.';
+ $('#checkout').classList.toggle('go',tot>0)});
+
+/* ---------- faq ---------- */
+const FAQ=[['Am I allowed to bring my own drinks?','Into the campgrounds, yes \u2014 cans and cartons, no glass, within a sensible limit we\'ll check at the gate. Into the arena, no. The Thirsty Tapir would be devastated.'],
+ ['What should I expect from the weather?','January in the Selva Verdeluz: 31 degrees at lunch, 19 at 2am, and a short hard shower that shows up uninvited. Pack a poncho. Pack reef-safe repellent. Pack both.'],
+ ['Is this suitable for all ages?','Yes. Under 16s get in free with a paying adult, and the Hammock Hollow runs a kids\' corner until 7pm.'],
+ ['Can I leave and return during the day?','Wristbands scan in and out as often as you like. The shuttle to Punta Carey runs every 20 minutes if you need a tamal.'],
+ ['Is the festival site wheelchair accessible?','Mostly flat, with matting to every stage, viewing platforms at the Big Ceiba and Lanternfall, and accessible camping by the gate. Email us and we\'ll sort it together.'],
+ ['Are refunds available?','Up to 30 days before gates, yes, in full. After that, resell through our fan-to-fan exchange at face value.'],
+ ['Are dogs welcome on site?','Sadly, no, apart from assistance dogs. The howler monkeys have a union and they were firm about it.'],
+ ['What\'s the plan if a storm rolls in?','We watch the radar closely. If a big one rolls in, we pause the music, open the Grotto as shelter and keep you posted through the app and the big screens.']];
+$('#qs').innerHTML=FAQ.map(([q,a],i)=>`<div class="q ${i?'':'open'}"><button><b>${q}</b><i>+</i></button><div class="a"><p>${a}</p></div></div>`).join('');
+const setQ=()=>$$('.q').forEach(q=>q.querySelector('.a').style.maxHeight=q.classList.contains('open')?q.querySelector('.a').scrollHeight+'px':0);
+$('#qs').addEventListener('click',e=>{const q=e.target.closest('.q');if(!e.target.closest('button'))return;const was=q.classList.contains('open');$$('.q').forEach(x=>x.classList.remove('open'));if(!was)q.classList.add('open');setQ()});setQ();
+$('#nform').onsubmit=e=>{e.preventDefault();$('#nok').textContent='You\'re on the list. See you in the jungle.';e.target.querySelector('button').textContent='✓ DONE'};
+
+/* ---------- getting there route ---------- */
+const rp=$('#rpath');rp.setAttribute('d','M114 114 C190 90, 230 80, 272 80 S 450 108, 520 108 S 610 100, 646 93 S 800 46, 880 46 S 1050 80, 1114 104 S 1220 150, 1264 148 S 1420 110, 1474 72');
+['rdots','rsolid'].forEach(id=>$('#'+id).setAttribute('d',rp.getAttribute('d')));
+const RL=rp.getTotalLength();$('#rsolid').setAttribute('stroke-dasharray',`0 ${RL}`);
+const near=x=>{let b=0,bd=1e9;for(let l=0;l<=RL;l+=4){const p=rp.getPointAtLength(l);if(Math.abs(p.x-x)<bd){bd=Math.abs(p.x-x);b=l}}return b};
+const stL=[114,646,1114,1474].map(near);
+stL.forEach((l,i)=>{const p=rp.getPointAtLength(l);$('#st'+i).setAttribute('cx',p.x);$('#st'+i).setAttribute('cy',p.y);const lb=$('#lb'+i);
+ if(i===0){lb.style.left='5px';lb.style.top=(p.y+32)+'px'}else if(i===3){lb.style.left=(p.x-130)+'px';lb.style.top=(p.y-78)+'px'}else{lb.style.left=(p.x-110)+'px';lb.style.top=(p.y+30)+'px';lb.style.width='220px';lb.style.textAlign='center'}});
+function routeScroll(){const r=$('#route').getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*.95-r.top)/(innerHeight*1.1)));const l=p*RL;const pt=rp.getPointAtLength(l);
+ $('#bus').setAttribute('transform',`translate(${pt.x} ${pt.y})`);$('#rsolid').setAttribute('stroke-dasharray',`${l} ${RL}`)}
+
+/* ---------- scroll loop ---------- */
+const mani=$('#manifesto'),mws=$$('#manifesto .mw');
+function onScroll(){expScroll();routeScroll();const y=scrollY;
+ $('#tapeY').style.transform=`translateX(${-((y*.6)%1800)-200}px)`;$('#tapeB').style.transform=`translateX(${((y*.5)%1800)-1900}px)`;
+ const r=mani.getBoundingClientRect();const p=(innerHeight*.9-r.top)/(r.height+innerHeight*.35);const n=Math.floor(p*mws.length*1.15);
+ mws.forEach((w,i)=>w.classList.toggle('on',i<n));$$('#manifesto .hl').forEach(h=>h.classList.toggle('on',h.querySelector('.mw').classList.contains('on')));
+ $$('#manifesto .pill').forEach(pl=>{const pv=pl.previousElementSibling;pl.classList.toggle('on',!!pv&&pv.classList.contains('on'))});
+ $$('.par').forEach(im=>{const rr=im.parentElement.getBoundingClientRect();im.style.transform=`translateY(${(rr.top-innerHeight/2)*-.12-40}px)`});
+ const b=$('#bottle').getBoundingClientRect();const bp=Math.min(1,Math.max(0,(innerHeight-b.top)/(innerHeight*.8)));$('#bfill').setAttribute('y',270-bp*230);
+ $$('.toucanpic img').forEach(im=>{const rr=im.getBoundingClientRect();im.style.transform=`scale(1.1) translateY(${(rr.top-innerHeight/2)*-.06}px)`});
+}
+let raf=0;addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;onScroll()})},{passive:true});
+addEventListener('resize',()=>{sizeExp();hdr();renderGrid();onScroll()});
+sizeExp();onScroll();
+document.fonts&&document.fonts.ready.then(()=>{sizeExp();onScroll()});
+if(location.hash==='#timetable')setTimeout(()=>$('#timetable').scrollIntoView(),300);
+</script>
+</body>
+</html>

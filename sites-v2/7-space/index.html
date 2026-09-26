@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APHOTIC — The deep begins two hundred metres down</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..600&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04070c; --bg2:#07101a; --ink:#e3edf4; --ink2:#b9c8d4; --muted:#8395a6; --dim:#54657a;
+  --accent:#58d2e6; --line:rgba(227,237,244,.12); --line2:rgba(227,237,244,.07); --cost:#f2b36b;
+  --serif:'Newsreader',Georgia,serif; --sans:'Archivo',Helvetica,Arial,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --pad:105px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scrollbar-color:#1b2836 #05080c}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+#gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+main{position:relative;z-index:2}
+
+/* banner */
+.banner{position:fixed;top:0;left:0;right:0;height:45px;z-index:50;background:#03060a;border-bottom:1px solid #111a24;display:flex;align-items:center;justify-content:space-between;padding:0 0 0 18px}
+.banner .built{display:flex;align-items:center;gap:10px;font-size:15px;color:#a3b1bd;letter-spacing:-.005em}
+.banner .built b{color:#fff;font-weight:600}
+.banner .built a{color:inherit;text-decoration:underline}
+.banner .star{width:18px;height:18px}
+
+/* nav */
+.nav{position:fixed;top:45px;left:0;right:0;height:71px;z-index:40;display:flex;align-items:center;padding:0 68px 0 68px;transition:background .5s,border-color .5s,backdrop-filter .5s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(5,10,16,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:rgba(255,255,255,.06)}
+.logo{display:flex;align-items:center;gap:16px;font-weight:500;font-size:17px;letter-spacing:.36em;color:#eaf2f8}
+.logo svg{width:24px;height:24px}
+.links{position:absolute;left:460px;display:flex;gap:34px}
+.links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:#a4b2be;padding:6px 0;position:relative;transition:color .3s}
+.links a:hover{color:#eaf2f8}
+.links a.on{color:#f1f7fb;font-weight:700}
+.links a.on::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1.5px;background:#58d2e6}
+.navr{margin-left:auto;display:flex;align-items:center;gap:22px}
+.kcount{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:#8395a6}
+.kcount b{color:#eaf2f8;font-weight:700;letter-spacing:.06em;margin-left:12px;font-size:12.5px}
+.btn-o{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--accent);border:1px solid #1f5561;padding:12px 19px;font-weight:700;transition:background .3s,color .3s}
+.btn-o:hover{background:var(--accent);color:#121212}
+
+/* eyebrow & type */
+.eb{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:12px}
+.eb::before{content:"";width:26px;height:1px;background:var(--accent);opacity:.8}
+.eb.dot::before{display:none}
+h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:-.022em;color:var(--ink)}
+.h2{font-size:57px;line-height:1.02;margin:22px 0 30px}
+.body{color:var(--ink2);font-size:16.5px;line-height:1.55;max-width:392px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.18s}.rv.d3{transition-delay:.28s}
+
+/* hero */
+.hero{height:100vh;min-height:760px;position:relative;padding:0 68px}
+.hero .eb{position:absolute;top:135px;left:68px}
+.hero .eb::before{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:1}
+.hero h1{position:absolute;top:180px;left:64px;font-size:130px;line-height:.915;letter-spacing:-.035em;max-width:1000px}
+.hero .lede{position:absolute;top:596px;left:68px;font-size:17px;line-height:1.55;color:var(--ink2);max-width:420px}
+.hero .ctas{position:absolute;top:624px;left:792px;display:flex;align-items:center;gap:20px}
+.btn-c{background:#e6f0f5;color:#161616;font-family:var(--mono);font-size:12px;letter-spacing:.2em;padding:0 26px;height:47px;display:inline-flex;align-items:center;transition:background .3s}
+.btn-c:hover{background:#fff}
+.btn-t{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:#eaf2f8;font-weight:700;display:inline-flex;gap:12px;align-items:center}
+.ignite{position:absolute;right:62px;top:686px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:#6d7e8f}
+
+/* dive chapters (transparent over 3D) */
+.ch{position:relative;height:150vh;padding:0 var(--pad)}
+.ch .txt{position:absolute;top:34vh;left:var(--pad);width:490px}
+.ch.r .txt{right:auto;width:490px;left:1007px}
+.ch .h2{margin:22px 0 28px}
+.kline{position:fixed;z-index:3;font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--accent);font-weight:700;display:flex;gap:12px;align-items:center;opacity:0;pointer-events:none;left:1058px}
+.kline::before{content:"";width:36px;height:1px;background:var(--accent)}
+
+/* opaque sections */
+.op{position:relative;background:var(--bg);z-index:2}
+.op::before,.op::after{content:"";position:absolute;left:0;right:0;height:34vh;pointer-events:none}
+.op::before{top:-34vh;background:linear-gradient(to bottom,rgba(4,7,12,0),var(--bg))}
+.op::after{bottom:-34vh;background:linear-gradient(to top,rgba(4,7,12,0),var(--bg))}
+.op+.op::before,.op.nb::after{display:none}
+.wrap{width:1102px;margin:0 auto;position:relative}
+
+/* stats */
+.stats{padding:230px 0 180px}
+.stats .hd{display:flex;justify-content:space-between;align-items:flex-end}
+.stats h2{font-size:78px;line-height:.98;margin-top:34px;width:640px;letter-spacing:-.03em}
+.stats .note{width:436px;color:var(--ink2);font-size:16.5px;line-height:1.55;margin-bottom:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);margin-top:98px;border-top:1px solid var(--line2)}
+.grid3 .c{padding:54px 30px 58px 0;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.grid3 .c:nth-child(3n){border-right:0}
+.grid3 .c:nth-child(3n+2),.grid3 .c:nth-child(3n){padding-left:34px}
+.num{font-family:var(--sans);font-stretch:125%;font-weight:300;font-size:108px;line-height:1;letter-spacing:-.02em;color:#e3edf4}
+.num.or{color:var(--accent)}
+.num small{font-size:36px;color:#7f91a2;margin-left:4px}
+.grid3 .c p{margin-top:28px;color:var(--ink2);font-size:16px;line-height:1.5;max-width:300px}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);margin-top:78px;gap:0}
+.notes div{padding-right:40px}
+.notes h4{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.24em;color:#7a8c9d;margin-bottom:14px}
+.notes p{color:#97a7b4;font-size:15.5px;line-height:1.55}
+</style>
+<style>
+/* missions */
+.missions{padding:190px 0 120px}
+.missions h2{font-size:78px;line-height:.98;margin-top:30px;letter-spacing:-.03em}
+.mtabs{display:grid;grid-template-columns:repeat(3,1fr);margin-top:130px;border-top:1px solid var(--line2)}
+.mtab{text-align:left;padding:34px 0 20px;position:relative;opacity:.5;transition:opacity .4s}
+.mtab::before{content:"";position:absolute;left:0;top:-1px;height:1.5px;width:0;background:var(--accent);transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.mtab.on{opacity:1}.mtab.on::before{width:100%}
+.mtab .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:#b9c8d4;font-weight:700}
+.mtab.on .k{color:var(--accent)}
+.mtab .n{font-family:var(--serif);font-weight:300;font-size:60px;line-height:1.05;letter-spacing:-.02em;margin-top:4px}
+.mpanel{display:grid;grid-template-columns:490px 525px;justify-content:space-between;margin-top:80px}
+.mpanel .big{font-family:var(--serif);font-style:italic;font-weight:300;font-size:132px;line-height:1;letter-spacing:-.035em;margin-left:6px}
+.mpanel .cat{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;margin-top:46px}
+.mpanel .tag{font-family:var(--serif);font-weight:300;font-size:26px;line-height:1.35;color:#cad7e0;margin-top:26px;max-width:420px}
+.specs{display:grid;grid-template-columns:201px 157px 1fr;margin-top:44px;column-gap:18px}
+.specs>div{padding:22px 0 24px;border-bottom:1px solid var(--line2)}
+.specs .l{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#7a8c9d;text-transform:uppercase}
+.specs .v{font-size:23px;margin-top:10px;color:#e3edf4;font-weight:300}
+.see{margin-top:48px}
+.see h4{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.26em;color:#7a8c9d;margin-bottom:10px}
+.see li{list-style:none;display:flex;gap:25px;padding:14px 0;border-bottom:1px solid var(--line2);font-size:16.5px;color:#cfdbe3;line-height:1.5}
+.see li b{font-family:var(--mono);font-size:11.5px;color:var(--accent);padding-top:3px}
+.mcta{margin-top:38px}
+.mcta .btn-c{height:47px}
+.mcta p{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#7a8c9d;margin-top:22px}
+.chart{border:1px solid rgba(255,255,255,.08);height:460px;position:relative;align-self:start;margin-top:12px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:37.5px 37.5px;background-position:-1px -1px;position:sticky;top:160px}
+.chart .cl{position:absolute;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:#7f91a2}
+.chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.chart svg text{font-family:var(--mono);font-size:9px;letter-spacing:.14em;fill:#b8c7d2}
+.chart svg text.or{fill:var(--accent);font-weight:700}
+
+/* vehicle */
+.vehicle{padding:200px 0 0}
+.vehicle .hd{display:flex;justify-content:space-between;align-items:flex-end}
+.vehicle h2{font-size:78px;line-height:.98;letter-spacing:-.03em;margin-top:30px;width:720px}
+.vehicle .hd .note{width:440px;color:var(--ink2);font-size:16.5px;line-height:1.55;margin-bottom:6px}
+.capwrap{position:relative;margin-top:60px;width:100%}
+.capwrap img{display:block;width:100%;height:auto}
+.hs{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hs::before{content:"";width:10px;height:10px;border-radius:50%;background:#9beaf5;box-shadow:0 0 10px rgba(155,234,245,.7)}
+.hs::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(88,210,230,.0);transition:border-color .3s,transform .3s}
+.hs.on::after{border-color:rgba(88,210,230,.8)}
+.hs:not(.on)::after{animation:pulse 2.4s infinite}
+@keyframes pulse{0%{border-color:rgba(88,210,230,.6);transform:scale(.6)}100%{border-color:rgba(88,210,230,0);transform:scale(1.6)}}
+.hs span{position:absolute;left:34px;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:#eaf2f8;font-weight:700;text-shadow:0 0 2px #000,0 0 6px rgba(0,0,0,.9)}
+.card{position:absolute;width:387px;background:rgba(8,16,26,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-top:1px solid rgba(88,210,230,.6);padding:30px 29px 26px;transition:left .6s cubic-bezier(.2,.7,.2,1),top .6s cubic-bezier(.2,.7,.2,1),opacity .35s}
+.card .k{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#8395a6}
+.card h3{font-size:30px;line-height:1.12;margin:16px 0 14px;letter-spacing:-.015em}
+.card p{font-size:14.5px;line-height:1.5;color:#b9c8d4}
+.card .m{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line2);margin-top:22px;padding-top:22px}
+.card .m .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:#7a8c9d}
+.card .m .v{font-size:23px;color:#9fe6f2;font-weight:300}
+.vtabs{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line2);margin-top:30px;border-bottom:1px solid var(--line2);padding-bottom:84px}
+.vtab{text-align:left;padding:24px 0 0;position:relative;opacity:.55;transition:opacity .3s}
+.vtab::before{content:"";position:absolute;left:0;top:-1px;height:1.5px;width:0;background:var(--accent);transition:width .6s}
+.vtab.on{opacity:1}.vtab.on::before{width:93%}
+.vtab .k{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#8395a6}
+.vtab.on .k{color:var(--accent);font-weight:700}
+.vtab .n{font-family:var(--serif);font-size:24px;font-weight:300;margin-top:6px}
+.vspecs{display:grid;grid-template-columns:repeat(6,1fr);padding:28px 0 160px;border-top:0}
+.vspecs .l{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#8395a6}
+.vspecs .v{font-stretch:118%;font-weight:300;font-size:40px;margin-top:12px;letter-spacing:-.01em}
+
+/* cabin */
+.cabin{padding:0}
+.cabin .img{position:relative;height:118vh;overflow:hidden}
+.cabin .img img{position:absolute;right:0;top:-6%;height:112%;width:auto;min-width:100%;object-fit:cover;will-change:transform}
+.cabin .img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,7,12,.55),rgba(4,7,12,0) 55%),linear-gradient(to top,var(--bg),rgba(4,7,12,0) 30%),linear-gradient(to bottom,var(--bg),rgba(4,7,12,0) 12%)}
+.cabin .ov{position:absolute;left:244px;top:56vh;z-index:2;width:640px}
+.cabin .ov h2{font-size:90px;line-height:.99;letter-spacing:-.03em;margin-top:26px}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);margin:70px auto 0;width:1102px;border-top:1px solid var(--line2);position:relative}
+.cols4>div{padding:44px 40px 50px 0;border-right:1px solid var(--line2)}
+.cols4>div:nth-child(n+2){padding-left:40px}
+.cols4>div:last-child{border-right:0}
+.cols4 .k{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:#8395a6}
+.cols4 h3{font-size:32px;line-height:1.1;margin:22px 0 16px;letter-spacing:-.015em}
+.cols4 p{font-size:16px;line-height:1.55;color:#b9c8d4}
+
+/* training */
+.training{padding:220px 0 180px}
+.training .hd{display:flex;justify-content:space-between;align-items:flex-end}
+.training h2{font-size:74px;line-height:.98;margin-top:30px;letter-spacing:-.03em}
+.training .hd .note{width:440px;color:var(--ink2);font-size:16.5px;line-height:1.55;margin-bottom:22px}
+.days{display:grid;grid-template-columns:repeat(6,1fr);margin-top:100px;position:relative}
+.days::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line2)}
+.days .bar{position:absolute;left:0;top:0;height:1.5px;background:var(--accent);transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.day{text-align:left;padding-top:24px;position:relative;opacity:.55;transition:opacity .3s}
+.day::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;border:1px solid #5a6b7d;background:var(--bg)}
+.day.on,.day.done{opacity:1}
+.day.on::before,.day.done::before{background:var(--accent);border-color:var(--accent)}
+.day .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:#8395a6}
+.day.on .k{color:var(--accent);font-weight:700}
+.day .n{font-family:var(--serif);font-size:22px;font-weight:300;margin-top:6px}
+.dpanel{display:grid;grid-template-columns:571px 1fr;gap:75px;margin-top:70px}
+.dimg{height:490px;overflow:hidden;position:relative}
+.dimg img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .5s}
+.dnum{font-family:var(--sans);font-stretch:125%;font-weight:300;font-size:92px;line-height:1;color:var(--accent);display:flex;align-items:baseline;gap:14px;margin-top:4px}
+.dnum small{font-family:var(--mono);font-size:11px;color:#7a8c9d;letter-spacing:.2em}
+.dpanel .k2{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;color:var(--accent);font-weight:700;margin-top:32px}
+.dpanel h3{font-size:44px;line-height:1.05;margin:14px 0 22px;letter-spacing:-.02em}
+.dpanel .p{font-size:16.5px;line-height:1.55;color:#b9c8d4;max-width:460px}
+.sched{margin-top:28px;border-top:1px solid var(--line2)}
+.sched div{display:flex;gap:28px;padding:12px 0;border-bottom:1px solid var(--line2);font-size:15.5px;color:#cfdbe3}
+.sched b{font-family:var(--mono);font-size:12.5px;color:#e3edf4;width:38px;padding-top:2px}
+.dnav{display:flex;align-items:center;gap:12px;margin-top:28px}
+.dnav button{width:45px;height:45px;border-radius:50%;border:1px solid #26394a;display:flex;align-items:center;justify-content:center;transition:border-color .3s}
+.dnav button:hover{border-color:var(--accent)}
+.dnav span{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#7a8c9d;margin-left:10px}
+.dfade{transition:opacity .35s, transform .35s}
+.dfade.out{opacity:0;transform:translateY(10px)}
+
+/* quote & countdown */
+.quote,.count{position:relative;height:100vh;min-height:760px}
+.quote .bg,.count .bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.quote .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg),rgba(4,7,12,.25) 30%,rgba(4,7,12,.2) 70%,var(--bg))}
+.quote .inner{position:absolute;left:244px;top:36vh;width:1100px}
+.quote blockquote{font-family:var(--serif);font-weight:300;font-size:74px;line-height:1.08;letter-spacing:-.022em;margin-top:30px;min-height:240px;max-width:840px}
+.quote .who{display:flex;gap:18px;align-items:baseline;margin-top:40px;font-size:15px}
+.quote .who span{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:#7a8c9d}
+.qdots{display:flex;gap:16px;margin-top:80px}
+.qdots button{width:44px;text-align:left;font-family:var(--mono);font-size:10px;color:#6d7e8f;padding-top:10px;position:relative}
+.qdots button::before{content:"";position:absolute;top:0;left:0;width:100%;height:1px;background:#1f2e3c}
+.qdots button i{position:absolute;top:0;left:0;height:1px;background:#d8e6ee;width:0}
+.qdots button.on{color:#e3edf4}
+.count .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg),rgba(4,7,12,0) 18%,rgba(4,7,12,0) 75%,rgba(4,7,12,.5))}
+.count .inner{position:absolute;left:244px;top:40vh;width:1300px}
+.count .eb::before{content:"";width:26px}
+.count .eb i{width:7px;height:7px;border-radius:50%;background:#f2b36b;display:inline-block;box-shadow:0 0 8px #f2b36b}
+.cd{display:flex;align-items:flex-start;margin-top:10px}
+.cd .u{width:260px;position:relative}
+.cd .u b{font-family:var(--sans);font-stretch:125%;font-weight:300;font-size:176px;line-height:1.02;letter-spacing:-.02em;display:block}
+.cd .u span{font-family:var(--mono);font-size:11px;letter-spacing:.26em;color:#7f91a2;display:block;margin-top:14px}
+.cd .col{width:84px;position:relative}
+.cd .col::before,.cd .col::after{content:"";position:absolute;left:30px;width:9px;height:9px;background:var(--accent);opacity:.8}
+.cd .col::before{top:65px}.cd .col::after{top:120px}
+.cfacts{display:flex;gap:65px;margin-top:52px;border-top:1px solid rgba(255,255,255,.12);padding-top:26px;width:846px}
+.cfacts .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:#7f91a2}
+.cfacts .v{font-size:18px;margin-top:8px}
+.count .btn-c{margin-top:44px}
+
+/* faq & footer */
+.faq{padding:200px 0 140px}
+.faq h2{font-size:70px;line-height:1;margin:30px 0 70px;letter-spacing:-.03em}
+.qa{border-top:1px solid var(--line2)}
+.qa:last-child{border-bottom:1px solid var(--line2)}
+.qa button{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;padding:28px 0;font-family:var(--serif);font-size:30px;font-weight:300}
+.qa button i{font-style:normal;font-family:var(--mono);font-size:18px;color:var(--accent);transition:transform .4s}
+.qa.open button i{transform:rotate(45deg)}
+.qa .a{overflow:hidden;max-height:0;transition:max-height .5s cubic-bezier(.2,.7,.2,1)}
+.qa .a p{padding:0 0 30px;color:#b9c8d4;max-width:640px;font-size:16.5px}
+footer{border-top:1px solid var(--line2);padding:70px 0 140px;color:#7a8c9d;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;align-items:flex-end}
+footer .logo{font-size:15px}
+
+/* HUD + rail */
+.hud{position:fixed;left:0;right:0;bottom:0;height:90px;z-index:30;pointer-events:none;transition:opacity .6s;background:linear-gradient(to top,rgba(2,5,9,.35),rgba(2,5,9,0))}
+.hud::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(255,255,255,.1)}
+.hud .row{position:absolute;right:78px;top:24px;display:flex;gap:44px}
+.hud .it{display:flex;flex-direction:column;align-items:flex-start;min-width:118px}
+.hud .l{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:#8395a6}
+.hud .v{font-family:var(--sans);font-weight:300;font-size:24px;line-height:1.1;margin-top:4px;color:#eaf2f8;white-space:nowrap;text-align:right;align-self:stretch}
+.hud .v small{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#7f91a2;margin-left:6px}
+.hud .v em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:4px}
+.rail{position:fixed;right:39px;top:211px;height:366px;width:2px;z-index:30;pointer-events:none}
+.rail .ln{position:absolute;left:0;top:0;bottom:0;width:1px;background:rgba(255,255,255,.18)}
+.rail .pr{position:absolute;left:0;top:0;width:1px;background:var(--accent)}
+.rail .d{position:absolute;left:-4px;width:9px;height:9px;border-radius:50%;border:1px solid #9fb1c0;background:#04070c;margin-top:-4px;transition:background .3s,border-color .3s}
+.rail .d.on{background:var(--accent);border-color:var(--accent)}
+.rail .mk{position:absolute;left:-7px;width:15px;height:15px;margin-top:-7px;border-radius:50%;border:1px solid var(--accent)}
+.rail .mk::before{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.rail .mk span{position:absolute;right:26px;top:-1px;font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="banner">
+  <div class="built"><svg class="star" viewBox="0 0 24 24"><g stroke="#f2b36b" stroke-width="1.6" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M7 2.8l10 18.4M2.8 7l18.4 10M17 2.8 7 21.2M21.2 7 2.8 17"/></g></svg><span>Built by <b>Claude Opus 5.5</b> in the style of a site from <a href="https://www.youtube.com/watch?v=mPiaap4zEVk" target="_blank" rel="noopener">Brendan Jowett's video</a></span></div>
+</div>
+
+<nav class="nav" id="nav">
+  <a href="#top" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#eaf2f8" stroke-width="1.3"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.6"/><path d="M1.5 12h3M19.5 12h3M12 1.5v3"/></svg>APHOTIC</a>
+  <div class="links">
+    <a href="#missions" data-nav="missions">DIVES</a>
+    <a href="#vehicle" data-nav="vehicle">VESSEL</a>
+    <a href="#training" data-nav="training">TRAINING</a>
+    <a href="#crew" data-nav="crew">THE TRENCH</a>
+    <a href="#questions" data-nav="questions">QUESTIONS</a>
+  </div>
+  <div class="navr">
+    <span class="kcount">V-41 IN<b class="kc">22d 20:18:33</b></span>
+    <a href="#launch" class="btn-o">CLAIM A SEAT</a>
+  </div>
+</nav>
+
+<div class="kline" id="kline">TWILIGHT LINE · 200 M</div>
+
+<main id="top">
+  <section class="hero" data-t0="0" data-t1="0.3" data-hero>
+    <div class="eb dot rv">STATION 4 · ISANDER TRENCH · 11°21′ N</div>
+    <h1 class="rv d1">The deep begins two hundred metres down.</h1>
+    <p class="lede rv d2">APHOTIC carries two guests and a pilot past that mark in one sphere. Five hours in the twilight, a day on the abyssal plain, or eleven hours to the trench floor and back.</p>
+    <div class="ctas rv d3"><a class="btn-c" href="#missions">CHOOSE A DIVE</a><a class="btn-t" href="#ascent">WATCH THE DESCENT <span>↓</span></a></div>
+    <div class="ignite">SCROLL TO DIVE</div>
+  </section>
+
+  <section class="ch" id="ascent" data-t0="0.3" data-t1="1.0">
+    <div class="txt"><div class="eb rv">01 · RELEASE · T+00:00:12</div><h2 class="h2 rv d1">The hook lets go, then a stillness nobody predicts.</h2><p class="body rv d2">Fourteen tonnes settle off the crane in one motion. The swell stays outside. Inside you notice the hull ticking, your own breath, and the pilot calling out the vent checks.</p></div>
+  </section>
+  <section class="ch r" data-t0="1.0" data-t1="2.0">
+    <div class="txt"><div class="eb rv">01 · SUNLIGHT ZONE · 50 M</div><h2 class="h2 rv d1">One minute down, the brightest stretch of the ride.</h2><p class="body rv d2" style="max-width:490px">Sunlight still reaches you in long pale shafts, 6 bar against the viewport. It glitters for a minute, then thins as the red drains out of it.</p></div>
+  </section>
+  <section class="ch" data-t0="2.0" data-t1="3.0">
+    <div class="txt"><div class="eb rv">01 · 150 M · 16 °C</div><h2 class="h2 rv d1">The blue fades and slides into indigo.</h2><p class="body rv d2" style="max-width:480px">Out there the light is a hundredth of what you squinted at on deck. Nobody has named this particular shade yet. Most divers attempt one regardless.</p></div>
+  </section>
+
+  <section class="op stats" data-op>
+    <div class="wrap">
+      <div class="hd">
+        <div><div class="eb rv">SAFETY AND ENGINEERING RECORD</div><h2 class="rv d1">We dived one hundred and forty-two times before a guest came aboard.</h2></div>
+        <p class="note rv d2">Every figure below is checked each quarter by the Isander Marine Safety Board and published in full, including the dives we would sooner forget. As of 21 September 2026.</p>
+      </div>
+      <div class="grid3">
+        <div class="c rv"><div class="num" data-count="142">142</div><p>Uncrewed test dives before our first guest</p></div>
+        <div class="c rv d1"><div class="num" data-count="96">96</div><p>Crewed dives made since March 2023</p></div>
+        <div class="c rv d2"><div class="num" data-count="180">180</div><p>Guests carried past the twilight line</p></div>
+        <div class="c rv"><div class="num or">0</div><p>Injuries among crew or guests. We plan to hold that at zero</p></div>
+        <div class="c rv d1"><div class="num" data-count="21">21</div><p>Dives past 9,000 metres in VIGIL, our first sphere</p></div>
+        <div class="c rv d2"><div class="num"><span data-count="1.5" data-dec="1">1.5</span><small>s</small></div><p>Time from a release call to the drop weights falling clear</p></div>
+      </div>
+      <div class="notes">
+        <div class="rv"><h4>EMERGENCY ASCENT</h4><p>Three separate ballast releases, live from the hook through to the floor.</p></div>
+        <div class="rv d1"><h4>SEA-STATE HOLDS, 2026</h4><p>11 of 23 windows held. We wait on the swell, never the calendar.</p></div>
+        <div class="rv d2"><h4>SPHERE PROOF MARGIN</h4><p>24% above our deepest dive, tested in a chamber, not modelled.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch r" data-t0="3.0" data-t1="3.8">
+    <div class="txt"><div class="eb rv">02 · 190 M · T+00:03:48</div><h2 class="h2 rv d1">Sparks, at eleven o'clock in the morning.</h2><p class="body rv d2" style="max-width:490px">They show up before you register that the light is gone. Blue flashes in the black: brief, sharp, and far more of them than feels plausible.</p></div>
+  </section>
+  <section class="ch" data-t0="3.8" data-t1="4.8" data-kline>
+    <div class="txt" style="top:22vh"><div class="eb rv">02 · THE LINE · 200 M</div><h2 class="h2 rv d1" style="font-size:82px;line-height:.98">Beyond here, a plant has no light left to grow by.</h2><p class="body rv d2" style="max-width:470px">Everything past this point lives on what falls, or on what it hunts. There is no wall, no jolt to mark it. The pilot reads the number once, low, and the sphere quiets.</p></div>
+  </section>
+  <section class="ch r" data-t0="4.8" data-t1="5.6" data-kline>
+    <div class="txt" style="top:44vh"><div class="eb rv">02 · LAST LIGHT · T+00:04:38</div><h2 class="h2 rv d1">SALTMARROW fades out above. You carry on down.</h2><p class="body rv d2" style="max-width:480px">The ship's deck lights shrink to a smudge overhead and are gone a minute later. Thrusters cut out. The hull goes quiet. The viewport belongs to you now.</p></div>
+  </section>
+
+  <section class="op missions" id="missions" data-op>
+    <div class="wrap">
+      <div class="eb rv">THE DIVES</div>
+      <h2 class="rv d1">Three ways under the<br>line.</h2>
+      <div class="mtabs rv d2">
+        <button class="mtab on" data-m="0"><div class="k">TWILIGHT · 1,000 M</div><div class="n">Dusk</div></button>
+        <button class="mtab" data-m="1"><div class="k">ABYSSAL · 4,000 M</div><div class="n">Plain</div></button>
+        <button class="mtab" data-m="2"><div class="k">HADAL · 9,412 M</div><div class="n">Sable</div></button>
+      </div>
+      <div class="mpanel">
+        <div class="dfade" id="mleft"></div>
+        <div class="chart rv" id="chart">
+          <div class="cl" style="left:21px;top:21px">DIVE PROFILE</div>
+          <div class="cl" style="right:21px;top:21px">DEPTH TO SCALE</div>
+          <svg id="csvg" viewBox="0 0 525 460" preserveAspectRatio="none"></svg>
+          <div class="cl" id="cfl" style="left:21px;bottom:22px">LAUNCH · T+0:00</div>
+          <div class="cl" id="cfr" style="right:21px;bottom:22px">RECOVERY · T+5:30</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="op vehicle" id="vehicle" data-op>
+    <div class="wrap">
+      <div class="hd">
+        <div><div class="eb rv">THE VESSEL · VIGIL ON SALTMARROW</div><h2 class="rv d1">Three seats, three viewports, and one instruction: let them see.</h2></div>
+        <p class="note rv d2">VIGIL is a submersible designed outward from the viewport. Our engineers got the acrylic first, then had to build a sphere around it. It rides SALTMARROW, a support ship that launches it from the stern twice a week.</p>
+      </div>
+    </div>
+    <div class="capwrap" id="capwrap">
+      <img src="img/capsule.jpg" alt="VIGIL submersible on its transport cradle in the hangar">
+      <div id="hsl"></div>
+      <div class="card" id="vcard"></div>
+    </div>
+    <div class="wrap">
+      <div class="vtabs" id="vtabs"></div>
+      <div class="vspecs">
+        <div class="rv"><div class="l">LENGTH</div><div class="v">6.2 m</div></div>
+        <div class="rv d1"><div class="l">SPHERE, INSIDE</div><div class="v">1.9 m</div></div>
+        <div class="rv d1"><div class="l">TITANIUM WALL</div><div class="v">98 mm</div></div>
+        <div class="rv d2"><div class="l">LIFE SUPPORT</div><div class="v">96 hours</div></div>
+        <div class="rv d2"><div class="l">CABIN PRESSURE</div><div class="v">1 atm</div></div>
+        <div class="rv d3"><div class="l">HULL RATING</div><div class="v">11,700 m</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" data-t0="5.6" data-t1="6.6">
+    <div class="txt" style="top:24vh"><div class="eb rv">03 · MIDNIGHT ZONE · 1,000 M</div><h2 class="h2 rv d1" >Nothing down here has ever seen the sun. It makes its own light.</h2><p class="body rv d2" style="max-width:480px">At 101 bar, every light outside the viewport was made by something alive: to hunt, to hide, to find a mate. It looks and feels like a night sky. It is precisely the reverse.</p></div>
+  </section>
+  <section class="ch r" data-t0="6.6" data-t1="7.3">
+    <div class="txt" style="top:24vh"><div class="eb rv">03 · MARINE SNOW · 2,500 M</div><h2 class="h2 rv d1" >In the floodlights it snows upward, all the way down.</h2><p class="body rv d2" style="max-width:500px">Flakes of everything that ever lived above you drift past the glass. Siphonophores trail by like strings of blue lamps. Nobody dozes through their first hour in the dark.</p></div>
+  </section>
+  <section class="ch" data-t0="7.3" data-t1="8.0">
+    <div class="txt" style="top:26vh"><div class="eb rv">03 · THE ABYSSAL PLAIN · 4,000 M</div><h2 class="h2 rv d1" style="font-size:82px;line-height:.98;width:640px">Four hundred bar. The floor comes up to meet you.</h2><p class="body rv d2" style="max-width:500px">A pale rim in the floodlights, then ooze, tracks and a sea cucumber in no hurry at all. Plain guests spend five hours here. Most stop checking the clock inside one.</p></div>
+  </section>
+
+  <section class="op cabin" data-op>
+    <div class="img"><img src="img/cabin.jpg" alt="A guest at the VIGIL viewport, a glowing siphonophore outside" id="cabimg">
+      <div class="ov"><div class="eb rv">THE SPHERE</div><h2 class="rv d1">We built the sphere around the viewport, then the viewport around you.</h2></div>
+    </div>
+    <div class="cols4">
+      <div class="rv"><div class="k">01 · SEAT</div><h3>Moulded to your frame.</h3><p>Your kneeling cushion comes from a scan taken on your first day of training. It holds you at the glass for hours and travels home with you after.</p></div>
+      <div class="rv d1"><div class="k">02 · GLASS</div><h3>Cast acrylic, 18 centimetres thick.</h3><p>A single cone, seated tighter the deeper you go, close enough to your face that the frame drops out of view. Every guest gets their own.</p></div>
+      <div class="rv d2"><div class="k">03 · LIGHT</div><h3>Dim enough to see by.</h3><p>Cabin lighting falls to 2 lux below the twilight line, warm and low near the floor, so your eyes adjust to both the floodlights and the sparks beyond them.</p></div>
+      <div class="rv d3"><div class="k">04 · AIR</div><h3>Sea-level, at 16°C.</h3><p>Sea-level pressure, 40% humidity, scrubbed and cycled every ninety seconds. Sable stocks ninety-six hours of it for an eleven-hour dive.</p></div>
+    </div>
+  </section>
+
+  <section class="op training" id="training" data-op>
+    <div class="wrap">
+      <div class="hd">
+        <div><div class="eb rv">THE TRAINING PROGRAMME</div><h2 class="rv d1">Six days to turn into<br>crew.</h2></div>
+        <p class="note rv d2">Plain guests train for six days at Port Tamsin. Dusk uses only three of them, and Sable adds fifteen more spread across two months. You leave able to handle everything in the sphere you will almost certainly never need.</p>
+      </div>
+      <div class="days rv" id="days"><div class="bar" id="dbar"></div></div>
+      <div class="dpanel">
+        <div class="dimg rv"><img id="dimg" src="img/trainer.jpg" alt="Dive physician in the Port Tamsin hangar"></div>
+        <div class="dfade rv d1" id="dright"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="crew" data-t0="8.0" data-t1="8.8">
+    <div class="txt" style="top:62vh"><div class="eb rv">04 · THE TRENCH EDGE · 4,600 M</div><h2 class="h2 rv d1" >Past the rim of the plain, the floor simply falls away.</h2><p class="body rv d2" style="max-width:480px">Sable drops off the edge at 50 metres a minute. Within the hour, the plain you thought was the bottom is a ledge somewhere far above you.</p></div>
+  </section>
+  <section class="ch" data-t0="8.8" data-t1="9.4">
+    <div class="txt" style="top:62vh"><div class="eb rv">04 · HADAL ZONE · T+02:00:00</div><h2 class="h2 rv d1" >Six kilometres down, the trench walls close in on both sides.</h2><p class="body rv d2" style="max-width:470px">You watch rock faces slide upward, pale amphipods swarm the lights, a snailfish hang still in the beam. Fewer than forty people have been down this trench.</p></div>
+  </section>
+  <section class="ch r" data-t0="9.4" data-t1="9.8">
+    <div class="txt" style="top:56vh"><div class="eb rv">04 · 8,600 M · LOSS OF SIGNAL</div><h2 class="h2 rv d1" >Between the walls, the phone falls silent for thirty-eight minutes.</h2><p class="body rv d2" style="max-width:490px">No ship, no surface crew on the line. Only the trench wall sliding past a few metres off the glass, rock fewer than forty people have ever seen with their own eyes.</p></div>
+  </section>
+  <section class="ch" data-t0="9.8" data-t1="10" style="height:130vh">
+    <div class="txt" style="top:48vh"><div class="eb rv">04 · SABLE DEEP · 9,412 M · 955 BAR</div><h2 class="h2 rv d1" style="font-size:82px">Then it settles.</h2><p class="body rv d2" style="max-width:470px">The skids touch pale ooze, in complete silence. Then a voice from SALTMARROW, delayed six seconds through the water, asking how the view looks.</p><a href="#launch" class="btn-o rv d3" style="display:inline-block;margin-top:40px">RESERVE SABLE</a></div>
+  </section>
+
+  <section class="op quote" data-op>
+    <div class="bg" style="background-image:url(img/quote.jpg)"></div>
+    <div class="inner">
+      <div class="eb rv">IN THEIR OWN WORDS</div>
+      <blockquote class="dfade rv d1" id="qtext"></blockquote>
+      <div class="who dfade rv d2" id="qwho"></div>
+      <div class="qdots" id="qdots"></div>
+    </div>
+  </section>
+
+  <section class="op count" id="launch" data-op>
+    <div class="bg" style="background-image:url(img/launch.jpg)"></div>
+    <div class="inner">
+      <div class="eb dot rv"><i></i>NEXT DIVE · V-41 · DUSK</div>
+      <div class="cd rv d1">
+        <div class="u"><b id="cdd">22</b><span>DAYS</span></div><div class="col"></div>
+        <div class="u"><b id="cdh">20</b><span>HOURS</span></div><div class="col"></div>
+        <div class="u"><b id="cdm">16</b><span>MINUTES</span></div><div class="col"></div>
+        <div class="u"><b id="cds">40</b><span>SECONDS</span></div>
+      </div>
+      <div class="cfacts rv d2">
+        <div><div class="l">WINDOW OPENS</div><div class="v">10:40 local · 17 Oct 2026</div></div>
+        <div><div class="l">STATION</div><div class="v">S-4, Isander Trench</div></div>
+        <div><div class="l">SEA STATE, L-24 DAYS</div><div class="v">84% go</div></div>
+        <div><div class="l">SEATS OPEN</div><div class="v">1 of 2</div></div>
+      </div>
+      <a class="btn-c rv d3" href="#questions">CLAIM A SEAT ON V-41</a>
+    </div>
+  </section>
+
+  <section class="op faq" id="questions" data-op>
+    <div class="wrap">
+      <div class="eb rv">QUESTIONS</div>
+      <h2 class="rv d1">What guests ask us first.</h2>
+      <div id="faq"></div>
+    </div>
+  </section>
+  <footer class="op" data-op>
+    <div class="wrap">
+      <div><a class="logo" href="#top"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#eaf2f8" stroke-width="1.3"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.6"/><path d="M1.5 12h3M19.5 12h3M12 1.5v3"/></svg>APHOTIC</a><p style="margin-top:18px">Port Tamsin · Isander Islands · 11°21′ N</p></div>
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.2em">© 2026 APHOTIC DEEP SYSTEMS</p>
+    </div>
+  </footer>
+</main>
+
+<div class="hud" id="hud">
+  <div class="row">
+    <div class="it"><span class="l">DEPTH</span><span class="v" id="halt">0<small>M</small></span></div>
+    <div class="it"><span class="l">PRESSURE</span><span class="v" id="hvel">1.0<small>BAR</small></span></div>
+    <div class="it"><span class="l">WATER</span><span class="v" id="hload">27.4<small>°C</small></span></div>
+    <div class="it"><span class="l">DIVE CLOCK</span><span class="v" id="hclk">T−00:00:10<em>.00</em></span></div>
+  </div>
+</div>
+<div class="rail" id="rail"><div class="ln"></div><div class="pr" id="rpr"></div><div id="rdots"></div><div class="mk" id="rmk"><span id="rlab">0 m</span></div></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+$$('.op').forEach(o=>{const n=o.nextElementSibling;if(n&&n.classList.contains('op'))o.classList.add('nb')});
+// reveals + counters
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);
+  e.target.querySelectorAll('[data-count]').forEach(countUp);}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+function countUp(el){const to=+el.dataset.count,dec=+(el.dataset.dec||0),t0=performance.now();
+  (function f(n){const k=Math.min(1,(n-t0)/1600),e=1-Math.pow(1-k,3);el.textContent=(to*e).toFixed(dec);if(k<1)requestAnimationFrame(f)})(t0);}
+// nav solid + active
+const nav=$('#nav'), navT=['missions','vehicle','training','crew','questions'].map(id=>[id,document.getElementById(id)]);
+function onScroll(){const y=scrollY;nav.classList.toggle('solid',y>30);
+  let cur=null;for(const [id,el] of navT){if(el.getBoundingClientRect().top<innerHeight*.5)cur=id}
+  $$('.links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===cur));}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+// countdown to V-41
+const target=Date.now()+((22*24+20)*3600+18*60+33)*1000;
+const p2=n=>String(n).padStart(2,'0');
+function tick(){let s=Math.max(0,Math.floor((target-Date.now())/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);s%=60;
+  $('.kc').textContent=`${d}d ${p2(h)}:${p2(m)}:${p2(s)}`;$('#cdd').textContent=p2(d);$('#cdh').textContent=p2(h);$('#cdm').textContent=p2(m);$('#cds').textContent=p2(s);}
+tick();setInterval(tick,1000);
+
+// missions
+const M=[
+ {name:'Dusk',cat:'TWILIGHT',tag:'Straight down past the line, four hours in the midnight zone, and home before dinner.',
+  specs:[['Fare per seat','US$65,000'],['Dive time','5 h 30 min'],['Max pressure','101 bar'],['Max depth','1,000 m'],['In the dark','4 h 40 min'],['Training','3 days']],
+  see:['The last of the sunlight, pale shafts going out one by one above you','The blue turning to black in under five minutes, at eleven in the morning','Lanternfish and siphonophores, lit by nothing but themselves','Marine snow, drifting silently up past the glass'],
+  dep:'10% DEPOSIT · US$6,500 · REFUNDABLE TO L-90 DAYS',fl:'LAUNCH · T+0:00',fr:'RECOVERY · T+5:30'},
+ {name:'Plain',cat:'ABYSSAL',tag:'Five days at sea, one long dive, and five hours on a floor that has not seen daylight in a hundred million years.',
+  specs:[['Fare per seat','US$240,000'],['Dive time','8 h 20 min'],['Max pressure','406 bar'],['Max depth','4,000 m'],['On the floor','5 h'],['Training','6 days']],
+  see:['The floor rising pale out of the dark into the floodlights','Tracks in the ooze from animals nobody has named','Sea cucumbers and tripod fish, in no hurry at all','A glass sponge the height of a person'],
+  dep:'10% DEPOSIT · US$24,000 · REFUNDABLE TO L-90 DAYS',fl:'LAUNCH · T+0:00',fr:'RECOVERY · T+8:20'},
+ {name:'Sable',cat:'HADAL',tag:'Eleven hours down to the floor of the Isander Trench and back, with a view nobody else can put into words.',
+  specs:[['Fare per seat','US$750,000'],['Dive time','11 h'],['Max pressure','955 bar'],['Max depth','9,412 m'],['On the floor','3 h'],['Training','21 days']],
+  see:['The plain dropping away as you slide off its edge','Thirty-eight minutes of quiet between the trench walls','Snailfish hanging still in the beam at 8,000 metres','The floor of Sable Deep, 9,412 metres down'],
+  dep:'10% DEPOSIT · US$75,000 · REFUNDABLE TO L-180 DAYS',fl:'LAUNCH · T+0:00',fr:'RECOVERY · T+11:00'}];
+function chartSVG(i){
+  const water='<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d3a4d" stop-opacity=".55"/><stop offset=".35" stop-color="#07192a" stop-opacity=".5"/><stop offset="1" stop-color="#04070c" stop-opacity="0"/></linearGradient></defs><rect x="0" y="62" width="525" height="398" fill="url(#wg)"/><path d="M0 62 Q66 58 131 62 T262 62 T394 62 T525 62" fill="none" stroke="#58d2e6" stroke-width="1.4" opacity=".7"/>';
+  if(i===0) return water+`<line x1="0" y1="114" x2="525" y2="114" stroke="#58d2e6" stroke-dasharray="2 5" stroke-width="1"/>
+   <line x1="36" y1="62" x2="36" y2="322" stroke="#3a4a5a" stroke-width="1"/><text x="44" y="192">— 500 M</text><text x="44" y="325">— 1,000 M</text>
+   <path id="tp" d="M70 62 C90 62, 120 300, 160 322 L350 322 C392 300, 430 62, 462 62" fill="none" stroke="#e3edf4" stroke-width="1.2"/>
+   <g fill="#04070c" stroke="#e3edf4"><circle cx="70" cy="62" r="3.5"/><circle cx="160" cy="322" r="3.5"/><circle cx="350" cy="322" r="3.5"/><circle cx="462" cy="62" r="3.5"/></g>
+   <circle id="cdot" r="5" fill="#f2b36b" opacity=".9"/>
+   <text x="255" y="350" text-anchor="middle" class="or">4 H 40 MIN IN THE MIDNIGHT ZONE</text><text x="255" y="366" text-anchor="middle">1,000 M · 101 BAR · 4.6 °C</text>
+   <text x="520" y="108" text-anchor="end" class="or">TWILIGHT LINE · 200 M</text><text x="126" y="200" text-anchor="end">DESCENT · 20 MIN</text>
+   <text x="392" y="200">ASCENT · 30 MIN</text><text x="70" y="50" text-anchor="middle">LAUNCH</text><text x="462" y="50" text-anchor="middle">RECOVERY</text>`;
+  if(i===1) return water+`<path d="M-1 356 Q60 350 120 356 T250 352 T380 357 T526 353 L526 460 L-1 460Z" fill="#101c26" stroke="#3d5566" stroke-width="1"/>
+   <line x1="0" y1="80" x2="525" y2="80" stroke="#58d2e6" stroke-dasharray="2 5" stroke-width="1" opacity=".6"/>
+   <path id="tp" class="traj" d="M60 62 C80 62, 110 320, 150 346 C200 352, 330 350, 380 346 C420 320, 450 62, 470 62" fill="none" stroke="#e3edf4" stroke-width="1.2"/><circle id="cdot" r="5" fill="#f2b36b"/>
+   <text x="265" y="336" text-anchor="middle" class="or">5 H ON THE ABYSSAL PLAIN</text><text x="265" y="390" text-anchor="middle">4,000 M · 406 BAR · 1.5 °C</text><text x="520" y="96" text-anchor="end">TWILIGHT LINE</text>
+   <text x="112" y="210" text-anchor="end">80 MIN DOWN</text><text x="420" y="210">80 MIN UP</text>`;
+  return water+`<path d="M-1 200 L150 204 C200 206, 225 250, 240 330 C250 390, 262 420, 280 420 C298 420, 305 380, 318 320 C332 250, 350 208, 400 206 L526 204 L526 460 L-1 460Z" fill="#101c26" stroke="#3d5566" stroke-width="1"/>
+   <path id="tp" class="traj" d="M90 62 C120 62, 150 120, 190 170 C220 206, 250 300, 268 410 C300 330, 400 140, 440 62" fill="none" stroke="#e3edf4" stroke-width="1.2"/><circle id="cdot" r="5" fill="#f2b36b"/>
+   <text x="292" y="414" class="or">SABLE DEEP · 9,412 M · 955 BAR</text><text x="70" y="226">ABYSSAL PLAIN · 4,000 M</text><text x="90" y="50" text-anchor="middle">LAUNCH</text><text x="440" y="50" text-anchor="middle">RECOVERY</text><text x="236" y="300" text-anchor="end">ISANDER TRENCH</text><text x="318" y="370">LOSS OF SIGNAL · 38 MIN</text>`;
+}
+let mi=0,dotT=0;
+function renderM(i){const m=M[i],L=$('#mleft');
+  L.innerHTML=`<div class="big">${m.name}</div><div class="cat">${m.cat}</div><div class="tag">${m.tag}</div>
+   <div class="specs">${m.specs.map(s=>`<div><div class="l">${s[0]}</div><div class="v">${s[1]}</div></div>`).join('')}</div>
+   <div class="see"><h4>WHAT YOU WILL SEE</h4><ul>${m.see.map((s,k)=>`<li><b>0${k+1}</b>${s}</li>`).join('')}</ul></div>
+   <div class="mcta"><a class="btn-c" href="#launch">RESERVE ${m.name.toUpperCase()}</a><p>${m.dep}</p></div>`;
+  $('#csvg').innerHTML=chartSVG(i);$('#cfl').textContent=m.fl;$('#cfr').textContent=m.fr;
+  const tp=$('#tp');if(tp&&tp.getTotalLength){const len=tp.getTotalLength();tp.style.strokeDasharray=len;tp.style.strokeDashoffset=len;tp.getBoundingClientRect();tp.style.transition='stroke-dashoffset 1.8s cubic-bezier(.3,.6,.2,1)';tp.style.strokeDashoffset=0;}
+}
+$$('.mtab').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.m;if(i===mi)return;mi=i;$$('.mtab').forEach(x=>x.classList.toggle('on',x===b));
+  const L=$('#mleft');L.classList.add('out');setTimeout(()=>{renderM(i);L.classList.remove('out')},300)}));
+renderM(0);
+(function anim(){dotT=(dotT+0.0025)%1;const tp=$('#tp'),d=$('#cdot');if(tp&&d&&tp.getTotalLength){const L=tp.getTotalLength(),p=tp.getPointAtLength(L*dotT);d.setAttribute('cx',p.x);d.setAttribute('cy',p.y)}requestAnimationFrame(anim)})();
+
+// vehicle hotspots
+const HS=[
+ {x:29.8,y:19.1,k:'01 · FLOODLIGHT BAR',n:'Floodlight bar',h:'Six suns, carried down with you.',p:'Six LED floods across the brow, each rated to 1,000 bar. Below the twilight line they are the only warm light for kilometres, and they reach fifteen metres of floor.',l:'OUTPUT',v:'6 × 20,000 lm'},
+ {x:25.5,y:43.7,k:'02 · CREW SPHERE',n:'Crew sphere',h:'One viewport per seat, no sharing.',p:'Three acrylic cones set in a forged titanium sphere, each angled 10° down so the floor lands in the centre of the glass once you are settled at it.',l:'VIEWPORT',v:'18 cm thick'},
+ {x:10.4,y:61.9,k:'03 · MANIPULATOR ARM',n:'Manipulator arm',h:'Seven joints and a gentle hand.',p:'The pilot drives it from inside the sphere to lift a rock, a sponge or a sediment core without disturbing the ooze around it. Grip force holds within a tenth of a newton.',l:'REACH',v:'2.1 m'},
+ {x:33.3,y:72.2,k:'04 · SAMPLE BASKET',n:'Sample basket',h:'Two drop weights. One would do.',p:'The basket rides above steel drop weights, released three separate ways. With the weights gone, VIGIL floats home at 40 metres a minute, basket and all.',l:'PAYLOAD',v:'150 kg'},
+ {x:90.5,y:34.6,k:'05 · THRUSTERS',n:'Thrusters',h:'The quietest part of the design.',p:'Four ducted thrusters, two at the stern and two in the flanks, turn VIGIL so your viewport points at what matters: the wall, the floor, the animal in the beam.',l:'THRUST',v:'4 × 1.2 kN'}];
+let vi=1;
+$('#hsl').innerHTML=HS.map((h,i)=>`<button class="hs" data-i="${i}" style="left:${h.x}%;top:${h.y}%" aria-label="Hotspot 0${i+1}"><span>0${i+1}</span></button>`).join('');
+$('#vtabs').innerHTML=HS.map((h,i)=>`<button class="vtab" data-i="${i}"><div class="k">0${i+1}</div><div class="n">${h.n}</div></button>`).join('');
+function setV(i){vi=i;const h=HS[i],c=$('#vcard');c.style.opacity=0;
+  setTimeout(()=>{c.innerHTML=`<div class="k">${h.k}</div><h3>${h.h}</h3><p>${h.p}</p><div class="m"><span class="l">${h.l}</span><span class="v">${h.v}</span></div>`;
+   let left=h.x+2.8, top=h.y-16; if(left>78)left=h.x-24; c.style.left=left+'%';c.style.top=Math.max(4,top)+'%';c.style.opacity=1},200);
+  $$('.hs').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));$$('.vtab').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));}
+$$('.hs,.vtab').forEach(b=>b.addEventListener('click',()=>setV(+b.dataset.i)));
+setV(1);
+// auto-advance hotspots while in view
+let vTimer=setInterval(()=>{const r=$('#capwrap').getBoundingClientRect();if(r.top<innerHeight*.4&&r.bottom>innerHeight*.6)setV((vi+1)%5)},4200);
+
+// cabin parallax
+const cab=$('#cabimg');addEventListener('scroll',()=>{const r=cab.parentElement.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){cab.style.transform=`translateY(${(r.top)*-0.12}px) scale(${1.04+Math.max(-.04,r.top/innerHeight*0.04)})`}},{passive:true});
+
+// training
+const D=[
+ {n:'Medicine and fit',k:'DAY ONE · MEDICINE AND FIT',h:'We assess you, then build the gear to fit.',p:'Your dive physician works through forty checks, none of which involve swimming. After that, we scan your body for a cushion shaped to hold you steady at the glass.',img:'img/trainer.jpg',s:[['07:00','Bloods, ECG and an unhurried breakfast'],['09:30','Full-body scan for your cushion mould'],['13:00','Thermal layers fitting, first pass'],['16:00','Opening briefing with your pilot']]},
+ {n:'The ship',k:'DAY TWO · THE SHIP',h:'Your body learns the swell before the dive does.',p:'A day aboard SALTMARROW, working up to a full launch from the stern A-frame. By evening, you walk the deck in a four-metre swell and read your checklist aloud.',img:'img/launch.jpg',s:[['08:00','Deck safety and boarding'],['10:00','Launch and recovery, watched from deck'],['13:30','Swimmer drills at the stern'],['16:00','Night launch, with checklist']]},
+ {n:'The sphere',k:'DAY THREE · THE SPHERE',h:'Eleven hours, in 1.9 metres.',p:'A day in the full-size sphere mock-up. You learn to move without elbows, to eat properly, and to leave your pencil where it rolls.',img:'img/cabin.jpg',s:[['06:30','Light breakfast, briefing'],['08:00','Sphere session, five hours sealed'],['13:00','Debrief and lunch'],['15:00','Viewport and camera drills']]},
+ {n:'The vessel',k:'DAY FOUR · THE VESSEL',h:'Every switch you will likely never touch.',p:'A full day in the VIGIL simulator with your crew: normal dive, a snagged arm, a dead phone and a fire. Your pilot watches closely for how well you take instruction.',img:'img/capsule.jpg',s:[['08:00','Seat fit in the actual sphere'],['10:00','Standard dive, start to finish'],['14:00','Off-nominal drills'],['17:00','Crew debrief']]},
+ {n:'First light',k:'DAY FIVE · FIRST LIGHT',h:'Down to 300 metres, then home.',p:'A two-hour qualification dive off Port Tamsin, just past the twilight line. You see your first sparks in the dark and call out the depth, twice over.',img:'img/quote.jpg',pos:'82% 50%',s:[['08:30','Pre-dive and hatch briefing'],['10:00','Descent to 300 metres'],['11:00','Hover and first sparks'],['16:00','Ascent and recovery']]},
+ {n:'The hatch',k:'DAY SIX · THE HATCH',h:'You show up a guest and depart as crew.',p:'A dive-day rehearsal from wake-up through hatch-close, then your pin, your patch, and dinner with everyone who dived before you.',img:'img/launch.jpg',s:[['05:00','Dive-day wake-up'],['07:00','Walking out to the A-frame'],['09:00','Hatch-close rehearsal'],['19:00','Crew dinner']]}];
+let di=0;
+$('#days').insertAdjacentHTML('beforeend',D.map((d,i)=>`<button class="day" data-i="${i}"><div class="k">DAY 0${i+1}</div><div class="n">${d.n}</div></button>`).join(''));
+function setD(i){di=(i+6)%6;const d=D[di],R=$('#dright'),img=$('#dimg');R.classList.add('out');img.style.opacity=0;
+  $$('.day').forEach((b,k)=>{b.classList.toggle('on',k===di);b.classList.toggle('done',k<di)});$('#dbar').style.width=(di*100/6+100/6*0.48)+'%';
+  setTimeout(()=>{R.innerHTML=`<div class="dnum">0${di+1}<small>/ 06</small></div><div class="k2">${d.k}</div><h3>${d.h}</h3><p class="p">${d.p}</p>
+   <div class="sched">${d.s.map(s=>`<div><b>${s[0]}</b>${s[1]}</div>`).join('')}</div>
+   <div class="dnav"><button aria-label="Previous day" id="dp">‹</button><button aria-label="Next day" id="dn">›</button><span>USE ← → TO MOVE BETWEEN DAYS</span></div>`;
+   img.src=d.img;img.style.objectPosition=d.pos||'';img.style.opacity=1;R.classList.remove('out');$('#dp').onclick=()=>setD(di-1);$('#dn').onclick=()=>setD(di+1);},di===0&&!R.innerHTML?0:300);}
+$$('.day').forEach(b=>b.addEventListener('click',()=>setD(+b.dataset.i)));
+addEventListener('keydown',e=>{const r=$('#training').getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0){if(e.key==='ArrowRight')setD(di+1);if(e.key==='ArrowLeft')setD(di-1)}});
+setD(0);
+
+// quotes
+const Q=[['“I’d rehearsed a whole speech for the viewport. Not one word of it came out.”','Maren Oyelaran','DUSK · V-12 · 2025'],
+ ['“The dark stops meaning empty after the first hour. It never quite goes back.”','Tobiah Rensfeld','PLAIN · V-27 · 2026'],
+ ['“Between the trench walls it went so quiet I could hear my own wristwatch.”','Sunniva Achterberg','SABLE · V-19 · 2025'],
+ ['“The pilot read out the depth, and nobody spoke for a full minute.”','Idris Calloway-Venn','DUSK · V-33 · 2026']];
+let qi=0,qStart=performance.now();
+$('#qdots').innerHTML=Q.map((q,i)=>`<button data-i="${i}"><i></i>0${i+1}</button>`).join('');
+function setQ(i){qi=i;qStart=performance.now();const t=$('#qtext'),w=$('#qwho');t.classList.add('out');w.classList.add('out');
+  setTimeout(()=>{t.textContent=Q[i][0];w.innerHTML=`${Q[i][1]}<span>${Q[i][2]}</span>`;t.classList.remove('out');w.classList.remove('out')},t.textContent?300:0);
+  $$('#qdots button').forEach((b,k)=>{b.classList.toggle('on',k===i);b.querySelector('i').style.width=k<i?'100%':'0'})}
+$$('#qdots button').forEach(b=>b.addEventListener('click',()=>setQ(+b.dataset.i)));setQ(0);
+(function qa(n){const k=(n-qStart)/7000;const bar=$$('#qdots button')[qi].querySelector('i');bar.style.width=Math.min(100,k*100)+'%';if(k>=1)setQ((qi+1)%4);requestAnimationFrame(qa)})(performance.now());
+
+// faq
+const F=[['How fit does a guest need to be?','Managing three flights of stairs and an hour of comfortable kneeling is usually enough to qualify. Your dive physician has the final call, on day one, not us.'],
+ ['What if the dive gets called off?','We wait for the next window, usually inside 48 hours. Your seat, your crew and your cushion all travel with you. A sea-state hold is never billed to you.'],
+ ['Am I allowed to bring anything along?','A personal allowance of 1.5 kg, cleared through the crew office beforehand. Most guests pack a photograph and then never remember to look at it.'],
+ ['Can I get my deposit back?','Fully refundable, up to 90 days before the dive on Dusk and Plain, and 180 days on Sable.']];
+$('#faq').innerHTML=F.map(f=>`<div class="qa rv"><button>${f[0]}<i>+</i></button><div class="a"><p>${f[1]}</p></div></div>`).join('');
+$$('.qa').forEach(q=>{io.observe(q);q.querySelector('button').onclick=()=>{const o=q.classList.toggle('open');q.querySelector('.a').style.maxHeight=o?q.querySelector('.a').scrollHeight+'px':0}});
+})();
+</script>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
+const canvas=document.getElementById('gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));
+renderer.setSize(innerWidth,innerHeight,false);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(40,innerWidth/innerHeight,0.05,4000);
+scene.add(camera);
+addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});
+const VS=`varying vec3 vObj;varying vec3 vW;varying vec3 vN;varying vec2 vUv;
+void main(){vObj=position;vUv=uv;vec4 w=modelMatrix*vec4(position,1.);vW=w.xyz;vN=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;}`;
+
+/* ---------- textures ---------- */
+function canvasTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;}
+const glowTex=canvasTex(128,128,(g,w,h)=>{const r=g.createRadialGradient(64,64,0,64,64,64);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.18,'rgba(255,255,255,.7)');r.addColorStop(.45,'rgba(255,255,255,.16)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,w,h)});
+const hullTex=canvasTex(1024,512,(g,w,h)=>{g.fillStyle='#d9d6ce';g.fillRect(0,0,w,h);
+  g.strokeStyle='rgba(20,30,40,.28)';g.lineWidth=2;for(let x=0;x<w;x+=128){g.beginPath();g.moveTo(x,0);g.lineTo(x,h);g.stroke()}
+  for(const y of[h*.34,h*.66]){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke()}
+  g.fillStyle='rgba(30,36,44,.45)';for(let x=10;x<w;x+=32)for(const y of[h*.34-6,h*.66+6]){g.beginPath();g.arc(x,y,2,0,7);g.fill()}
+  for(let i=0;i<260;i++){g.fillStyle=`rgba(60,55,48,${Math.random()*.08})`;g.fillRect(Math.random()*w,Math.random()*h,2+Math.random()*30,1+Math.random()*3)}
+  const s=g.createLinearGradient(0,0,w,0);s.addColorStop(0,'rgba(40,45,50,.18)');s.addColorStop(.5,'rgba(40,45,50,0)');s.addColorStop(1,'rgba(40,45,50,.18)');g.fillStyle=s;g.fillRect(0,0,w,h)});
+
+/* ---------- water dome ---------- */
+const waterU={top:{value:new THREE.Color()},mid:{value:new THREE.Color()},deep:{value:new THREE.Color()},sunAmt:{value:1},time:{value:0}};
+const water=new THREE.Mesh(new THREE.SphereGeometry(1500,48,24),new THREE.ShaderMaterial({uniforms:waterU,side:THREE.BackSide,depthWrite:false,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform vec3 top,mid,deep;uniform float sunAmt,time;varying vec3 vW;
+ void main(){vec3 d=normalize(vW-cameraPosition);float e=d.y;vec3 c=mix(deep,mid,smoothstep(-.7,.05,e));c=mix(c,top,smoothstep(.05,.95,e));
+ c+=vec3(.5,.85,1.)*pow(max(e,0.),7.)*sunAmt*.8;
+ float a=atan(d.z,d.x);float ray=pow(.5+.5*sin(a*23.+time*.25)*sin(a*9.-time*.17),3.);c+=vec3(.25,.55,.7)*ray*smoothstep(.05,.8,e)*sunAmt*.22;
+ gl_FragColor=vec4(c,1.);}`}));
+water.renderOrder=-5;water.frustumCulled=false;scene.add(water);
+
+/* ---------- surface, seen from below ---------- */
+const surfG=new THREE.Group();scene.add(surfG);
+const surfU={time:{value:0},op:{value:1}};
+const surf=new THREE.Mesh(new THREE.PlaneGeometry(900,900,1,1),new THREE.ShaderMaterial({uniforms:surfU,transparent:true,depthWrite:false,side:THREE.DoubleSide,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform float time,op;varying vec3 vW;
+ void main(){vec2 p=vW.xz;float n=sin(p.x*.35+time*.8)*sin(p.y*.3-time*.6)+sin((p.x+p.y)*.22+time*.5)+.6*sin(p.x*.9-p.y*.7+time*1.3);
+ float b=pow(1.-abs(sin(n*1.7)),5.);float dist=length(p-cameraPosition.xz);float f=exp(-dist/90.);
+ vec3 c=mix(vec3(.12,.4,.52),vec3(.7,.92,1.),b*.45+.12);gl_FragColor=vec4(c,op*f*.8);}`}));
+surf.rotation.x=Math.PI/2;surfG.add(surf);
+const rayU={op:{value:1}};
+const rayMat=new THREE.ShaderMaterial({uniforms:rayU,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform float op;varying vec2 vUv;varying vec3 vN;varying vec3 vW;
+ void main(){vec3 V=normalize(cameraPosition-vW);float f=abs(dot(normalize(vN),V));float a=pow(vUv.y,1.6)*pow(f,1.5)*op*.16;gl_FragColor=vec4(vec3(.6,.9,1.)*a,a);}`});
+const rg=new THREE.CylinderGeometry(1,3.2,80,24,1,true);rg.translate(0,-40,0);
+for(let i=0;i<14;i++){const r=new THREE.Mesh(rg,rayMat);const a=Math.random()*6.28,d=6+Math.random()*50;r.position.set(Math.cos(a)*d,0,Math.sin(a)*d-10);
+  r.scale.set(.6+Math.random()*1.2,.7+Math.random()*.6,.6+Math.random()*1.2);r.rotation.set(-.06,0,.2);surfG.add(r)}
+
+/* ---------- particles ---------- */
+const PRt=renderer.getPixelRatio();
+function field(n,S,sz0,sz1){const p=new Float32Array(n*3),s=new Float32Array(n),ph=new Float32Array(n);
+  for(let i=0;i<n;i++){p.set([(Math.random()-.5)*S,(Math.random()-.5)*S,(Math.random()-.5)*S],i*3);s[i]=sz0+Math.pow(Math.random(),3)*(sz1-sz0);ph[i]=Math.random()*100}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('sz',new THREE.BufferAttribute(s,1));g.setAttribute('ph',new THREE.BufferAttribute(ph,1));return g}
+const PVS=`attribute float sz,ph;uniform vec3 cam;uniform float drift,S,pr,time,tw;varying float vA;varying float vPh;
+ void main(){vec3 p=position;p.y+=drift;p.x+=sin(drift*.07+ph)*.6;p=mod(p-cam+S*.5,S)-S*.5+cam;
+ vec4 mv=modelViewMatrix*vec4(p,1.);float dz=-mv.z;gl_PointSize=sz*pr*(24./max(dz,.5));
+ vA=smoothstep(S*.5,S*.3,length(p-cam))*smoothstep(.4,2.5,dz);vA*=mix(1.,pow(.5+.5*sin(time*(.6+fract(ph)*1.8)+ph),6.),tw);vPh=ph;gl_Position=projectionMatrix*mv;}`;
+function pmat(col,col2,S,tw){return new THREE.ShaderMaterial({uniforms:{cam:{value:V3(0,0,0)},drift:{value:0},S:{value:S},pr:{value:PRt},time:{value:0},tw:{value:tw},op:{value:0},col:{value:new THREE.Color(col)},col2:{value:new THREE.Color(col2)}},
+ transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,vertexShader:PVS,
+ fragmentShader:`uniform float op;uniform vec3 col,col2;varying float vA;varying float vPh;void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.08,d)*vA*op;gl_FragColor=vec4(mix(col,col2,fract(vPh*.37))*a,a);}`})}
+const snow=new THREE.Points(field(3200,46,.8,3.2),pmat(0xb9d0dc,0xf0f4f2,46,0));snow.frustumCulled=false;scene.add(snow);
+const bio=new THREE.Points(field(900,110,2.5,10),pmat(0x3fb8ff,0x6ff4ff,110,1));bio.frustumCulled=false;scene.add(bio);
+// bubbles from the release
+const BN=260,bp=new Float32Array(BN*3),bs=new Float32Array(BN);for(let i=0;i<BN;i++){const a=Math.random()*6.28,r=Math.random()*2.6;bp.set([Math.cos(a)*r,Math.random()*16,Math.sin(a)*r*1.6],i*3);bs[i]=1+Math.random()*3}
+const bg=new THREE.BufferGeometry();bg.setAttribute('position',new THREE.BufferAttribute(bp,3));bg.setAttribute('sz',new THREE.BufferAttribute(bs,1));
+const bubU={time:{value:0},op:{value:0},pr:{value:PRt}};
+const bubbles=new THREE.Points(bg,new THREE.ShaderMaterial({uniforms:bubU,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,
+ vertexShader:`attribute float sz;uniform float time,pr;varying float vA;void main(){vec3 p=position;p.y=mod(p.y+time*(2.+sz*.6),16.)-3.;p.x+=sin(time*3.+p.y)*.15;vA=smoothstep(12.,6.,p.y);
+ vec4 mv=modelViewMatrix*vec4(p,1.);gl_PointSize=sz*pr*(22./max(-mv.z,.5));gl_Position=projectionMatrix*mv;}`,
+ fragmentShader:`uniform float op;varying float vA;void main(){float d=length(gl_PointCoord-.5);float a=(smoothstep(.5,.35,d)-smoothstep(.35,.2,d)*.7)*op*vA;gl_FragColor=vec4(vec3(.85,.97,1.)*a,a);}`}));
+bubbles.frustumCulled=false;scene.add(bubbles);
+// a siphonophore drifting past: a chain of blue lamps
+const SPN=46,spp=new Float32Array(SPN*3),sps=new Float32Array(SPN),spph=new Float32Array(SPN);
+for(let i=0;i<SPN;i++){const k=i/SPN;spp.set([Math.sin(k*5.)*1.6+k*3,-k*15,Math.cos(k*3.)*1.2],i*3);sps[i]=i<3?9:3+Math.random()*3;spph[i]=i*.21}
+const spg=new THREE.BufferGeometry();spg.setAttribute('position',new THREE.BufferAttribute(spp,3));spg.setAttribute('sz',new THREE.BufferAttribute(sps,1));spg.setAttribute('ph',new THREE.BufferAttribute(spph,1));
+const sphU={time:{value:0},op:{value:0},pr:{value:PRt}};
+const sipho=new THREE.Points(spg,new THREE.ShaderMaterial({uniforms:sphU,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,
+ vertexShader:`attribute float sz,ph;uniform float time,pr;varying float vA;void main(){vec3 p=position;p.x+=sin(time*.7+ph*2.)*.35;vA=.55+.45*sin(time*2.2-ph*6.);
+ vec4 mv=modelViewMatrix*vec4(p,1.);gl_PointSize=sz*pr*(26./max(-mv.z,.5));gl_Position=projectionMatrix*mv;}`,
+ fragmentShader:`uniform float op;varying float vA;void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.0,d);a=a*a*op*vA;gl_FragColor=vec4(vec3(.35,.75,1.)*a*1.6,a);}`}));
+sipho.frustumCulled=false;scene.add(sipho);
+
+/* ---------- lights ---------- */
+const hemi=new THREE.HemisphereLight(0x7fc6e0,0x08131c,1.4);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xa8e2f2,2.2);scene.add(sun);scene.add(sun.target);
+const fill=new THREE.DirectionalLight(0xa9c9e0,0.6);camera.add(fill);fill.position.set(0,0,1);fill.target.position.set(0,0,-1);camera.add(fill.target);
+
+/* ---------- the submersible ---------- */
+const hullMat=new THREE.MeshStandardMaterial({map:hullTex,roughness:.5,metalness:.05});
+const tiMat=new THREE.MeshStandardMaterial({color:0x8a939c,roughness:.4,metalness:.45});
+const darkMat=new THREE.MeshStandardMaterial({color:0x1f252b,roughness:.55,metalness:.45});
+const steelMat=new THREE.MeshStandardMaterial({color:0x3a4148,roughness:.5,metalness:.55});
+const glassMat=new THREE.MeshStandardMaterial({color:0x0b1016,roughness:.06,metalness:.3,emissive:0xff9a4a,emissiveIntensity:.05});
+const lampMat=new THREE.MeshBasicMaterial({color:0x3a3a36,toneMapped:false});
+function spr(tex,color,sx,sy,op=1){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,color,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:op,toneMapped:false,fog:false}));s.scale.set(sx,sy||sx,1);return s}
+const sub=new THREE.Group();scene.add(sub);
+function mesh(geo,mat,x,y,z){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);sub.add(m);return m}
+const hull=mesh(new THREE.CapsuleGeometry(1.05,3.9,12,40),hullMat,0,.18,-.4);hull.rotation.x=Math.PI/2;hull.scale.set(.96,1,1.1);
+const SPH=V3(0,-.08,2.0);
+mesh(new THREE.SphereGeometry(1.02,48,32),tiMat,SPH.x,SPH.y,SPH.z);
+mesh(new THREE.TorusGeometry(1.0,.05,10,48),steelMat,0,-.08,1.62).scale.set(1,1.02,1);
+for(const a of[-.46,0,.46]){const dir=V3(Math.sin(a),-.1,Math.cos(a)).normalize(),p=SPH.clone().add(dir.clone().multiplyScalar(1.0));
+  const ring=mesh(new THREE.TorusGeometry(.24,.055,12,32),steelMat,p.x,p.y,p.z);ring.lookAt(p.clone().add(dir));
+  const gl=mesh(new THREE.SphereGeometry(.2,24,16),glassMat,p.x,p.y,p.z);gl.scale.set(1,1,.4);gl.lookAt(p.clone().add(dir))}
+const tower=mesh(new THREE.CylinderGeometry(.42,.47,.5,28),darkMat,0,1.35,.35);mesh(new THREE.CylinderGeometry(.47,.47,.07,28),steelMat,0,1.63,.35);
+// floodlight bar
+mesh(new THREE.BoxGeometry(2.1,.1,.16),darkMat,0,1.16,1.72);
+const lamps=[];for(let i=0;i<6;i++){const x=-.85+i*.34;const h=mesh(new THREE.CylinderGeometry(.1,.11,.16,18),steelMat,x,1.3,1.78);h.rotation.x=Math.PI/2;
+  const l=mesh(new THREE.CircleGeometry(.082,18),lampMat,x,1.3,1.865);const g=spr(glowTex,0xffcf96,1.1,1.1,.9);g.position.set(x,1.3,1.95);sub.add(g);lamps.push(g)}
+const beamU={op:{value:0}};
+const beamMat=new THREE.ShaderMaterial({uniforms:beamU,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,toneMapped:false,vertexShader:VS,
+ fragmentShader:`uniform float op;varying vec2 vUv;varying vec3 vN;varying vec3 vW;
+ void main(){vec3 V=normalize(cameraPosition-vW);float f=abs(dot(normalize(vN),V));float a=pow(vUv.y,2.2)*pow(f,1.2)*op*.2;gl_FragColor=vec4(vec3(1.,.86,.64)*a,a);}`});
+const cg=new THREE.ConeGeometry(4.2,22,32,1,true);cg.translate(0,-11,0);
+for(const [x,yaw] of[[-.55,.12],[.55,-.12]]){const b=new THREE.Mesh(cg,beamMat);b.position.set(x,1.3,1.9);b.rotation.set(-(Math.PI/2-.38),yaw,0,'YXZ');sub.add(b)}
+const halo=new THREE.PointLight(0xc9dbe6,0,45,1);halo.position.set(0,1.4,1.2);sub.add(halo);
+const spot=new THREE.SpotLight(0xffd8ac,0,70,.6,.55,1);spot.position.set(0,1.3,1.9);spot.target.position.set(0,-7,16);sub.add(spot,spot.target);
+// stern and flank thrusters
+const props=[];
+function duct(x,y,z,r,axis){const g=new THREE.Group();g.position.set(x,y,z);sub.add(g);
+  g.add(new THREE.Mesh(new THREE.TorusGeometry(r,.075,12,36),steelMat));const sh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.34,36,1,true),darkMat);sh.rotation.x=Math.PI/2;g.add(sh);
+  const pr=new THREE.Group();for(let i=0;i<4;i++){const bl=new THREE.Mesh(new THREE.BoxGeometry(.07,r*.9,.03),steelMat);bl.position.y=r*.45;const h=new THREE.Group();h.rotation.z=i*Math.PI/2;bl.rotation.y=.5;h.add(bl);pr.add(h)}
+  pr.add(new THREE.Mesh(new THREE.SphereGeometry(.08,12,8),steelMat));g.add(pr);props.push(pr);if(axis==='y')g.rotation.x=Math.PI/2;return g}
+duct(.98,.55,-3.35,.42);duct(-.98,.55,-3.35,.42);duct(.98,-.45,-3.2,.42);duct(-.98,-.45,-3.2,.42);
+for(const s of[1,-1]){mesh(new THREE.BoxGeometry(.5,.06,.9),darkMat,s*.62,.05,-3.3);duct(s*1.2,.25,.4,.26,'y')}
+// skids, drop weights, sample basket
+for(const s of[1,-1]){mesh(new THREE.BoxGeometry(.12,.14,5.2),steelMat,s*.72,-1.34,-.3);for(const z of[-2,-.4,1.2])mesh(new THREE.BoxGeometry(.1,.42,.1),steelMat,s*.62,-1.1,z)}
+mesh(new THREE.BoxGeometry(1.1,.3,.7),darkMat,0,-1.1,-1.3);mesh(new THREE.BoxGeometry(1.1,.3,.7),darkMat,0,-1.1,-.3);
+const basket=mesh(new THREE.BoxGeometry(1.0,.46,.62),new THREE.MeshStandardMaterial({color:0x8a939b,wireframe:true,roughness:.6,metalness:.5}),0,-1.02,2.72);
+// manipulator arm
+const arm=new THREE.Group();arm.position.set(.62,-.72,2.5);sub.add(arm);
+const shoulder=new THREE.Mesh(new THREE.SphereGeometry(.16,16,12),darkMat);arm.add(shoulder);
+const upperArm=new THREE.Group();arm.add(upperArm);const ua=new THREE.Mesh(new THREE.BoxGeometry(.16,.16,.95),darkMat);ua.position.z=.47;upperArm.add(ua);upperArm.rotation.set(.35,-.2,0);
+const elbow=new THREE.Group();elbow.position.z=.95;upperArm.add(elbow);elbow.add(new THREE.Mesh(new THREE.SphereGeometry(.12,14,10),steelMat));
+const fa=new THREE.Mesh(new THREE.BoxGeometry(.13,.13,.8),darkMat);fa.position.z=.4;elbow.add(fa);elbow.rotation.x=.75;
+const wrist=new THREE.Group();wrist.position.z=.82;elbow.add(wrist);wrist.add(new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,.16,14),steelMat));
+for(const s of[1,-1]){const f=new THREE.Mesh(new THREE.BoxGeometry(.04,.05,.28),steelMat);f.position.set(s*.06,0,.14);f.rotation.y=-s*.3;wrist.add(f)}
+// strobe
+mesh(new THREE.CylinderGeometry(.03,.03,.5,8),steelMat,0,1.55,-1.8);const strobe=spr(glowTex,0xffb070,.9,.9,1);strobe.position.set(0,1.82,-1.8);sub.add(strobe);
+
+/* ---------- terrain: abyssal plain, trench walls, trench floor ---------- */
+const hsh=(x,y)=>{const s=Math.sin(x*127.1+y*311.7)*43758.5453;return s-Math.floor(s)};
+function relief(x,y){return Math.sin(x*.11+1.3)*Math.sin(y*.13+.7)*1.1+Math.sin(x*.37+y*.21)*.35+Math.sin(x*.9-y*.7)*.12+hsh(Math.round(x*2),Math.round(y*2))*.08}
+function rock(x,y){return Math.sin(y*.07+x*.05)*3.2+Math.sin(y*.23-x*.19)*1.3+Math.sin(y*.9+x*.6)*.4+Math.sin(y*2.1)*.25+hsh(Math.round(x),Math.round(y))*.5}
+function terrain(w,h,sw,sh,f,mat){const g=new THREE.PlaneGeometry(w,h,sw,sh);const p=g.attributes.position;for(let i=0;i<p.count;i++)p.setZ(i,f(p.getX(i),p.getY(i)));g.computeVertexNormals();return new THREE.Mesh(g,mat)}
+const oozeMat=new THREE.MeshStandardMaterial({color:0x7d8284,roughness:1,metalness:0});
+const rockMat=new THREE.MeshStandardMaterial({color:0x5c6266,roughness:.95,metalness:0,flatShading:true});
+const floorG=new THREE.Group();scene.add(floorG);
+const plain=terrain(240,240,120,120,relief,oozeMat);plain.rotation.x=-Math.PI/2;plain.position.x=-118;floorG.add(plain);
+const cliff=terrain(240,560,60,140,(x,y)=>rock(x,y)+(y>270?-(y-270)*.3:0),rockMat);cliff.rotation.y=Math.PI/2;cliff.position.set(2,-278,0);floorG.add(cliff);
+const stones=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,0),rockMat,140);{const m=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler();
+ for(let i=0;i<140;i++){const x=-Math.random()*70-2,z=(Math.random()-.5)*110,s=.12+Math.pow(Math.random(),3)*.9;q.setFromEuler(e.set(Math.random()*3,Math.random()*3,0));
+  m.compose(V3(x,relief(x+118,-z)*1+s*.3,z),q,V3(s,s*.6,s));stones.setMatrixAt(i,m)}}
+floorG.add(stones);
+const wallR=terrain(240,1400,60,280,(x,y)=>rock(x+40,y),rockMat);wallR.rotation.y=-Math.PI/2;scene.add(wallR);
+const tfloor=terrain(200,200,100,100,(x,y)=>relief(x*.7+30,y*.7)*.6,oozeMat);tfloor.rotation.x=-Math.PI/2;scene.add(tfloor);
+
+/* ---------- the twilight line, in camera space ---------- */
+const twU={op:{value:0}};
+const twl=new THREE.Mesh(new THREE.RingGeometry(78,82,256,1,Math.PI/2-.75,1.5),new THREE.ShaderMaterial({uniforms:twU,transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending,toneMapped:false,
+ vertexShader:`varying vec3 vObj;void main(){vObj=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+ fragmentShader:`uniform float op;varying vec3 vObj;void main(){float r=length(vObj.xy);float d=abs(r-80.);float a=exp(-d*d*70.)*1.1+exp(-d*3.)*.14;
+ float ang=atan(vObj.y,vObj.x);float fade=smoothstep(.75,.2,abs(ang-1.5708));a*=fade*(.8+.4*sin(ang*90.)*sin(ang*37.));gl_FragColor=vec4(vec3(.45,.88,1.)*a*op,1.);}`}));
+twl.renderOrder=6;camera.add(twl);
+
+/* ---------- tracks ---------- */
+const ease=k=>k*k*(3-2*k);
+function track(pts,lin){return t=>{if(t<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){const[a,va]=pts[i],[b,vb]=pts[i+1];if(t<=b){let k=(t-a)/(b-a);if(!lin)k=ease(k);
+  return Array.isArray(va)?va.map((x,j)=>x+(vb[j]-x)*k):va+(vb-va)*k}}return pts[pts.length-1][1]}}
+const D2R=Math.PI/180;
+const T={
+ // camera around the submersible: azimuth, elevation (deg), distance, screen shift right, shift up
+ cam:track([[0,[-38,-10,15,3.6,-.4]],[.3,[-34,-12,14.5,3.6,-.3]],[.65,[-25,-14,12,3.2,0]],[1.5,[30,-8,11.5,-3.2,0]],[2.5,[-40,2,12,3.3,0]],[3.05,[-45,0,12.5,3.3,0]],
+  [3.4,[35,-4,12,-3.3,0]],[4.3,[-30,6,13,3.4,-1]],[5.2,[50,0,12,-3.3,-1]],[6.1,[-55,8,11.5,3.4,0]],[6.95,[40,-6,12.5,-3.4,0]],[7.65,[-30,20,12,3.4,-.5]],
+  [8.4,[-80,10,13,3.0,1.2]],[9.1,[-125,-8,14,3.0,1.2]],[9.6,[60,4,12,-3.0,1.0]],[9.9,[-25,14,10,2.6,1.2]],[10,[-18,16,9.5,2.6,1.2]]]),
+ top:track([[0,[.2,.46,.56]],[1,[.17,.42,.55]],[2,[.1,.3,.44]],[3,[.04,.12,.22]],[4,[.012,.035,.07]],[5.6,[.007,.018,.034]],[10,[.006,.014,.028]]]),
+ mid:track([[0,[.035,.22,.32]],[1,[.03,.19,.3]],[2,[.018,.12,.2]],[3,[.008,.045,.085]],[4,[.004,.013,.028]],[5.6,[.003,.008,.016]],[10,[.003,.007,.014]]]),
+ deep:track([[0,[.01,.1,.17]],[1,[.008,.07,.13]],[2,[.004,.035,.075]],[3,[.003,.013,.03]],[4,[.002,.005,.012]],[10,[.001,.003,.007]]]),
+ sunAmt:track([[0,1],[1,.8],[2,.35],[3,.08],[3.6,0]]),
+ fogN:track([[0,12],[3,6],[10,4]]),fogF:track([[0,130],[2,95],[3,70],[5,58],[7.5,70],[10,75]]),
+ surf:track([[0,3.3],[.3,3.5],[.8,8],[1.5,22],[2.2,48],[2.8,90]]),
+ rays:track([[0,1],[1,.85],[2,.4],[2.7,0]]),
+ bub:track([[0,.25],[.3,.3],[.4,1],[1.1,.6],[1.8,0]]),
+ snow:track([[0,.3],[2,.5],[4,.8],[10,.9]]),
+ bio:track([[2.5,0],[3.3,.9],[5.6,1],[10,1]]),
+ sph:track([[5.9,0],[6.4,1],[7.4,1],[7.9,0]]),sphY:track([[5.9,16],[7.9,-2]],true),
+ flood:track([[2.3,0],[2.9,1],[10,1]]),
+ hemi:track([[0,1.6],[1,1.3],[2,.8],[3,.35],[4,.2],[5.6,.14],[10,.12]]),
+ sunI:track([[0,2.4],[1,1.8],[2,.9],[3,.3],[4,.05],[5,0]]),
+ fx:track([[7.3,6],[8.0,6],[8.45,-12]]),fy:track([[7.3,-70],[7.9,-3.4],[8.05,-2.9],[8.45,-2.9],[8.9,40],[9.4,230],[9.8,420],[10,500]]),
+ tf:track([[9.3,-120],[9.8,-7],[10,-2.5]]),
+ tl:track([[3.85,0],[4.1,1],[5.4,1],[5.6,0]]),
+ tlY:track([[3.9,.18],[4.3,.225],[4.6,.305],[5.2,.295],[5.6,.28]]),
+ pitch:track([[0,0],[.3,0],[.6,-.1],[2,-.05],[7.5,-.02],[8,.02],[8.5,-.12],[9.6,-.08],[10,.02]]),
+};
+// dive table: t, depth m, pressure bar, water °C, dive clock s
+const HUD=[[0,0,1.0,27.4,-10],[.3,0,1.0,27.4,0],[1,50,6.0,26.8,60],[2,120,13.1,21.5,144],[3,168,17.9,16.2,202],[3.8,190,20.1,14.6,228],[4.3,200,21.1,14.1,240],[4.8,232,24.3,13.0,278],
+ [5.6,300,31.2,11.0,360],[6.1,700,71.5,6.0,840],[6.6,1000,101.9,4.6,1200],[7,2500,254,2.4,3000],[7.3,3200,325,1.9,3840],[8,4000,406,1.5,4800],[8.4,4600,467,1.5,5520],
+ [8.8,6000,609,1.6,7200],[9.4,8600,873,2.1,10320],[9.8,9300,944,2.3,11160],[9.9,9380,952,2.4,11256],[10,9412,955,2.4,11300]];
+function hudAt(t){for(let i=0;i<HUD.length-1;i++){const a=HUD[i],b=HUD[i+1];if(t<=b[0]){const k=Math.max(0,(t-a[0])/(b[0]-a[0]));return a.map((x,j)=>x+(b[j]-x)*k)}}return HUD[HUD.length-1]}
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+const p2=n=>String(Math.floor(n)).padStart(2,'0');
+function clock(s){const neg=s<0;s=Math.abs(s);const fr=Math.floor((s%1)*100);let S=Math.floor(s);const d=Math.floor(S/86400);S%=86400;
+  return `T${neg?'−':'+'}${d?d+'d ':''}${p2(S/3600)}:${p2(S%3600/60)}:${p2(S%60)}<em>.${String(fr).padStart(2,'0')}</em>`}
+const $=id=>document.getElementById(id);
+const hDep=$('halt'),hPr=$('hvel'),hTmp=$('hload'),hClk=$('hclk'),hud=$('hud'),kline=$('kline'),rpr=$('rpr'),rmk=$('rmk'),rlab=$('rlab');
+const RT=[0,3,5.6,8,10],RY=[0,125,183,263,366];
+$('rdots').innerHTML=RY.map(y=>`<div class="d" style="top:${y}px"></div>`).join('');const rdots=[...document.querySelectorAll('.rail .d')];
+function railY(t){for(let i=0;i<4;i++)if(t<=RT[i+1])return RY[i]+(RY[i+1]-RY[i])*(t-RT[i])/(RT[i+1]-RT[i]);return 366}
+
+/* ---------- scroll → t ---------- */
+let KP=[],OPS=[];
+function layout(){const vh=innerHeight;KP=[];
+ document.querySelectorAll('[data-t0]').forEach(s=>{const top=s.offsetTop,b=top+s.offsetHeight,t0=+s.dataset.t0,t1=+s.dataset.t1;
+  if(s.hasAttribute('data-hero'))KP.push([0,t0],[Math.max(1,b-vh*.5),t1]);else KP.push([top-vh*.5,t0],[b-vh*.5,t1])});
+ KP.sort((a,b)=>a[0]-b[0]);OPS=[...document.querySelectorAll('[data-op]')];}
+function scrollT(){const y=scrollY;if(y<=KP[0][0])return KP[0][1];for(let i=0;i<KP.length-1;i++){const[a,ta]=KP[i],[b,tb]=KP[i+1];if(y<=b)return b>a?ta+(tb-ta)*(y-a)/(b-a):tb}return KP[KP.length-1][1]}
+layout();addEventListener('resize',layout);addEventListener('load',layout);setTimeout(layout,800);
+let tS=scrollT(),last=performance.now(),skip=0;
+
+/* ---------- per-frame ---------- */
+const UP=V3(0,1,0),fog=new THREE.Fog(0x000000,10,120);scene.fog=fog;
+const setC=(c,v)=>c.setRGB(v[0],v[1],v[2]);
+function update(t,time){
+ // submersible: gentle bob and trim
+ sub.position.set(0,Math.sin(time*.6)*.12,0);sub.rotation.set(T.pitch(t)+Math.sin(time*.45)*.015,-.1,Math.sin(time*.5)*.02);
+ props.forEach((p,i)=>p.rotation.z=time*(i%2?-3:3));
+ upperArm.rotation.y=-.2+Math.sin(time*.35)*.06;elbow.rotation.x=.75+Math.sin(time*.3)*.05;
+ strobe.material.opacity=Math.pow(Math.max(0,Math.sin(time*2.4)),24);
+ // camera
+ const [az,el,dist,sx,sy]=T.cam(t);const a=az*D2R,e=el*D2R;
+ const cp=V3(Math.sin(a)*Math.cos(e),Math.sin(e),Math.cos(a)*Math.cos(e)).multiplyScalar(dist);
+ const fwd=cp.clone().negate().normalize(),right=fwd.clone().cross(UP).normalize(),up2=right.clone().cross(fwd);
+ camera.up.copy(UP);camera.position.copy(cp);camera.lookAt(right.multiplyScalar(-sx).add(up2.multiplyScalar(-sy)));camera.updateMatrixWorld();
+ // water
+ const m=T.mid(t);setC(waterU.top.value,T.top(t));setC(waterU.mid.value,m);setC(waterU.deep.value,T.deep(t));waterU.sunAmt.value=T.sunAmt(t);waterU.time.value=time;
+ water.position.copy(camera.position);fog.color.setRGB(m[0],m[1],m[2],THREE.SRGBColorSpace);fog.near=T.fogN(t);fog.far=T.fogF(t);
+ const sy0=T.surf(t);surfG.position.y=sy0;surfG.visible=t<2.9;surfU.time.value=time;surfU.op.value=Math.min(1,Math.max(0,(2.9-t)/1.2));rayU.op.value=T.rays(t);
+ // particles
+ for(const [p,o,sp] of[[snow,T.snow(t),1],[bio,T.bio(t),.5]]){const u=p.material.uniforms;u.cam.value.copy(camera.position);u.drift.value=time*.5*sp+t*24*sp;u.time.value=time;u.op.value=o}
+ bubU.time.value=time;bubU.op.value=T.bub(t);bubbles.visible=T.bub(t)>.01;
+ sphU.time.value=time;sphU.op.value=T.sph(t);sipho.visible=T.sph(t)>.01;sipho.position.copy(camera.localToWorld(V3(-1.5,T.sphY(t),-24)));
+ // lights
+ const fl=T.flood(t);beamU.op.value=fl;spot.intensity=fl*60;halo.intensity=fl*(t>7?10:3);lamps.forEach(l=>{l.visible=fl>.01;l.material.opacity=.9*fl});lampMat.color.setRGB(.23+.77*fl,.23+.66*fl,.21+.53*fl);
+ hemi.intensity=T.hemi(t);sun.intensity=T.sunI(t);sun.position.set(20,60,10);sun.target.position.set(0,0,0);fill.intensity=.45+.35*Math.min(1,t/4);
+ // terrain
+ floorG.visible=t>7.25;floorG.position.set(T.fx(t),T.fy(t),0);
+ wallR.visible=t>8.2;wallR.position.set(T.fx(t)+30,T.fy(t)-300,0);
+ tfloor.visible=t>9.3;tfloor.position.set(8,T.tf(t),0);
+ // twilight line
+ const tl=T.tl(t),ky=T.tlY(t),hh=Math.tan(20*D2R)*60;twU.op.value=tl;twl.visible=tl>.01;twl.position.set(0,(.5-ky)*2*hh-80*1.58,-60);twl.scale.setScalar(1.58);
+ kline.style.opacity=tl;kline.style.top=(ky*innerHeight-5)+'px';
+ // HUD
+ const hv=hudAt(t);hDep.innerHTML=fmt(hv[1])+'<small>M</small>';hPr.innerHTML=(hv[2]<100?hv[2].toFixed(1):fmt(hv[2]))+'<small>BAR</small>';hTmp.innerHTML=hv[3].toFixed(1)+'<small>°C</small>';
+ hClk.innerHTML=clock(hv[4]);
+ const ry2=railY(t);rpr.style.height=ry2+'px';rmk.style.top=ry2+'px';rlab.textContent=fmt(hv[1])+' m';rdots.forEach((d,i)=>d.classList.toggle('on',RY[i]<=ry2+1));
+}
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+ const target=window.__T!==undefined?window.__T:scrollT();if(Math.abs(target-tS)>.35)tS=target;else tS+=(target-tS)*Math.min(1,dt*5);if(Math.abs(target-tS)<1e-4)tS=target;
+ const vh=innerHeight;let covered=false,hideHud=false;
+ let cf=0;for(const s of OPS){const r=s.getBoundingClientRect();if(r.top<=1&&r.bottom>=vh-1)covered=true;if(r.top<vh*.72&&r.bottom>vh*.28)hideHud=true;cf+=Math.max(0,Math.min(vh,r.bottom)-Math.max(0,r.top))/vh}
+ if(cf>.45&&(++skip%4))covered=true;
+ hud.style.opacity=hideHud?0:1;
+ update(tS,now/1000);
+ if(!covered||window.__T!==undefined)renderer.render(scene,camera);
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+window.__setT=v=>{tS=v};window.__dbg=()=>[camera.position.toArray(),tS];
+</script>
+</body>
+</html>
